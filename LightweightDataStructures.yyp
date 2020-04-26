@@ -1,9 +1,11 @@
 {
   "resources": [
     {"id":{"name":"GMAssert","path":"extensions/GMAssert/GMAssert.yy",},"order":0,},
+    {"id":{"name":"LightweightQueues","path":"scripts/LightweightQueues/LightweightQueues.yy",},"order":1,},
     {"id":{"name":"__GMA_BREAKPOINT__","path":"scripts/__GMA_BREAKPOINT__/__GMA_BREAKPOINT__.yy",},"order":0,},
     {"id":{"name":"lds_test_all","path":"scripts/lds_test_all/lds_test_all.yy",},"order":0,},
     {"id":{"name":"lds_test_stack","path":"scripts/lds_test_stack/lds_test_stack.yy",},"order":1,},
+    {"id":{"name":"lds_test_queue","path":"scripts/lds_test_queue/lds_test_queue.yy",},"order":2,},
     {"id":{"name":"LightweightStacks","path":"scripts/LightweightStacks/LightweightStacks.yy",},"order":0,},
     {"id":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},"order":0,},
   ],
