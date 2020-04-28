@@ -6,6 +6,7 @@ function lds_test_all() {
 	
 	lds_test_stack();
 	lds_test_queue();
+	lds_test_heap();
 	
 	timeB = current_time;
 	show_debug_message("Lightweight Data Structure tests done in " + string(timeB-timeA) + "ms.");
