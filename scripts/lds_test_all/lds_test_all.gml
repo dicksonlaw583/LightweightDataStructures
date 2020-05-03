@@ -4,10 +4,13 @@ function lds_test_all() {
 	var timeA, timeB;
 	timeA = current_time;
 	
+	lds_test_shuffle();
+	lds_test_sort();
 	lds_test_stack();
 	lds_test_queue();
 	lds_test_heap();
 	lds_test_map();
+	lds_test_list();
 	
 	timeB = current_time;
 	show_debug_message("Lightweight Data Structure tests done in " + string(timeB-timeA) + "ms.");
