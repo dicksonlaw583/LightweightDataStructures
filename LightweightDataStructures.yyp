@@ -2,6 +2,8 @@
   "resources": [
     {"id":{"name":"lds_test_map","path":"scripts/lds_test_map/lds_test_map.yy",},"order":4,},
     {"id":{"name":"lds_test_shuffle","path":"scripts/lds_test_shuffle/lds_test_shuffle.yy",},"order":6,},
+    {"id":{"name":"lds_test_grid","path":"scripts/lds_test_grid/lds_test_grid.yy",},"order":8,},
+    {"id":{"name":"LightweightGrids","path":"scripts/LightweightGrids/LightweightGrids.yy",},"order":5,},
     {"id":{"name":"LightweightLists","path":"scripts/LightweightLists/LightweightLists.yy",},"order":4,},
     {"id":{"name":"GMAssert","path":"extensions/GMAssert/GMAssert.yy",},"order":0,},
     {"id":{"name":"LightweightQueues","path":"scripts/LightweightQueues/LightweightQueues.yy",},"order":1,},

@@ -1,7 +1,7 @@
 #define __lds_array_shuffle__
 {
 	var arr = argument0;
-	for (var i = array_length(arr)-1; i >= 0; --i) {
+	for (var i = array_length(arr)-1; i > 0; --i) {
 		var j = irandom(i);
 		var temp = arr[i];
 		arr[@i] = arr[j];
