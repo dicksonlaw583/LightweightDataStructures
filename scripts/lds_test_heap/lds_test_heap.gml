@@ -160,4 +160,41 @@ function lds_test_heap() {
 	assert_equal(heap.deleteMax(), "delta", "Test changing priorities B4");
 	assert_equal(heap.deleteMax(), "epsilon", "Test changing priorities B5");
 	#endregion
+
+	#region Test heap copy
+	var heap2;
+	heap = new Heap("foo", 5, "bar", 7, "baz", 4, "qux", 6, "gone", 9);
+	heap2 = new Heap("foobar", 583, "barbaz", 907);
+	heap.deleteMax();
+	heap2.copy(heap);
+	assert_equal(heap2.size(), 4, "Test heap copy 1a");
+	assert_equal(heap2.deleteMin(), "baz", "Test heap copy 1b");
+	assert_equal(heap2.deleteMin(), "foo", "Test heap copy 1c");
+	assert_equal(heap2.deleteMax(), "bar", "Test heap copy 1d");
+	assert_equal(heap2.deleteMax(), "qux", "Test heap copy 1e");
+	assert(heap2.empty(), "Test heap copy 1f");
+	assert_equal(heap.size(), 4, "Test heap copy 2a");
+	assert_equal(heap.deleteMin(), "baz", "Test heap copy 2b");
+	assert_equal(heap.deleteMin(), "foo", "Test heap copy 2c");
+	assert_equal(heap.deleteMax(), "bar", "Test heap copy 2d");
+	assert_equal(heap.deleteMax(), "qux", "Test heap copy 2e");
+	assert(heap.empty(), "Test heap copy 2f");
+	#endregion
+	
+	#region Test heap clone
+	heap = new Heap("foo", 5, "bar", 7, "baz", 4, "qux", 6);
+	heap2 = heap.clone();
+	assert_equal(heap2.size(), 4, "Test heap clone 1a");
+	assert_equal(heap2.deleteMin(), "baz", "Test heap clone 1b");
+	assert_equal(heap2.deleteMin(), "foo", "Test heap clone 1c");
+	assert_equal(heap2.deleteMax(), "bar", "Test heap clone 1d");
+	assert_equal(heap2.deleteMax(), "qux", "Test heap clone 1e");
+	assert(heap2.empty(), "Test heap clone 1f");
+	assert_equal(heap.size(), 4, "Test heap clone 2a");
+	assert_equal(heap.deleteMin(), "baz", "Test heap clone 2b");
+	assert_equal(heap.deleteMin(), "foo", "Test heap clone 2c");
+	assert_equal(heap.deleteMax(), "bar", "Test heap clone 2d");
+	assert_equal(heap.deleteMax(), "qux", "Test heap clone 2e");
+	assert(heap.empty(), "Test heap clone 2f");
+	#endregion
 }

@@ -60,6 +60,7 @@ function Heap() constructor {
 				if (deletePos < _length) {
 					_swap(deletePos, _length);
 					_data[_length--] = undefined;
+					_pushUp(deletePos);
 					_pushDownMax(deletePos);
 				} else {
 					_data[_length--] = undefined;
@@ -147,9 +148,27 @@ function Heap() constructor {
 		return _priority[i];
 	};
 	
+	// Shallow copy from another heap
+	static copy = function(source) {
+		_length = source._length;
+		_data = array_create(1+_length, undefined);
+		_priority = array_create(1+_length, undefined);
+		if (_length > 0) {
+			array_copy(_data, 1, source._data, 1, _length);
+			array_copy(_priority, 1, source._priority, 1, _length);
+		}
+	};
+	
+	// Return a shallow clone of this heap
+	static clone = function() {
+		var theClone = new Heap();
+		theClone.copy(self);
+		return theClone;
+	};
+	
 	// (INTERNAL) Set up the heap
 	static _formHeap = function() {
-		for (var i = _length >> 2; i >= 1; --i) {
+		for (var i = _length >> 1; i >= 1; --i) {
 			_pushDown(i);
 		}
 	};
