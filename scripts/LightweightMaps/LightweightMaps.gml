@@ -6,13 +6,13 @@ function Map() constructor {
 	_exists = {};
 	_size = argument_count div 2;
 	_keysCache = array_create(argument_count >> 1);
+	_keysCachePos = 0;
 	for (var i = 0; i < argument_count; i += 2) {
 		var kn = _toKeyName(argument[i]);
 		variable_struct_set(_data, kn, argument[i+1]);
-		variable_struct_set(_exists, kn, true);
-		_keysCache[i >> 1] = argument[i];
+		variable_struct_set(_exists, kn, _keysCachePos);
+		_keysCache[_keysCachePos++] = argument[i];
 	}
-	_keysCachePos = _size;
 	
 	static _toKeyName = function(k) {
 		return "_" + string_replace_all(string_replace_all(string_replace_all(base64_encode(k), "+", "_3"), "/", "_4"), "=", "_p");
@@ -129,6 +129,36 @@ function Map() constructor {
 		}
 		return _keys;
 	};
+
+	// Shallow copy from another map
+	static copy = function(source) {
+		delete _data;
+		delete _exists;
+		_size = source._size;
+		_data = {};
+		_exists = {};
+		// Copy struct keys that exist
+		var sourceKeys = variable_struct_get_names(source._exists);
+		for (var i = array_length(sourceKeys)-1; i >= 0; --i) {
+			var sourceKey = sourceKeys[i],
+				sourceKeyExists = variable_struct_get(source._exists, sourceKey);
+			if (!is_undefined(sourceKeyExists)) {
+				variable_struct_set(_exists, sourceKey, sourceKeyExists);
+				variable_struct_set(_data, sourceKey, variable_struct_get(source._data, sourceKey));
+			}
+		}
+		// Copy keys cache
+		_keysCache = array_create(source._keysCachePos);
+		array_copy(_keysCache, 0, source._keysCache, 0, source._keysCachePos);
+		_keysCachePos = source._keysCachePos;
+	};
+	
+	// Shallow clone of this map
+	static clone = function() {
+		var theClone = new Map();
+		theClone.copy(self);
+		return theClone;
+	}
 }
 
 function MapKeyMissingException(_msg) constructor {

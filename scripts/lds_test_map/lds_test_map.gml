@@ -49,4 +49,20 @@ function lds_test_map() {
 		"foo",
 		["foo", "bar"]
 	], "Test simple map iteration 1");
+	
+	// Test map copy
+	var map2;
+	map = new Map("FOO", 11, "BAR", 22, "BAZ", 33);
+	map2 = new Map("foobar", 583);
+	map2.copy(map);
+	assert_equal([map2.size(), map2.get("FOO"), map2.get("BAR"), map2.get("BAZ"), bool(map2.exists("foobar"))], [3, 11, 22, 33, bool(false)], "Test map copy 1");
+	map2.set("FOO", 111);
+	assert_equal([map.size(), map.get("FOO"), map.get("BAR"), map.get("BAZ"), bool(map.exists("foobar"))], [3, 11, 22, 33, bool(false)], "Test map copy 2");
+
+	// Test map clone
+	map = new Map("FOO", 111, "BAR", 222, "BAZ", 333);
+	map2 = map.clone();
+	assert_equal([map2.size(), map2.get("FOO"), map2.get("BAR"), map2.get("BAZ"), bool(map2.exists("foobar"))], [3, 111, 222, 333, bool(false)], "Test map clone 1");
+	map2.set("FOO", 1111);
+	assert_equal([map.size(), map.get("FOO"), map.get("BAR"), map.get("BAZ"), bool(map.exists("foobar"))], [3, 111, 222, 333, bool(false)], "Test map clone 2");
 }
