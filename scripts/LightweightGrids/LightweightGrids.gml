@@ -459,6 +459,23 @@ function Grid() constructor {
 		}
 		return to2d;
 	};
+
+	// Shallow copy from another grid
+	static copy = function(source) {
+		delete _data;
+		_width = source._width;
+		_height = source._height;
+		var totalSize = _width*_height;
+		_data = array_create(totalSize);
+		array_copy(_data, 0, source._data, 0, totalSize);
+	};
+	
+	// Create a shallow clone of this grid
+	static clone = function() {
+		var theClone = new Grid(_width, _height);
+		theClone.copy(self);
+		return theClone;
+	};
 }
 
 function GridIndexOutOfBoundsException(xx, yy) constructor {

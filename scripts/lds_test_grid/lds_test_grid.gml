@@ -406,4 +406,30 @@ function lds_test_grid() {
 	assert_equal(grid.getDiskMin(5, 5, 4), 0, "Test grid stats 4c");
 	assert_equal(grid.getDiskSum(5, 5, 4), 15, "Test grid stats 4d");
 	#endregion
+
+	#region Test grid copy
+	var grid2;
+	grid = new Grid(3, 2,
+		11, 22, 33,
+		44, 55, 66
+	);
+	grid2 = new Grid(2, 1,
+		111, 222
+	);
+	grid2.copy(grid);
+	assert_equal(grid2.to2dArray(), [[11, 22, 33], [44, 55, 66]], "Test grid copy 1");
+	grid2.set(1, 1, 555);
+	assert_equal(grid.to2dArray(), [[11, 22, 33], [44, 55, 66]], "Test grid copy 2");
+	#endregion
+
+	#region Test grid clone
+	grid = new Grid(3, 2,
+		111, 222, 333,
+		444, 555, 666
+	);
+	grid2 = grid.clone();
+	assert_equal(grid2.to2dArray(), [[111, 222, 333], [444, 555, 666]], "Test grid copy 1");
+	grid2.set(1, 1, 5555);
+	assert_equal(grid.to2dArray(), [[111, 222, 333], [444, 555, 666]], "Test grid copy 2");
+	#endregion
 }
