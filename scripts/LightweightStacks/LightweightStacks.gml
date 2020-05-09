@@ -2,7 +2,7 @@ function Stack() constructor {
 	// Set up basic properties and starting entries
 	_canonType = "Stack";
 	_type = "Stack";
-	_data = array_create(argument_count);
+	_data = undefined;
 	_length = argument_count;
 	for (var i = argument_count-1; i >= 0; --i) {
 		_data = [argument[i], _data];
@@ -52,6 +52,30 @@ function Stack() constructor {
 	};
 	static get = top;
 	static peek = top;
+	
+	// Clear the stack and shallow-copy contents from another stack
+	static copy = function(source) {
+		_data = undefined;
+		var currentSourceNode = source._data;
+		if (source._length > 0) {
+			var currentNewNode = [currentSourceNode[0], undefined];
+			_data = currentNewNode;
+			currentSourceNode = currentSourceNode[1];
+			while (is_array(currentSourceNode)) {
+				currentNewNode[@1] = [currentSourceNode[0], undefined];
+				currentNewNode = currentNewNode[1];
+				currentSourceNode = currentSourceNode[1];
+			}
+		}
+		_length = source._length;
+	};
+	
+	// Return a shallow clone of this stack
+	static clone = function(source) {
+		var theClone = new Stack();
+		theClone.copy(self);
+		return theClone;
+	};
 }
 
 function StackEmptyException(_msg) constructor {

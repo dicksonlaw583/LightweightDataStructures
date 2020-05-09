@@ -90,4 +90,34 @@ function lds_test_stack() {
 	assert_throws(method({ stack: stack }, function() {
 		stack.top()
 	}), new StackEmptyException("Trying to peek at an empty stack."), "Test multi-push after init 12");
+	
+	// Test stack copy
+	var stack2;
+	stack = new Stack(11, 22, 33);
+	stack2 = new Stack(44);
+	stack2.copy(stack);
+	assert_equal(stack2.size(), 3, "Test stack copy 1a");
+	assert_equal(stack2.pop(), 11, "Test stack copy 1b");
+	assert_equal(stack2.pop(), 22, "Test stack copy 1c");
+	assert_equal(stack2.pop(), 33, "Test stack copy 1d");
+	assert(stack2.empty(), "Test stack copy 1e");
+	assert_equal(stack.size(), 3, "Test stack copy 2a");
+	assert_equal(stack.pop(), 11, "Test stack copy 2b");
+	assert_equal(stack.pop(), 22, "Test stack copy 2c");
+	assert_equal(stack.pop(), 33, "Test stack copy 2d");
+	assert(stack.empty(), "Test stack copy 2e");
+	
+	// Test stack clone
+	stack = new Stack(111, 222, 333);
+	stack2 = stack.clone();
+	assert_equal(stack2.size(), 3, "Test stack clone 1a");
+	assert_equal(stack2.pop(), 111, "Test stack clone 1b");
+	assert_equal(stack2.pop(), 222, "Test stack clone 1c");
+	assert_equal(stack2.pop(), 333, "Test stack clone 1d");
+	assert(stack2.empty(), "Test stack clone 1e");
+	assert_equal(stack.size(), 3, "Test stack clone 2a");
+	assert_equal(stack.pop(), 111, "Test stack clone 2b");
+	assert_equal(stack.pop(), 222, "Test stack clone 2c");
+	assert_equal(stack.pop(), 333, "Test stack clone 2d");
+	assert(stack.empty(), "Test stack clone 2e");
 }
