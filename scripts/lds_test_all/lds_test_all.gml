@@ -12,6 +12,7 @@ function lds_test_all() {
 	lds_test_map();
 	lds_test_list();
 	lds_test_grid();
+	lds_test_reduce();
 	
 	timeB = current_time;
 	show_debug_message("Lightweight Data Structure tests done in " + string(timeB-timeA) + "ms.");
