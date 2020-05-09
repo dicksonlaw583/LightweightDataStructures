@@ -73,4 +73,38 @@ function lds_test_queue() {
 	assert_throws(method({ queue: queue }, function() {
 		queue.tail();
 	}), new QueueEmptyException("Trying to get the tail of an empty queue."), "Test multi-enqueue from init 10");
+	
+	// Test queue copy
+	var queue2;
+	queue = new Queue(11, 22, 33);
+	queue2 = new Queue(44);
+	queue2.copy(queue);
+	assert_equal(queue2.size(), 3, "Test queue copy 1a");
+	assert_equal([queue2.head(), queue2.tail()], [11, 33], "Test queue copy 1b");
+	assert_equal(queue2.dequeue(), 11, "Test queue copy 1c");
+	assert_equal(queue2.dequeue(), 22, "Test queue copy 1d");
+	assert_equal(queue2.dequeue(), 33, "Test queue copy 1e");
+	assert(queue2.empty(), "Test queue copy 1f");
+	assert_equal(queue.size(), 3, "Test queue copy 2a");
+	assert_equal([queue.head(), queue.tail()], [11, 33], "Test queue copy 2b");
+	assert_equal(queue.dequeue(), 11, "Test queue copy 2c");
+	assert_equal(queue.dequeue(), 22, "Test queue copy 2d");
+	assert_equal(queue.dequeue(), 33, "Test queue copy 2e");
+	assert(queue.empty(), "Test queue copy 2f");
+	
+	// Test queue clone
+	queue = new Queue(111, 222, 333);
+	queue2 = queue.clone();
+	assert_equal(queue2.size(), 3, "Test queue clone 1a");
+	assert_equal([queue2.head(), queue2.tail()], [111, 333], "Test queue clone 1b");
+	assert_equal(queue2.dequeue(), 111, "Test queue clone 1c");
+	assert_equal(queue2.dequeue(), 222, "Test queue clone 1d");
+	assert_equal(queue2.dequeue(), 333, "Test queue clone 1e");
+	assert(queue2.empty(), "Test queue clone 1f");
+	assert_equal(queue.size(), 3, "Test queue clone 2a");
+	assert_equal([queue.head(), queue.tail()], [111, 333], "Test queue clone 2b");
+	assert_equal(queue.dequeue(), 111, "Test queue clone 2c");
+	assert_equal(queue.dequeue(), 222, "Test queue clone 2d");
+	assert_equal(queue.dequeue(), 333, "Test queue clone 2e");
+	assert(queue.empty(), "Test queue clone 2f");
 }

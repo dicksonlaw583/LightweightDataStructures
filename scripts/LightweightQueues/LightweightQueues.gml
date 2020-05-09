@@ -83,6 +83,32 @@ function Queue() constructor {
 		}
 		return _tail[0];
 	}
+
+	// Shallow-copy from another stack
+	static copy = function(source) {
+		_head = undefined;
+		_tail = undefined;
+		if (source._length > 0) {
+			var currentSourceNode = source._head;
+			var currentNewNode = [currentSourceNode[0], undefined];
+			_head = currentNewNode;
+			currentSourceNode = currentSourceNode[1];
+			while (is_array(currentSourceNode)) {
+				currentNewNode[@1] = [currentSourceNode[0], undefined];
+				currentNewNode = currentNewNode[1];
+				currentSourceNode = currentSourceNode[1];
+			}
+			_tail = currentNewNode;
+		}
+		_length = source._length;
+	};
+	
+	// Return a shallow clone of this queue
+	static clone = function(source) {
+		var theClone = new Queue();
+		theClone.copy(self);
+		return theClone;
+	};
 }
 
 function QueueEmptyException(_msg) constructor {
