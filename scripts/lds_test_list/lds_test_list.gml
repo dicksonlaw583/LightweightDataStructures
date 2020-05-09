@@ -111,4 +111,19 @@ function lds_test_list() {
 	list.sort(false, function(v) { return v.k; }, function(a, b) { return ord(a) > ord(b); });
 	assert_equal(list.toArray(), [{k:"G"}, {k:"F"}, {k:"E"}, {k:"D"}, {k:"C"}, {k:"B"}, {k:"A"}], "Test list sort 6");
 	
+	// Test list copy
+	var list2;
+	list = new List(11, 22, 33, 44);
+	list2 = new List(44, 55);
+	list2.copy(list);
+	assert_equal([list2.size(), list2.get(0), list2.get(1), list2.get(2), list2.get(3)], [4, 11, 22, 33, 44], "Test list copy 1");
+	list2.remove(1);
+	assert_equal([list.size(), list.get(0), list.get(1), list.get(2), list.get(3)], [4, 11, 22, 33, 44], "Test list copy 2");
+
+	// Test list clone
+	list = new List(111, 222, 333, 444);
+	list2 = list.clone();
+	assert_equal([list2.size(), list2.get(0), list2.get(1), list2.get(2), list2.get(3)], [4, 111, 222, 333, 444], "Test list clone 1");
+	list2.remove(1);
+	assert_equal([list.size(), list.get(0), list.get(1), list.get(2), list.get(3)], [4, 111, 222, 333, 444], "Test list clone 2");
 }

@@ -234,6 +234,32 @@ function List() constructor {
 		}
 	};
 	
+	// Shallow copy from another list
+	static copy = function(source) {
+		delete _head;
+		delete _tail;
+		_head = undefined;
+		_tail = undefined;
+		_length = source._length;
+		var currentSourceNode = source._tail;
+		if (_length != 0) {
+			_tail = [undefined, undefined, currentSourceNode[2]];
+			_head = _tail;
+		}
+		repeat (_length-1) {
+			var prevHead = _head;
+			currentSourceNode = currentSourceNode[0];
+			_head = [undefined, prevHead, currentSourceNode[2]];
+			prevHead[@0] = _head;
+		}
+	};
+	
+	// Shallow clone of this list
+	static clone = function() {
+		var theClone = new List();
+		theClone.copy(self);
+		return theClone;
+	};
 }
 
 function ListIndexOutOfBoundsException(_index) constructor {
