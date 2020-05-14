@@ -120,4 +120,44 @@ function lds_test_stack() {
 	assert_equal(stack.pop(), 222, "Test stack clone 2c");
 	assert_equal(stack.pop(), 333, "Test stack clone 2d");
 	assert(stack.empty(), "Test stack clone 2e");
+	
+	// Test stack reduction
+	stack = new Stack();
+	assert_equal(stack.reduceToData(), [], "Test stack reduction 1");
+	stack = new Stack(2);
+	assert_equal(stack.reduceToData(), [2], "Test stack reduction 2");
+	stack = new Stack("three", 3);
+	assert_equal(stack.reduceToData(), ["three", 3], "Test stack reduction 3");
+	stack = new Stack(111, [222, 333], { foo: 444 }, "555");
+	assert_equal(stack.reduceToData(), [111, [222, 333], {t: "struct", d: {foo: 444}}, "555"], "Test stack reduction 4");
+	
+	// Test stack expansion
+	//1
+	stack = new Stack();
+	stack.expandFromData([]);
+	assert(stack.empty(), "Test stack expansion 1");
+	//2
+	stack = new Stack();
+	stack.expandFromData([2]);
+	assert_equal([stack.size(), stack.top()], [1, 2], "Test stack expansion 2");
+	//3
+	stack = new Stack();
+	stack.expandFromData(["three", 3]);
+	assert_equal([stack.size(), stack.top()], [2, "three"], "Test stack expansion 3a");
+	assert_equal(stack.pop(), "three", "Test stack expansion 3b");
+	assert_equal([stack.size(), stack.top()], [1, 3], "Test stack expansion 3c");
+	assert_equal(stack.pop(), 3, "Test stack expansion 3d");
+	assert(stack.empty(), "Test stack expansion 3e");
+	//4
+	stack = new Stack();
+	stack.expandFromData([111, [222, 333], {t: "struct", d: {foo: 444}}, "555"]);
+	assert_equal([stack.size(), stack.top()], [4, 111], "Test stack expansion 4a");
+	assert_equal(stack.pop(), 111, "Test stack expansion 4b");
+	assert_equal([stack.size(), stack.top()], [3, [222, 333]], "Test stack expansion 4c");
+	assert_equal(stack.pop(), [222, 333], "Test stack expansion 4d");
+	assert_equal([stack.size(), stack.top()], [2, {foo: 444}], "Test stack expansion 4e");
+	assert_equal(stack.pop(), {foo: 444}, "Test stack expansion 4f");
+	assert_equal([stack.size(), stack.top()], [1, "555"], "Test stack expansion 4g");
+	assert_equal(stack.pop(), "555", "Test stack expansion 4h");
+	assert(stack.empty(), "Test stack expansion 4g");
 }

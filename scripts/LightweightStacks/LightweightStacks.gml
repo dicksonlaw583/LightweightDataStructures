@@ -76,6 +76,29 @@ function Stack() constructor {
 		theClone.copy(self);
 		return theClone;
 	};
+	
+	// Return a reduction of this stack
+	static reduceToData = function() {
+		var dataArray = array_create(_length);
+		var currentNode = _data;
+		for (var i = 0; i < _length; ++i) {
+			dataArray[i] = lds_reduce(currentNode[0]);
+			currentNode = currentNode[1];
+		}
+		return dataArray;
+	};
+	
+	// Expand the data to overwrite this stack
+	static expandFromData = function(data) {
+		clear();
+		_length = array_length(data);
+		if (_length > 0) {
+			for (var i = _length-1; i >= 0; --i) {
+				_data = [lds_expand(data[i]), _data];
+			}
+		}
+		return self;
+	};
 }
 
 function StackEmptyException(_msg) constructor {
