@@ -109,6 +109,33 @@ function Queue() constructor {
 		theClone.copy(self);
 		return theClone;
 	};
+	
+	// Return a reduction of this queue
+	static reduceToData = function() {
+		var dataArray = array_create(_length);
+		var currentNode = _head;
+		for (var i = 0; i < _length; ++i) {
+			dataArray[i] = lds_reduce(currentNode[0]);
+			currentNode = currentNode[1];
+		}
+		return dataArray;
+	};
+	
+	// Expand the data to overwrite this queue
+	static expandFromData = function(data) {
+		clear();
+		_length = array_length(data);
+		if (_length > 0) {
+			var currentNewNode = [lds_expand(data[0]), undefined];
+			_head = currentNewNode;
+			for (var i = 1; i < _length; ++i) {
+				currentNewNode[@1] = [lds_expand(data[i]), undefined];
+				currentNewNode = currentNewNode[1];
+			}
+			_tail = currentNewNode;
+		}
+		return self;
+	};
 }
 
 function QueueEmptyException(_msg) constructor {

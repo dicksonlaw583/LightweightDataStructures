@@ -107,4 +107,44 @@ function lds_test_queue() {
 	assert_equal(queue.dequeue(), 222, "Test queue clone 2d");
 	assert_equal(queue.dequeue(), 333, "Test queue clone 2e");
 	assert(queue.empty(), "Test queue clone 2f");
+	
+	// Test queue reduction
+	queue = new Queue();
+	assert_equal(queue.reduceToData(), [], "Test queue reduction 1");
+	queue = new Queue(2);
+	assert_equal(queue.reduceToData(), [2], "Test queue reduction 2");
+	queue = new Queue("three", 3);
+	assert_equal(queue.reduceToData(), ["three", 3], "Test queue reduction 3");
+	queue = new Queue(111, [222, 333], { foo: 444 }, "555");
+	assert_equal(queue.reduceToData(), [111, [222, 333], {t: "struct", d: {foo: 444}}, "555"], "Test queue reduction 4");
+	
+	// Test queue expansion
+	//1
+	queue = new Queue();
+	queue.expandFromData([]);
+	assert(queue.empty(), "Test queue expansion 1");
+	//2
+	queue = new Queue();
+	queue.expandFromData([2]);
+	assert_equal([queue.size(), queue.head()], [1, 2], "Test queue expansion 2");
+	//3
+	queue = new Queue();
+	queue.expandFromData(["three", 3]);
+	assert_equal([queue.size(), queue.head()], [2, "three"], "Test queue expansion 3a");
+	assert_equal(queue.dequeue(), "three", "Test queue expansion 3b");
+	assert_equal([queue.size(), queue.head()], [1, 3], "Test queue expansion 3c");
+	assert_equal(queue.dequeue(), 3, "Test queue expansion 3d");
+	assert(queue.empty(), "Test queue expansion 3e");
+	//4
+	queue = new Queue();
+	queue.expandFromData([111, [222, 333], {t: "struct", d: {foo: 444}}, "555"]);
+	assert_equal([queue.size(), queue.head()], [4, 111], "Test queue expansion 4a");
+	assert_equal(queue.dequeue(), 111, "Test queue expansion 4b");
+	assert_equal([queue.size(), queue.head()], [3, [222, 333]], "Test queue expansion 4c");
+	assert_equal(queue.dequeue(), [222, 333], "Test queue expansion 4d");
+	assert_equal([queue.size(), queue.head()], [2, {foo: 444}], "Test queue expansion 4e");
+	assert_equal(queue.dequeue(), {foo: 444}, "Test queue expansion 4f");
+	assert_equal([queue.size(), queue.head()], [1, "555"], "Test queue expansion 4g");
+	assert_equal(queue.dequeue(), "555", "Test queue expansion 4h");
+	assert(queue.empty(), "Test queue expansion 4g");
 }
