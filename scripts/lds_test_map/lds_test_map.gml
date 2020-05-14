@@ -65,4 +65,23 @@ function lds_test_map() {
 	assert_equal([map2.size(), map2.get("FOO"), map2.get("BAR"), map2.get("BAZ"), bool(map2.exists("foobar"))], [3, 111, 222, 333, bool(false)], "Test map clone 1");
 	map2.set("FOO", 1111);
 	assert_equal([map.size(), map.get("FOO"), map.get("BAR"), map.get("BAZ"), bool(map.exists("foobar"))], [3, 111, 222, 333, bool(false)], "Test map clone 2");
+
+	// Test map reduction
+	map = new Map()
+	assert_equal(map.reduceToData(), [[], []], "Test map reduction 1");
+	map = new Map("foo", 111);
+	assert_equal(map.reduceToData(), [["foo"], [111]], "Test map reduction 2");
+	map = new Map("foo", 111, "bar", [222, 2222], "baz", {foobar: 333});
+	assert_equal(map.reduceToData(), [["foo", "bar", "baz"], [111, [222, 2222], {t: "struct", d: {foobar: 333}}]], "Test map reduction 3");
+	
+	// Test map expansion
+	map = new Map("bad", 583);
+	map.expandFromData([[], []]);
+	assert(map.empty(), "Test map expansion 1");
+	map = new Map("bad", 583);
+	map.expandFromData([["foo"], [111]]);
+	assert_equal([map.size(), map.get("foo")], [1, 111], "Test map expansion 2");
+	map = new Map("bad", 583);
+	map.expandFromData([["foo", "bar", "baz"], [111, [222, 2222], {t: "struct", d: {foobar: 333}}]]);
+	assert_equal([map.size(), map.get("foo"), map.get("bar"), map.get("baz")], [3, 111, [222, 2222], {foobar: 333}], "Test map expansion 3");
 }

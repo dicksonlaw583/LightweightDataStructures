@@ -159,6 +159,38 @@ function Map() constructor {
 		theClone.copy(self);
 		return theClone;
 	}
+	
+	// Reduce this map to a representation in basic data types
+	static reduceToData = function() {
+		var keysArray = array_create(_size);
+		var valuesArray = array_create(_size);
+		var i = 0;
+		for (var ii = 0; ii < _keysCachePos; ++ii) {
+			var key = _keysCache[ii];
+			if (is_undefined(key)) continue;
+			keysArray[i] = key;
+			valuesArray[i] = lds_reduce(variable_struct_get(_data, _toKeyName(key)));
+			++i;
+		}
+		return [keysArray, valuesArray];
+	};
+	
+	// Expand the data to overwrite this map
+	static expandFromData = function(data) {
+		clear();
+		var dataKeys = data[0],
+			dataData = data[1];
+		_size = array_length(data[0]);
+		_keysCachePos = _size;
+		array_resize(_keysCache, _size);
+		array_copy(_keysCache, 0, data[0], 0, _size);
+		for (var i = _size-1; i >= 0; --i) {
+			var keyName = _toKeyName(dataKeys[i])
+			variable_struct_set(_data, keyName, lds_expand(dataData[i]));
+			variable_struct_set(_exists, keyName, i);
+		}
+		return self;
+	};
 }
 
 function MapKeyMissingException(_msg) constructor {
