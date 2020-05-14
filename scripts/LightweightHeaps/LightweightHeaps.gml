@@ -166,6 +166,30 @@ function Heap() constructor {
 		return theClone;
 	};
 	
+	// Reduce this heap to a representation in basic data types
+	static reduceToData = function() {
+		var priorityArray = array_create(_length);
+		array_copy(priorityArray, 0, _priority, 1, _length);
+		var dataArray = array_create(_length);
+		for (var i = _length; i >= 1; --i) {
+			dataArray[i-1] = lds_reduce(_data[i]);
+		}
+		return [priorityArray, dataArray];
+	};
+	
+	// Expand the data to overwrite this heap
+	static expandFromData = function(data) {
+		_length = array_length(data[0]);
+		array_resize(_priority, 1+_length);
+		array_copy(_priority, 1, data[0], 0, _length);
+		array_resize(_data, 1+_length);
+		var dataData = data[1];
+		for (var i = _length; i >= 1; --i) {
+			_data[i] = lds_expand(dataData[i-1]);
+		}
+		return self;
+	};
+	
 	// (INTERNAL) Set up the heap
 	static _formHeap = function() {
 		for (var i = _length >> 1; i >= 1; --i) {
@@ -301,7 +325,7 @@ function Heap() constructor {
 			_swap(i, grandpa);
 			i = grandpa;
 		}
-	}
+	};
 	
 	// (INTERNAL) Push up max
 	static _pushUpMax = function(i) {

@@ -197,4 +197,30 @@ function lds_test_heap() {
 	assert_equal(heap.deleteMax(), "qux", "Test heap clone 2e");
 	assert(heap.empty(), "Test heap clone 2f");
 	#endregion
+
+	#region Test heap reduction
+	heap = new Heap();
+	assert_equal(heap.reduceToData(), [[], []], "Test heap reduction 1");
+	heap = new Heap("foo", 2);
+	assert_equal(heap.reduceToData(), [[2], ["foo"]], "Test heap reduction 2");
+	heap = new Heap("foo", 7, "bar", 5);
+	assert_equal(heap.reduceToData(), [[5, 7], ["bar", "foo"]], "Test heap reduction 3");
+	heap = new Heap([222, 333], 7, { foo: 444 }, 5, "666", 6);
+	assert_equal(heap.reduceToData(), [[5, 7, 6], [{t: "struct", d: {foo: 444}}, [222, 333], "666"]], "Test heap reduction 4");
+	#endregion
+	
+	#region Test heap expansion
+	heap = new Heap("bad", 583);
+	heap.expandFromData([[], []]);
+	assert(heap.empty(), "Test heap expansion 1");
+	heap = new Heap("bad", 583);
+	heap.expandFromData([[2], ["foo"]]);
+	assert_equal([heap.size(), heap.getMin(), heap.getMax()], [1, "foo", "foo"], "Test heap expansion 2");
+	heap = new Heap("bad", 583);
+	heap.expandFromData([[5, 7], ["bar", "foo"]]);
+	assert_equal([heap.size(), heap.getMin(), heap.getMax()], [2, "bar", "foo"], "Test heap expansion 3");
+	heap = new Heap("bad", 583);
+	heap.expandFromData([[5, 7, 6], [{t: "struct", d: {foo: 444}}, [222, 333], "666"]]);
+	assert_equal([heap.size(), heap.getMin(), heap.getMax()], [3, {foo: 444}, [222, 333]], "Test heap expansion 4");
+	#endregion
 }
