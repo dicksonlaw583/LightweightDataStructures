@@ -432,4 +432,30 @@ function lds_test_grid() {
 	grid2.set(1, 1, 5555);
 	assert_equal(grid.to2dArray(), [[111, 222, 333], [444, 555, 666]], "Test grid copy 2");
 	#endregion
+
+	#region Test grid reduction
+	grid = new Grid(2, 3,
+		11, 22,
+		33, 44,
+		55, 66
+	);
+	assert_equal(grid.reduceToData(), [11, 22, 33, 44, 55, 66, 2, 3], "Test grid reduction 1");
+	grid = new Grid(3, 2,
+		111, [222, 333], { foo: 444 },
+		"555", { bar: 666, baz: 777 }, "888");
+	assert_equal(grid.reduceToData(), [111, [222, 333], {t: "struct", d: {foo: 444}}, "555", {t: "struct", d: {bar: 666, baz: 777}}, "888", 3, 2], "Test grid reduction 2");
+	#endregion
+	
+	#region Test grid expansion
+	grid = new Grid(1, 1,
+		0
+	);
+	grid.expandFromData([11, 22, 33, 44, 55, 66, 2, 3]);
+	assert_equal(grid.to2dArray(), [[11, 22], [33, 44], [55, 66]], "Test grid expansion 1");
+	grid = new Grid(1, 1,
+		0
+	);
+	grid.expandFromData([111, [222, 333], {t: "struct", d: {foo: 444}}, "555", {t: "struct", d: {bar: 666, baz: 777}}, "888", 3, 2]);
+	assert_equal(grid.to2dArray(), [[111, [222, 333], { foo: 444 }], ["555", { bar: 666, baz: 777 }, "888"]], "Test grid expansion 2");
+	#endregion
 }

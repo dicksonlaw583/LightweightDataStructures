@@ -476,6 +476,30 @@ function Grid() constructor {
 		theClone.copy(self);
 		return theClone;
 	};
+
+	// Reduce this grid to a representation in basic data types
+	static reduceToData = function() {
+		var siz = _width*_height;
+		var dataArray = array_create(siz+2);
+		dataArray[siz] = _width;
+		dataArray[siz+1] = _height;
+		for (var i = siz-1; i >= 0; --i) {
+			dataArray[i] = lds_reduce(_data[i]);
+		}
+		return dataArray;
+	};
+	
+	// Expand the data to overwrite this grid
+	static expandFromData = function(data) {
+		var dataEndIndex = array_length(data)-1;
+		_width = data[dataEndIndex-1];
+		_height = data[dataEndIndex];
+		_data = array_create(_width*_height);
+		for (var i = dataEndIndex-2; i >= 0; --i) {
+			_data[i] = lds_expand(data[i]);
+		}
+		return self;
+	};
 }
 
 function GridIndexOutOfBoundsException(xx, yy) constructor {
