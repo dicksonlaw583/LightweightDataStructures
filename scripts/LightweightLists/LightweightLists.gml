@@ -260,6 +260,34 @@ function List() constructor {
 		theClone.copy(self);
 		return theClone;
 	};
+	
+	// Reduce this list to a representation in basic data types
+	static reduceToData = function() {
+		var dataArray = array_create(_length);
+		var currentNode = _head;
+		var i = 0;
+		repeat (_length) {
+			dataArray[i++] = lds_reduce(currentNode[2]);
+			currentNode = currentNode[1];
+		}
+		return dataArray;
+	};
+	
+	// Expand the data to overwrite this queue
+	static expandFromData = function(data) {
+		clear();
+		_length = array_length(data);
+		if (_length > 0) {
+			_tail = [undefined, undefined, lds_expand(data[_length-1])];
+			_head = _tail;
+			for (var i = _length-2; i >= 0; --i) {
+				var prevHead = _head;
+				_head = [undefined, prevHead, lds_expand(data[i])];
+				prevHead[@0] = _head;
+			}
+		}
+		return self;
+	};
 }
 
 function ListIndexOutOfBoundsException(_index) constructor {

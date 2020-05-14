@@ -126,4 +126,32 @@ function lds_test_list() {
 	assert_equal([list2.size(), list2.get(0), list2.get(1), list2.get(2), list2.get(3)], [4, 111, 222, 333, 444], "Test list clone 1");
 	list2.remove(1);
 	assert_equal([list.size(), list.get(0), list.get(1), list.get(2), list.get(3)], [4, 111, 222, 333, 444], "Test list clone 2");
+	
+	// Test list reduction
+	list = new List();
+	assert_equal(list.reduceToData(), [], "Test list reduction 1");
+	list = new List(2);
+	assert_equal(list.reduceToData(), [2], "Test list reduction 2");
+	list = new List("three", 3);
+	assert_equal(list.reduceToData(), ["three", 3], "Test list reduction 3");
+	list = new List(111, [222, 333], { foo: 444 }, "555");
+	assert_equal(list.reduceToData(), [111, [222, 333], {t: "struct", d: {foo: 444}}, "555"], "Test list reduction 4");
+	
+	// Test list expansion
+	//1
+	list = new List();
+	list.expandFromData([]);
+	assert(list.empty(), "Test list expansion 1");
+	//2
+	list = new List();
+	list.expandFromData([2]);
+	assert_equal([list.size(), list.get(0)], [1, 2], "Test list expansion 2");
+	//3
+	list = new List();
+	list.expandFromData(["three", 3]);
+	assert_equal([list.size(), list.get(0), list.get(1)], [2, "three", 3], "Test list expansion 3");
+	//4
+	list = new List();
+	list.expandFromData([111, [222, 333], {t: "struct", d: {foo: 444}}, "555"]);
+	assert_equal([list.size(), list.get(0), list.get(1), list.get(2), list.get(3)], [4, 111, [222, 333], {foo: 444}, "555"], "Test list expansion 4");
 }
