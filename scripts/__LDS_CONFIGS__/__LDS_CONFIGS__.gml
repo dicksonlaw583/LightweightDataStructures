@@ -15,5 +15,5 @@ global.__lds_expanders__ = {
 	List: function(d) { var s = new List(); s.expandFromData(d); return s; },
 	Map: function(d) { var s = new Map(); s.expandFromData(d); return s; },
 	Heap: function(d) { var s = new Heap(); s.expandFromData(d); return s; },
-	Grid: function(d) { var s = new Grid(d.w, d.h); s.expandFromData(d); return s; },
+	Grid: function(d) { var s = new Grid(); s.expandFromData(d); return s; },
 };

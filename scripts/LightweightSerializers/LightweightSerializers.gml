@@ -62,7 +62,7 @@ function lds_expand(data) {
 				default:
 					var expander = variable_struct_get(global.__lds_expanders__, data.t);
 					if (is_method(expander)) {
-						expander = expander(data.d);
+						expanded = expander(data.d);
 					} else {
 						throw new UnrecognizedLdsTypeException(data.t);
 					}
