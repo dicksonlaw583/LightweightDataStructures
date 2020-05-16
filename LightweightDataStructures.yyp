@@ -1,5 +1,6 @@
 {
   "resources": [
+    {"id":{"name":"lds_test_copy_deep","path":"scripts/lds_test_copy_deep/lds_test_copy_deep.yy",},"order":11,},
     {"id":{"name":"lds_test_map","path":"scripts/lds_test_map/lds_test_map.yy",},"order":4,},
     {"id":{"name":"lds_test_shuffle","path":"scripts/lds_test_shuffle/lds_test_shuffle.yy",},"order":6,},
     {"id":{"name":"lds_test_grid","path":"scripts/lds_test_grid/lds_test_grid.yy",},"order":8,},

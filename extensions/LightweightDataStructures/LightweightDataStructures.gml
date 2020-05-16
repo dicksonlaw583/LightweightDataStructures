@@ -81,3 +81,9 @@
 	}
 	array_copy(arr, lo, _arr, 0, span);
 }
+
+#define __lds_typeof__
+{
+	gml_pragma("forceinline");
+	return is_struct(argument0) ? instanceof(argument0) : typeof(argument0);
+}

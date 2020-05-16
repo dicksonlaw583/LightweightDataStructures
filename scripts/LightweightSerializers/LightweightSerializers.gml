@@ -130,6 +130,69 @@ function lds_copy(thing, source) {
 	return thing;
 }
 
+///@func lds_copy_deep(thing, source)
+///@param thing
+///@param source
+///@desc Deep copy to thing from source
+function lds_copy_deep(thing, source) {
+	var copyType = __lds_typeof__(thing);
+	if (copyType != __lds_typeof__(source)) throw new IncompatibleCopyException(thing, source);
+	var copySize, thingEntry, sourceEntry, sourceType;
+	switch (typeof(thing)) {
+		case "array":
+			copySize = array_length(source);
+			array_resize(thing, copySize);
+			for (var i = copySize-1; i >= 0; --i) {
+				thingEntry = thing[i];
+				sourceEntry = source[i];
+				sourceType = __lds_typeof__(sourceEntry);
+				if (sourceType == __lds_typeof__(thingEntry) && (is_array(thingEntry) || is_struct(thingEntry))) {
+					lds_copy_deep(thingEntry, sourceEntry);
+				} else {
+					array_set(thing, i, lds_clone_deep(sourceEntry));
+				}
+			}
+		break;
+		case "struct":
+			if (copyType == "struct") {
+				// Transfer their keys to mine
+				var copyKeys = variable_struct_get_names(source);
+				copySize = array_length(copyKeys);
+				for (var i = copySize-1; i >= 0; --i) {
+					var copyKey = copyKeys[i];
+					thingEntry = variable_struct_get(thing, copyKey);
+					sourceEntry = variable_struct_get(source, copyKey);
+					sourceType = __lds_typeof__(sourceEntry);
+					if (sourceType == __lds_typeof__(thingEntry) && (is_array(thingEntry) || is_struct(thingEntry))) {
+						lds_copy_deep(thingEntry, sourceEntry);
+					} else {
+						variable_struct_set(thing, copyKey, lds_clone_deep(sourceEntry));
+					}
+				}
+				// Set keys that are not theirs to undefined
+				var myKeys = variable_struct_get_names(thing);
+				var mySize = array_length(myKeys);
+				for (var i = mySize-1; i >= 0; --i) {
+					var myKey = myKeys[i];
+					if (!variable_struct_exists(source, myKey)) {
+						variable_struct_set(thing, myKey, undefined);
+					}
+				}
+			} else {
+				var copier = variable_struct_get(global.__lds_deep_copiers__, copyType);
+				if (is_method(copier)) {
+					copier(thing, source);
+				} else {
+					throw new UnrecognizedLdsTypeException(copyType);
+				}
+			}
+		break;
+		default:
+			return source;
+	}
+	return thing;
+}
+
 ///@func lds_clone(thing)
 ///@param thing
 ///@desc Return shallow clone of thing
@@ -166,6 +229,43 @@ function lds_clone(thing) {
 	return theClone;
 }
 
+///@func lds_clone_deep(thing) ???
+///@param thing
+///@desc Return deep clone of thing
+function lds_clone_deep(thing) {
+	var cloneType = typeof(thing);
+	var theClone;
+	switch (cloneType) {
+		case "array":
+			var cloneSize = array_length(thing);
+			theClone = array_create(cloneSize);
+			for (var i = cloneSize-1; i >= 0; --i) {
+				theClone[i] = lds_clone_deep(thing[i]);
+			}
+		break;
+		case "struct":
+			cloneType = instanceof(thing);
+			if (cloneType == "struct") {
+				var cloneKeys = variable_struct_get_names(thing);
+				theClone = {};
+				for (var i = array_length(cloneKeys)-1; i >= 0; --i) {
+					var cloneKey = cloneKeys[i];
+					variable_struct_set(theClone, cloneKey, lds_clone_deep(variable_struct_get(thing, cloneKey)));
+				}
+			} else {
+				var cloner = variable_struct_get(global.__lds_deep_cloners__, cloneType);
+				if (is_method(cloner)) {
+					theClone = cloner(thing);
+				} else {
+					throw new UnrecognizedLdsTypeException(cloneType);
+				}
+			}
+		break;
+		default:
+			return thing;
+	}
+	return theClone;
+}
 
 function UnrecognizedLdsTypeException(_type) constructor {
 	type = _type;

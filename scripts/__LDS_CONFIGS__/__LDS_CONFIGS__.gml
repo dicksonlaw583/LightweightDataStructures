@@ -37,3 +37,23 @@ global.__lds_cloners__ = {
 	Heap: function(s) { return s.clone(); },
 	Grid: function(s) { return s.clone(); },
 };
+
+/* Configure deep copiers here */
+global.__lds_deep_copiers__ = {
+	Stack: function(t, s) { t.copyDeep(s); },
+	Queue: function(t, s) { t.copyDeep(s); },
+	List: function(t, s) { t.copyDeep(s); },
+	Map: function(t, s) { t.copyDeep(s); },
+	Heap: function(t, s) { t.copyDeep(s); },
+	Grid: function(t, s) { t.copyDeep(s); },
+};
+
+/* Configure deep cloners here */
+global.__lds_deep_cloners__ = {
+	Stack: function(s) { return s.cloneDeep(); },
+	Queue: function(s) { return s.cloneDeep(); },
+	List: function(s) { return s.cloneDeep(); },
+	Map: function(s) { return s.cloneDeep(); },
+	Heap: function(s) { return s.cloneDeep(); },
+	Grid: function(s) { return s.cloneDeep(); },
+};
