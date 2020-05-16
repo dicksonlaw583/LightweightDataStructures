@@ -82,10 +82,106 @@ function lds_expand(data) {
 	return expanded;
 }
 
+///@func lds_copy(thing, source)
+///@param thing
+///@param source
+///@desc Shallow copy to thing from source
+function lds_copy(thing, source) {
+	var copyType = typeof(thing);
+	if (copyType != typeof(source) || (copyType == "struct" && instanceof(thing) != instanceof(source))) throw new IncompatibleCopyException(thing, source);
+	var copySize;
+	switch (copyType) {
+		case "array":
+			copySize = array_length(source);
+			array_resize(thing, copySize);
+			array_copy(thing, 0, source, 0, copySize);
+		break;
+		case "struct":
+			copyType = instanceof(source);
+			if (copyType == "struct") {
+				// Transfer their keys to mine
+				var copyKeys = variable_struct_get_names(source);
+				copySize = array_length(copyKeys);
+				for (var i = copySize-1; i >= 0; --i) {
+					var copyKey = copyKeys[i];
+					variable_struct_set(thing, copyKey, variable_struct_get(source, copyKey));
+				}
+				// Set keys that are not theirs to undefined
+				var myKeys = variable_struct_get_names(thing);
+				var mySize = array_length(myKeys);
+				for (var i = mySize-1; i >= 0; --i) {
+					var myKey = myKeys[i];
+					if (!variable_struct_exists(source, myKey)) {
+						variable_struct_set(thing, myKey, undefined);
+					}
+				}
+			} else {
+				var copier = variable_struct_get(global.__lds_copiers__, copyType);
+				if (is_method(copier)) {
+					copier(thing, source);
+				} else {
+					throw new UnrecognizedLdsTypeException(copyType);
+				}
+			}
+		break;
+		default:
+			return source;
+	}
+	return thing;
+}
+
+///@func lds_clone(thing)
+///@param thing
+///@desc Return shallow clone of thing
+function lds_clone(thing) {
+	var cloneType = typeof(thing);
+	var theClone;
+	switch (cloneType) {
+		case "array":
+			var cloneSize = array_length(thing);
+			theClone = array_create(cloneSize);
+			array_copy(theClone, 0, thing, 0, cloneSize);
+		break;
+		case "struct":
+			cloneType = instanceof(thing);
+			if (cloneType == "struct") {
+				var cloneKeys = variable_struct_get_names(thing);
+				theClone = {};
+				for (var i = array_length(cloneKeys)-1; i >= 0; --i) {
+					var cloneKey = cloneKeys[i];
+					variable_struct_set(theClone, cloneKey, variable_struct_get(thing, cloneKey));
+				}
+			} else {
+				var cloner = variable_struct_get(global.__lds_cloners__, cloneType);
+				if (is_method(cloner)) {
+					theClone = cloner(thing);
+				} else {
+					throw new UnrecognizedLdsTypeException(cloneType);
+				}
+			}
+		break;
+		default:
+			return thing;
+	}
+	return theClone;
+}
+
 
 function UnrecognizedLdsTypeException(_type) constructor {
 	type = _type;
 	static toString = function() {
 		return "Unrecognized LDS type \"" + type + "\".";
+	};
+}
+
+function IncompatibleCopyException(_target, _source) constructor {
+	target = _target;
+	source = _source;
+	static toString = function() {
+		var typeOfTarget = typeof(target);
+		if (typeOfTarget == "struct") typeOfTarget = instanceof(target);
+		var typeOfSource = typeof(source);
+		if (typeOfSource == "struct") typeOfSource = instanceof(source);
+		return "Cannot copy to " + typeOfTarget + " from " + typeOfSource + ".";
 	};
 }

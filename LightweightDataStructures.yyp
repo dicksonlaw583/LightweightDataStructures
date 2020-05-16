@@ -25,6 +25,7 @@
     {"id":{"name":"lds_test_sort","path":"scripts/lds_test_sort/lds_test_sort.yy",},"order":7,},
     {"id":{"name":"JsonStructParseException","path":"scripts/JsonStructParseException/JsonStructParseException.yy",},"order":1,},
     {"id":{"name":"JsonStruct","path":"extensions/JsonStruct/JsonStruct.yy",},"order":2,},
+    {"id":{"name":"lds_test_copy_shallow","path":"scripts/lds_test_copy_shallow/lds_test_copy_shallow.yy",},"order":10,},
     {"id":{"name":"LightweightStacks","path":"scripts/LightweightStacks/LightweightStacks.yy",},"order":0,},
     {"id":{"name":"rmTest","path":"rooms/rmTest/rmTest.yy",},"order":0,},
   ],
