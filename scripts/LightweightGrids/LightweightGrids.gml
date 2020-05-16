@@ -433,21 +433,21 @@ function Grid() constructor {
 		}
 		__lds_array_sort__(sortArray, ascend, function(sae) { return sae[0]; }, comparer);
 		// Swap rows according to result
-		var moveMap = ds_map_create(); // This maps old row positions to current row positions
+		var moveMap = array_create(_height, undefined); // This maps old row positions to current row positions
 		for (var i = _height-1; i >= 0; --i) {
 			var newi = sortArray[i][1];
 			// If target row has been moved, forget about previous pairing, and pair current row to the new row
-			while (ds_map_exists(moveMap, newi)) {
+			while (!is_undefined(moveMap[newi])) {
 				var prevnewi = newi;
-				newi = moveMap[? newi];
-				ds_map_delete(moveMap, prevnewi);
+				newi = moveMap[newi];
+				moveMap[prevnewi] = undefined;
 			}
 			if (i != newi) {
 				_swap(i, newi);
-				moveMap[? i] = newi;
+				moveMap[i] = newi;
 			}
 		}
-		ds_map_destroy(moveMap);
+		delete moveMap;
 	};
 	
 	// To 2D array
