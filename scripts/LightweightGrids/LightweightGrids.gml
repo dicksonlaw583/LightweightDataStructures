@@ -2,13 +2,26 @@ function Grid() constructor {
 	// Set up basic properties and starting entries
 	_canonType = "Grid";
 	_type = "List";
-	_width = argument[0];
-	_height = argument[1];
-	_data = array_create(_width*_height, undefined);
-	var i = 0;
-	repeat (argument_count-2) {
-		_data[i] = argument[i+2];
-		++i;
+	switch (argument_count) {
+		case 0:
+			_width = 0;
+			_height = 0;
+			_data = [];
+			break;
+		case 1:
+			_width = argument[0];
+			_height = 1;
+			_data = array_create(_width, undefined);
+			break;
+		default:
+			_width = argument[0];
+			_height = argument[1];
+			_data = array_create(_width*_height, undefined);
+			var i = 0;
+			repeat (argument_count-2) {
+				_data[i] = argument[i+2];
+				++i;
+			}
 	}
 
 	// Clear

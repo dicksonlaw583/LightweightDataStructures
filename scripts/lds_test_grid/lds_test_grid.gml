@@ -2,6 +2,13 @@
 function lds_test_grid() {
 	var grid;
 
+	#region Test mini grid constructors
+	grid = new Grid();
+	assert_equal([grid.width(), grid.height()], [0, 0], "Test mini grid constructors 1");
+	grid = new Grid(4);
+	assert_equal([grid.width(), grid.height(), grid.get(2, 0)], [4, 1, undefined], "Test mini grid constructors 2");
+	#endregion
+
 	#region Test new grid (with basic gets and sets)
 	grid = new Grid(3, 2);
 	assert_equal([grid.width(), grid.height(), grid.get(0, 0)], [3, 2, undefined], "Test new grid 1");
