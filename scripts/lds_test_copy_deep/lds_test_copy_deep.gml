@@ -54,19 +54,19 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1b");
 	source.add(5);
 	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1c");
-	//// Grid
-	//source = new Grid(3, 2,
-	//	{foo: 11}, 22, 33,
-	//	44, 55, 66
-	//);
-	//target = new Grid(1, 1, "boo");
-	//lds_copy_deep(target, source);
-	//assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1a");
-	//nestedEntry = source.get(0, 0);
-	//nestedEntry.foo = 111;
-	//assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1b");
-	//source.set(0, 0, 1111);
-	//assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1c");
+	// Grid
+	source = new Grid(3, 2,
+		{foo: 11}, 22, 33,
+		44, 55, 66
+	);
+	target = new Grid(1, 1, "boo");
+	lds_copy_deep(target, source);
+	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1a");
+	nestedEntry = source.get(0, 0);
+	nestedEntry.foo = 111;
+	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1b");
+	source.set(0, 0, 1111);
+	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1c");
 	//// Heap
 	//source = new Heap("qux", 44, {foo: 11}, 11, "bar", 22, "baz", 33);
 	//target = new Heap("bad", 55);
@@ -148,18 +148,18 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1b");
 	source.add(5);
 	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1c");
-	//// Grid
-	//source = new Grid(3, 2,
-	//	{foo: 11}, 22, 33,
-	//	44, 55, 66
-	//);
-	//target = lds_clone_deep(source);
-	//assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1a");
-	//nestedEntry = source.get(0, 0);
-	//nestedEntry.foo = 111;
-	//assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1b");
-	//source.set(0, 0, 1111);
-	//assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1c");
+	// Grid
+	source = new Grid(3, 2,
+		{foo: 11}, 22, 33,
+		44, 55, 66
+	);
+	target = lds_clone_deep(source);
+	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1a");
+	nestedEntry = source.get(0, 0);
+	nestedEntry.foo = 111;
+	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1b");
+	source.set(0, 0, 1111);
+	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1c");
 	//// Heap
 	//source = new Heap("qux", 44, {foo: 11}, 11, "bar", 22, "baz", 33);
 	//target = lds_clone_deep(source);

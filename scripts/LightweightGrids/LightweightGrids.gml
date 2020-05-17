@@ -513,6 +513,26 @@ function Grid() constructor {
 		}
 		return self;
 	};
+	
+	// Deep copy from another grid
+	static copyDeep = function(source) {
+		delete _data;
+		_width = source._width;
+		_height = source._height;
+		var totalSize = _width*_height;
+		_data = array_create(totalSize);
+		var sourceData = source._data;
+		for (var i = totalSize-1; i >= 0; --i) {
+			_data[i] = lds_clone_deep(sourceData[i]);
+		}
+	};
+	
+	// Create a deep clone of this grid
+	static cloneDeep = function() {
+		var theClone = new Grid(_width, _height);
+		theClone.copyDeep(self);
+		return theClone;
+	};
 }
 
 function GridIndexOutOfBoundsException(xx, yy) constructor {
