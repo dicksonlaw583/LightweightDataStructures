@@ -77,26 +77,26 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1b");
 	source.deleteMin();
 	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1c");
-	//// Map
-	//source = new Map("foo", "bar", "baz", {qux: 22});
-	//target = new Map("bad", 666);
-	//lds_copy_deep(target, source);
-	//assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep copies 1a");
-	//nestedEntry = source.get("baz");
-	//nestedEntry.qux = 222;
-	//assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep copies 1b");
-	//source.remove("baz");
-	//assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep copies 1c");
-	//// Nested
-	//source = new List("foo", new Map("bar", 33), "baz");
-	//target = new List("qux");
-	//lds_copy_deep(target, source);
-	//assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep copies 1a");
-	//nestedEntry = source.get(1);
-	//nestedEntry.set("bar", 333);
-	//assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep copies 1b");
-	//source.remove(1);
-	//assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep copies 1c");
+	// Map
+	source = new Map("foo", "bar", "baz", {qux: 22});
+	target = new Map("bad", 666);
+	lds_copy_deep(target, source);
+	assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep copies 1a");
+	nestedEntry = source.get("baz");
+	nestedEntry.qux = 222;
+	assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep copies 1b");
+	source.remove("baz");
+	assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep copies 1c");
+	// Nested
+	source = new List("foo", new Map("bar", 33), "baz");
+	target = new List("qux");
+	lds_copy_deep(target, source);
+	assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep copies 1a");
+	nestedEntry = source.get(1);
+	nestedEntry.set("bar", 333);
+	assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep copies 1b");
+	source.remove(1);
+	assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep copies 1c");
 	#endregion
 	
 	#region Test basic deep clones
@@ -169,23 +169,23 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1b");
 	source.deleteMin();
 	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1c");
-	//// Map
-	//source = new Map("foo", "bar", "baz", {qux: 22});
-	//target = lds_clone_deep(source);
-	//assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep clones 1a");
-	//nestedEntry = source.get("baz");
-	//nestedEntry.qux = 222;
-	//assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep clones 1b");
-	//source.remove("baz");
-	//assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep clones 1c");
-	//// Nested
-	//source = new List("foo", new Map("bar", 33), "baz");
-	//target = lds_clone_deep(source);
-	//assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep clones 1a");
-	//nestedEntry = source.get(1);
-	//nestedEntry.set("bar", 333);
-	//assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep clones 1b");
-	//source.remove(1);
-	//assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep clones 1c");
+	// Map
+	source = new Map("foo", "bar", "baz", {qux: 22});
+	target = lds_clone_deep(source);
+	assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep clones 1a");
+	nestedEntry = source.get("baz");
+	nestedEntry.qux = 222;
+	assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep clones 1b");
+	source.remove("baz");
+	assert_equal([target.size(), target.get("foo"), target.get("baz")], [2, "bar", {qux: 22}], "Test LDS map deep clones 1c");
+	// Nested
+	source = new List("foo", new Map("bar", 33), "baz");
+	target = lds_clone_deep(source);
+	assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep clones 1a");
+	nestedEntry = source.get(1);
+	nestedEntry.set("bar", 333);
+	assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep clones 1b");
+	source.remove(1);
+	assert_equal([target.size(), target.get(0), (target.get(1)).get("bar"), target.get(2)], [3, "foo", 33, "baz"], "Test LDS nested deep clones 1c");
 	#endregion
 }

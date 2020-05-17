@@ -191,6 +191,36 @@ function Map() constructor {
 		}
 		return self;
 	};
+	
+	// Deep copy from another map
+	static copyDeep = function(source) {
+		delete _data;
+		delete _exists;
+		_size = source._size;
+		_data = {};
+		_exists = {};
+		// Copy struct keys that exist
+		var sourceKeys = variable_struct_get_names(source._exists);
+		for (var i = array_length(sourceKeys)-1; i >= 0; --i) {
+			var sourceKey = sourceKeys[i],
+				sourceKeyExists = variable_struct_get(source._exists, sourceKey);
+			if (!is_undefined(sourceKeyExists)) {
+				variable_struct_set(_exists, sourceKey, sourceKeyExists);
+				variable_struct_set(_data, sourceKey, lds_clone_deep(variable_struct_get(source._data, sourceKey)));
+			}
+		}
+		// Copy keys cache
+		_keysCache = array_create(source._keysCachePos);
+		array_copy(_keysCache, 0, source._keysCache, 0, source._keysCachePos);
+		_keysCachePos = source._keysCachePos;
+	};
+	
+	// Deep clone of this map
+	static cloneDeep = function() {
+		var theClone = new Map();
+		theClone.copyDeep(self);
+		return theClone;
+	}
 }
 
 function MapKeyMissingException(_msg) constructor {
