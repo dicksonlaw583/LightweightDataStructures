@@ -288,6 +288,33 @@ function List() constructor {
 		}
 		return self;
 	};
+	
+	// Deep copy from another list
+	static copyDeep = function(source) {
+		delete _head;
+		delete _tail;
+		_head = undefined;
+		_tail = undefined;
+		_length = source._length;
+		var currentSourceNode = source._tail;
+		if (_length != 0) {
+			_tail = [undefined, undefined, lds_clone_deep(currentSourceNode[2])];
+			_head = _tail;
+		}
+		repeat (_length-1) {
+			var prevHead = _head;
+			currentSourceNode = currentSourceNode[0];
+			_head = [undefined, prevHead, lds_clone_deep(currentSourceNode[2])];
+			prevHead[@0] = _head;
+		}
+	};
+	
+	// Deep clone of this list
+	static cloneDeep = function() {
+		var theClone = new List();
+		theClone.copyDeep(self);
+		return theClone;
+	};
 }
 
 function ListIndexOutOfBoundsException(_index) constructor {

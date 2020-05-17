@@ -44,16 +44,16 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1b");
 	source.enqueue("boo");
 	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1c");
-	//// List
-	//source = new List([1, 2], 3, 4);
-	//target = new List("bad", "bad");
-	//lds_copy_deep(target, source);
-	//assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1a");
-	//nestedEntry = source.get(0);
-	//nestedEntry[@0] = 11;
-	//assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1b");
-	//source.add(5);
-	//assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1c");
+	// List
+	source = new List([1, 2], 3, 4);
+	target = new List("bad", "bad");
+	lds_copy_deep(target, source);
+	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1a");
+	nestedEntry = source.get(0);
+	nestedEntry[@0] = 11;
+	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1b");
+	source.add(5);
+	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep copies 1c");
 	//// Grid
 	//source = new Grid(3, 2,
 	//	{foo: 11}, 22, 33,
@@ -139,15 +139,15 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1b");
 	source.enqueue("boo");
 	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1c");
-	//// List
-	//source = new List([1, 2], 3, 4);
-	//target = lds_clone_deep(source);
-	//assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1a");
-	//nestedEntry = source.get(0);
-	//nestedEntry[@0] = 11;
-	//assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1b");
-	//source.add(5);
-	//assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1c");
+	// List
+	source = new List([1, 2], 3, 4);
+	target = lds_clone_deep(source);
+	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1a");
+	nestedEntry = source.get(0);
+	nestedEntry[@0] = 11;
+	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1b");
+	source.add(5);
+	assert_equal([target.size(), target.get(0), target.get(1), target.get(2)], [3, [1, 2], 3, 4], "Test LDS list deep clones 1c");
 	//// Grid
 	//source = new Grid(3, 2,
 	//	{foo: 11}, 22, 33,
