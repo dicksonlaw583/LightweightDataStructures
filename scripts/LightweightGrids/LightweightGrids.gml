@@ -102,6 +102,29 @@ function Grid() constructor {
 			}
 		}
 	};
+	
+	// Set grid region
+	static setGridRegion = function(sourceGrid, x1, y1, x2, y2, xpos, ypos) {
+		var sx1 = max(0, x1),
+			sy1 = max(0, y1),
+			sx2 = min(sourceGrid._width-1, x2),
+			sy2 = min(sourceGrid._height-1, y2),
+			sourceWidth = sourceGrid._width,
+			sourceRegionDx = sx2-sx1,
+			sourceRegionDy = sy2-sy1,
+			tx1 = max(0, xpos),
+			ty1 = max(0, ypos),
+			tx2 = min(_width-1, xpos+sourceRegionDx),
+			ty2 = min(_height-1, ypos+sourceRegionDy),
+			sourceData = sourceGrid._data,
+			regionWidth = min(tx2-tx1, sourceRegionDx)+1,
+			regionHeight = min(ty2-ty1, sourceRegionDy)+1;
+		tx1 += sx1-x1;
+		ty1 += sy1-y1;
+		for (var yy = 0; yy < regionHeight; ++yy) {
+			array_copy(_data, tx1+(ty1+yy)*_width, sourceData, sx1+(sy1+yy)*sourceWidth, regionWidth);
+		}
+	};
 
 	// Get
 	static get = function(xx, yy) {
@@ -143,6 +166,31 @@ function Grid() constructor {
 			}
 		}
 	};
+	
+	// Add grid region
+	static addGridRegion = function(sourceGrid, x1, y1, x2, y2, xpos, ypos) {
+		var sx1 = max(0, x1),
+			sy1 = max(0, y1),
+			sx2 = min(sourceGrid._width-1, x2),
+			sy2 = min(sourceGrid._height-1, y2),
+			sourceWidth = sourceGrid._width,
+			sourceRegionDx = sx2-sx1,
+			sourceRegionDy = sy2-sy1,
+			tx1 = max(0, xpos),
+			ty1 = max(0, ypos),
+			tx2 = min(_width-1, xpos+sourceRegionDx),
+			ty2 = min(_height-1, ypos+sourceRegionDy),
+			sourceData = sourceGrid._data,
+			regionWidth = min(tx2-tx1, sourceRegionDx)+1,
+			regionHeight = min(ty2-ty1, sourceRegionDy)+1;
+		tx1 += sx1-x1;
+		ty1 += sy1-y1;
+		for (var yy = regionHeight-1; yy >= 0; --yy) {
+			for (var xx = regionWidth-1; xx >= 0; --xx) {
+				_data[@tx1+xx+(ty1+yy)*_width] += sourceData[sx1+xx+(sy1+yy)*sourceWidth];
+			}
+		}
+	};
 
 	// Multiply
 	static multiply = function(xx, yy, val) {
@@ -173,6 +221,31 @@ function Grid() constructor {
 		for (var yy = _y1; yy <= _y2; ++yy) {
 			for (var xx = _x1; xx <= _x2; ++xx) {
 				_data[xx+yy*_width] *= val;
+			}
+		}
+	};
+	
+	// Multiply grid region
+	static multiplyGridRegion = function(sourceGrid, x1, y1, x2, y2, xpos, ypos) {
+		var sx1 = max(0, x1),
+			sy1 = max(0, y1),
+			sx2 = min(sourceGrid._width-1, x2),
+			sy2 = min(sourceGrid._height-1, y2),
+			sourceWidth = sourceGrid._width,
+			sourceRegionDx = sx2-sx1,
+			sourceRegionDy = sy2-sy1,
+			tx1 = max(0, xpos),
+			ty1 = max(0, ypos),
+			tx2 = min(_width-1, xpos+sourceRegionDx),
+			ty2 = min(_height-1, ypos+sourceRegionDy),
+			sourceData = sourceGrid._data,
+			regionWidth = min(tx2-tx1, sourceRegionDx)+1,
+			regionHeight = min(ty2-ty1, sourceRegionDy)+1;
+		tx1 += sx1-x1;
+		ty1 += sy1-y1;
+		for (var yy = regionHeight-1; yy >= 0; --yy) {
+			for (var xx = regionWidth-1; xx >= 0; --xx) {
+				_data[@tx1+xx+(ty1+yy)*_width] *= sourceData[sx1+xx+(sy1+yy)*sourceWidth];
 			}
 		}
 	};

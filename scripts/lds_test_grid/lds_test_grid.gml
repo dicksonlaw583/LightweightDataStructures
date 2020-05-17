@@ -1,6 +1,6 @@
 ///@func lds_test_grid()
 function lds_test_grid() {
-	var grid;
+	var grid, grid2;
 
 	#region Test mini grid constructors
 	grid = new Grid();
@@ -387,7 +387,112 @@ function lds_test_grid() {
 	assert_equal(grid.valueDiskX(3, 5, 2, 13), -1, "Test grid value positions 4c");
 	assert_equal(grid.valueDiskY(3, 5, 2, 13), -1, "Test grid value positions 4d");
 	#endregion
-	
+
+	#region Test grid region-to-region sets
+	grid = new Grid(4, 4,
+		00, 02, 04, 08,
+		10, 12, 14, 16,
+		18, 20, 22, 24,
+		26, 28, 30, 32
+	);
+	grid2 = new Grid(3, 3,
+		01, 03, 05,
+		07, 09, 11,
+		13, 15, 17
+	);
+	grid.setGridRegion(grid2, 1, 0, 2, 1, 1, 2);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10, 12, 14, 16],
+		[18, 03, 05, 24],
+		[26, 09, 11, 32]
+	], "Test grid region-to-region sets 1");
+	grid.setGridRegion(grid2, -2, -1, 1, 2, 0, 0);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10, 12, 01, 03],
+		[18, 03, 07, 09],
+		[26, 09, 13, 15]
+	], "Test grid region-to-region sets 2");
+	grid.setGridRegion(grid2, 2, 1, 4, 5, 0, 1);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[11, 12, 01, 03],
+		[17, 03, 07, 09],
+		[26, 09, 13, 15]
+	], "Test grid region-to-region sets 3");
+	#endregion
+
+	#region Test grid region-to-region adds
+	grid = new Grid(4, 4,
+		00, 02, 04, 08,
+		10, 12, 14, 16,
+		18, 20, 22, 24,
+		26, 28, 30, 32
+	);
+	grid2 = new Grid(3, 3,
+		01, 03, 05,
+		07, 09, 11,
+		13, 15, 17
+	);
+	grid.addGridRegion(grid2, 1, 0, 2, 1, 1, 2);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10, 12, 14, 16],
+		[18, 20+3, 22+5, 24],
+		[26, 28+9, 30+11, 32]
+	], "Test grid region-to-region adds 1");
+	grid.addGridRegion(grid2, -2, -1, 1, 2, 0, 0);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10, 12, 14+1, 16+3],
+		[18, 20+3, 22+5+7, 24+9],
+		[26, 28+9, 30+11+13, 32+15]
+	], "Test grid region-to-region adds 2");
+	grid.addGridRegion(grid2, 2, 1, 4, 5, 0, 1);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10+11, 12, 14+1, 16+3],
+		[18+17, 20+3, 22+5+7, 24+9],
+		[26, 28+9, 30+11+13, 32+15]
+	], "Test grid region-to-region adds 3");
+	#endregion
+
+	#region Test grid region-to-region multiplies
+	grid = new Grid(4, 4,
+		00, 02, 04, 08,
+		10, 12, 14, 16,
+		18, 20, 22, 24,
+		26, 28, 30, 32
+	);
+	grid2 = new Grid(3, 3,
+		01, 03, 05,
+		07, 09, 11,
+		13, 15, 17
+	);
+	grid.multiplyGridRegion(grid2, 1, 0, 2, 1, 1, 2);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10, 12, 14, 16],
+		[18, 20*3, 22*5, 24],
+		[26, 28*9, 30*11, 32]
+	], "Test grid region-to-region multiplies 1");
+	grid.multiplyGridRegion(grid2, -2, -1, 1, 2, 0, 0);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10, 12, 14*1, 16*3],
+		[18, 20*3, 22*5*7, 24*9],
+		[26, 28*9, 30*11*13, 32*15]
+	], "Test grid region-to-region multiplies 2");
+	grid.multiplyGridRegion(grid2, 2, 1, 4, 5, 0, 1);
+	assert_equal(grid.to2dArray(), [
+		[00, 02, 04, 08],
+		[10*11, 12, 14*1, 16*3],
+		[18*17, 20*3, 22*5*7, 24*9],
+		[26, 28*9, 30*11*13, 32*15]
+	], "Test grid region-to-region multiplies 3");
+	#endregion
+
 	#region Test grid stats
 	grid = new Grid(5, 5,
 		0, 1, 2, 3, 4,
@@ -415,7 +520,6 @@ function lds_test_grid() {
 	#endregion
 
 	#region Test grid copy
-	var grid2;
 	grid = new Grid(3, 2,
 		11, 22, 33,
 		44, 55, 66
