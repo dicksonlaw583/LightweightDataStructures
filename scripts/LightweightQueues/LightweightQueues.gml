@@ -136,6 +136,32 @@ function Queue() constructor {
 		}
 		return self;
 	};
+	
+	// Deep-copy from another queue
+	static copyDeep = function(source) {
+		_head = undefined;
+		_tail = undefined;
+		if (source._length > 0) {
+			var currentSourceNode = source._head;
+			var currentNewNode = [lds_clone_deep(currentSourceNode[0]), undefined];
+			_head = currentNewNode;
+			currentSourceNode = currentSourceNode[1];
+			while (is_array(currentSourceNode)) {
+				currentNewNode[@1] = [lds_clone_deep(currentSourceNode[0]), undefined];
+				currentNewNode = currentNewNode[1];
+				currentSourceNode = currentSourceNode[1];
+			}
+			_tail = currentNewNode;
+		}
+		_length = source._length;
+	};
+	
+	// Return a deep clone of this queue
+	static cloneDeep = function(source) {
+		var theClone = new Queue();
+		theClone.copyDeep(self);
+		return theClone;
+	};
 }
 
 function QueueEmptyException(_msg) constructor {

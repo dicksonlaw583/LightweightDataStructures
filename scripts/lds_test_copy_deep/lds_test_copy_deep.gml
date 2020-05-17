@@ -34,16 +34,16 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.top()], [2, [1, 2]], "Test LDS stack deep copies 1b");
 	source.push("boo");
 	assert_equal([target.size(), target.top()], [2, [1, 2]], "Test LDS stack deep copies 1c");
-	//// Queue
-	//source = new Queue([1, 2], [3, 4], [5, 6]);
-	//target = new Queue(undefined);
-	//lds_copy_deep(target, source);
-	//assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1a");
-	//nestedEntry = source.tail();
-	//nestedEntry[@0] = 55;
-	//assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1b");
-	//source.enqueue("boo");
-	//assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1c");
+	// Queue
+	source = new Queue([1, 2], [3, 4], [5, 6]);
+	target = new Queue(undefined);
+	lds_copy_deep(target, source);
+	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1a");
+	nestedEntry = source.tail();
+	nestedEntry[@0] = 55;
+	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1b");
+	source.enqueue("boo");
+	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep copies 1c");
 	//// List
 	//source = new List([1, 2], 3, 4);
 	//target = new List("bad", "bad");
@@ -130,15 +130,15 @@ function lds_test_copy_deep() {
 	assert_equal([target.size(), target.top()], [2, [1, 2]], "Test LDS stack deep clones 1b");
 	source.push("boo");
 	assert_equal([target.size(), target.top()], [2, [1, 2]], "Test LDS stack deep clones 1c");
-	//// Queue
-	//source = new Queue([1, 2], [3, 4], [5, 6]);
-	//target = lds_clone_deep(source);
-	//assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1a");
-	//nestedEntry = source.tail();
-	//nestedEntry[@0] = 55;
-	//assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1b");
-	//source.enqueue("boo");
-	//assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1c");
+	// Queue
+	source = new Queue([1, 2], [3, 4], [5, 6]);
+	target = lds_clone_deep(source);
+	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1a");
+	nestedEntry = source.tail();
+	nestedEntry[@0] = 55;
+	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1b");
+	source.enqueue("boo");
+	assert_equal([target.size(), target.head(), target.tail()], [3, [1, 2], [5, 6]], "Test LDS queue deep clones 1c");
 	//// List
 	//source = new List([1, 2], 3, 4);
 	//target = lds_clone_deep(source);
