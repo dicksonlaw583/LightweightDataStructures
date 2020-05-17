@@ -99,6 +99,30 @@ function Stack() constructor {
 		}
 		return self;
 	};
+	
+	// Clear the stack and deep-copy contents from another stack
+	static copyDeep = function(source) {
+		_data = undefined;
+		var currentSourceNode = source._data;
+		if (source._length > 0) {
+			var currentNewNode = [lds_clone_deep(currentSourceNode[0]), undefined];
+			_data = currentNewNode;
+			currentSourceNode = currentSourceNode[1];
+			while (is_array(currentSourceNode)) {
+				currentNewNode[@1] = [lds_clone_deep(currentSourceNode[0]), undefined];
+				currentNewNode = currentNewNode[1];
+				currentSourceNode = currentSourceNode[1];
+			}
+		}
+		_length = source._length;
+	};
+	
+	// Return a deep clone of this stack
+	static cloneDeep = function() {
+		var theClone = new Stack();
+		theClone.copyDeep(self);
+		return theClone;
+	};
 }
 
 function StackEmptyException(_msg) constructor {
