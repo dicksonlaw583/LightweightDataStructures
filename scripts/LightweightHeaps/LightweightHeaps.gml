@@ -190,6 +190,28 @@ function Heap() constructor {
 		return self;
 	};
 	
+	// Deep copy from another heap
+	static copyDeep = function(source) {
+		_length = source._length;
+		_data = array_create(1+_length, undefined);
+		_priority = array_create(1+_length, undefined);
+		if (_length > 0) {
+			var sourceData = source._data;
+			for (var i = _length; i >= 1; --i) {
+				_data[i] = lds_clone_deep(sourceData[i]);
+			}
+			array_copy(_priority, 1, source._priority, 1, _length);
+		}
+	};
+	
+	// Return a deep clone of this heap
+	static cloneDeep = function() {
+		var theClone = new Heap();
+		theClone.copyDeep(self);
+		return theClone;
+	};
+	
+	
 	// (INTERNAL) Set up the heap
 	static _formHeap = function() {
 		for (var i = _length >> 1; i >= 1; --i) {

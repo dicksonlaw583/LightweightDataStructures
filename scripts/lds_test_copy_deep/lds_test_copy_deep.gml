@@ -67,16 +67,16 @@ function lds_test_copy_deep() {
 	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1b");
 	source.set(0, 0, 1111);
 	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep copies 1c");
-	//// Heap
-	//source = new Heap("qux", 44, {foo: 11}, 11, "bar", 22, "baz", 33);
-	//target = new Heap("bad", 55);
-	//lds_copy_deep(target, source);
-	//assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1a");
-	//nestedEntry = source.getMin();
-	//nestedEntry.foo = 111;
-	//assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1b");
-	//source.deleteMin();
-	//assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1c");
+	// Heap
+	source = new Heap("qux", 44, {foo: 11}, 11, "bar", 22, "baz", 33);
+	target = new Heap("bad", 55);
+	lds_copy_deep(target, source);
+	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1a");
+	nestedEntry = source.getMin();
+	nestedEntry.foo = 111;
+	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1b");
+	source.deleteMin();
+	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep copies 1c");
 	//// Map
 	//source = new Map("foo", "bar", "baz", {qux: 22});
 	//target = new Map("bad", 666);
@@ -160,15 +160,15 @@ function lds_test_copy_deep() {
 	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1b");
 	source.set(0, 0, 1111);
 	assert_equal(target.to2dArray(), [[{foo: 11}, 22, 33], [44, 55, 66]], "Test LDS grid deep clones 1c");
-	//// Heap
-	//source = new Heap("qux", 44, {foo: 11}, 11, "bar", 22, "baz", 33);
-	//target = lds_clone_deep(source);
-	//assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1a");
-	//nestedEntry = source.getMin();
-	//nestedEntry.foo = 111;
-	//assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1b");
-	//source.deleteMin();
-	//assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1c");
+	// Heap
+	source = new Heap("qux", 44, {foo: 11}, 11, "bar", 22, "baz", 33);
+	target = lds_clone_deep(source);
+	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1a");
+	nestedEntry = source.getMin();
+	nestedEntry.foo = 111;
+	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1b");
+	source.deleteMin();
+	assert_equal([target.size(), target.getMin(), target.getMax()], [4, {foo: 11}, "qux"], "Test LDS heap deep clones 1c");
 	//// Map
 	//source = new Map("foo", "bar", "baz", {qux: 22});
 	//target = lds_clone_deep(source);
