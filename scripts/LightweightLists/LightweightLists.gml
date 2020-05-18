@@ -315,6 +315,18 @@ function List() constructor {
 		theClone.copyDeep(self);
 		return theClone;
 	};
+	
+	// Load from data string
+	static read = function(datastr) {
+		var data = jsons_decode(datastr);
+		if (data.t != instanceof(self)) throw new IncompatibleDataException(instanceof(self), data.t);
+		expandFromData(data.d);
+	};
+	
+	// Save into data string
+	static write = function() {
+		return lds_write(self);
+	};
 }
 
 function ListIndexOutOfBoundsException(_index) constructor {

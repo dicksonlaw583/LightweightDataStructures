@@ -154,4 +154,20 @@ function lds_test_list() {
 	list = new List();
 	list.expandFromData([111, [222, 333], {t: "struct", d: {foo: 444}}, "555"]);
 	assert_equal([list.size(), list.get(0), list.get(1), list.get(2), list.get(3)], [4, 111, [222, 333], {foo: 444}, "555"], "Test list expansion 4");
+	
+	// Test list read/write
+	list = new List();
+	list2 = new List(1, 2, 3);
+	got = list.write();
+	list2.read(got);
+	assert(list2.empty(), "Test list read/write 1");
+	list = new List("foo", "bar", "baz");
+	list2 = new List();
+	got = list.write();
+	list2.read(got);
+	assert_equal([list2.size(), list2.get(0), list2.get(1), list2.get(2)], [3, "foo", "bar", "baz"], "Test list read/write 2");
+	list = new List("foo");
+	assert_throws(method({ list: list }, function() {
+		list.read(lds_write(int64(0)));
+	}), new IncompatibleDataException("List", "int64"), "Test list read/write 3");
 }
