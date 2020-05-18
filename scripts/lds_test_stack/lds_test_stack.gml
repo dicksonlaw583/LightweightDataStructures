@@ -160,4 +160,20 @@ function lds_test_stack() {
 	assert_equal([stack.size(), stack.top()], [1, "555"], "Test stack expansion 4g");
 	assert_equal(stack.pop(), "555", "Test stack expansion 4h");
 	assert(stack.empty(), "Test stack expansion 4g");
+	
+	// Test stack read/write
+	stack = new Stack();
+	stack2 = new Stack(1, 2, 3);
+	got = stack.write();
+	stack2.read(got);
+	assert(stack2.empty(), "Test stack read/write 1");
+	stack = new Stack("foo", "bar");
+	stack2 = new Stack();
+	got = stack.write();
+	stack2.read(got);
+	assert_equal([stack2.size(), stack2.top()], [2, "foo"], "Test stack read/write 2");
+	stack = new Stack("foo");
+	assert_throws(method({ stack: stack }, function() {
+		stack.read(lds_write(int64(0)));
+	}), new IncompatibleDataException("Stack", "int64"), "Test stack read/write 3");
 }

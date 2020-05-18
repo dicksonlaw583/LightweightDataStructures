@@ -285,3 +285,11 @@ function IncompatibleCopyException(_target, _source) constructor {
 		return "Cannot copy to " + typeOfTarget + " from " + typeOfSource + ".";
 	};
 }
+
+function IncompatibleDataException(_targetType, _sourceType) constructor {
+	targetType = _targetType;
+	sourceType = _sourceType;
+	static toString = function() {
+		return "Cannot read data intended for " + string(sourceType) + " into " + string(targetType) + ".";
+	};
+}
