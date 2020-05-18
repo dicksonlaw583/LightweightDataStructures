@@ -1,6 +1,6 @@
 ///@func lds_test_queue()
 function lds_test_queue() {
-	var queue;
+	var queue, queue2;
 	
 	// Test empty queue
 	queue = new Queue();
@@ -75,7 +75,6 @@ function lds_test_queue() {
 	}), new QueueEmptyException("Trying to get the tail of an empty queue."), "Test multi-enqueue from init 10");
 	
 	// Test queue copy
-	var queue2;
 	queue = new Queue(11, 22, 33);
 	queue2 = new Queue(44);
 	queue2.copy(queue);
@@ -147,4 +146,20 @@ function lds_test_queue() {
 	assert_equal([queue.size(), queue.head()], [1, "555"], "Test queue expansion 4g");
 	assert_equal(queue.dequeue(), "555", "Test queue expansion 4h");
 	assert(queue.empty(), "Test queue expansion 4g");
+	
+	// Test queue read/write
+	queue = new Queue();
+	queue2 = new Queue(1, 2, 3);
+	got = queue.write();
+	queue2.read(got);
+	assert(queue2.empty(), "Test queue read/write 1");
+	queue = new Queue("foo", "bar", "baz");
+	queue2 = new Queue();
+	got = queue.write();
+	queue2.read(got);
+	assert_equal([queue2.size(), queue2.head(), queue2.tail()], [3, "foo", "baz"], "Test queue read/write 2");
+	queue = new Queue("foo");
+	assert_throws(method({ queue: queue }, function() {
+		queue.read(lds_write(int64(0)));
+	}), new IncompatibleDataException("Queue", "int64"), "Test queue read/write 3");
 }
