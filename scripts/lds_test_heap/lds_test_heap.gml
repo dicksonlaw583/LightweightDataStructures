@@ -1,6 +1,6 @@
 ///@func lds_test_heap()
 function lds_test_heap() {
-	var heap;
+	var heap, heap2;
 	
 	#region Test empty heap
 	heap = new Heap();
@@ -162,7 +162,6 @@ function lds_test_heap() {
 	#endregion
 
 	#region Test heap copy
-	var heap2;
 	heap = new Heap("foo", 5, "bar", 7, "baz", 4, "qux", 6, "gone", 9);
 	heap2 = new Heap("foobar", 583, "barbaz", 907);
 	heap.deleteMax();
@@ -222,5 +221,22 @@ function lds_test_heap() {
 	heap = new Heap("bad", 583);
 	heap.expandFromData([[5, 7, 6], [{t: "struct", d: {foo: 444}}, [222, 333], "666"]]);
 	assert_equal([heap.size(), heap.getMin(), heap.getMax()], [3, {foo: 444}, [222, 333]], "Test heap expansion 4");
+	#endregion
+	
+	#region Test heap read/write
+	heap = new Heap();
+	heap2 = new Heap("foo", 123);
+	got = heap.write();
+	heap2.read(got);
+	assert(heap2.empty(), "Test heap read/write 1");
+	heap = new Heap("foo", 123, "bar", 234);
+	heap2 = new Heap();
+	got = heap.write();
+	heap2.read(got);
+	assert_equal([heap2.size(), heap2.getMin(), heap2.getMax()], [2, "foo", "bar"], "Test heap read/write 2");
+	heap = new Heap("foo", 567);
+	assert_throws(method({ heap: heap }, function() {
+		heap.read(lds_write(int64(0)));
+	}), new IncompatibleDataException("Heap", "int64"), "Test heap read/write 3");
 	#endregion
 }

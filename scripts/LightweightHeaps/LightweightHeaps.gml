@@ -211,6 +211,18 @@ function Heap() constructor {
 		return theClone;
 	};
 	
+	// Load from data string
+	static read = function(datastr) {
+		var data = jsons_decode(datastr);
+		if (data.t != instanceof(self)) throw new IncompatibleDataException(instanceof(self), data.t);
+		expandFromData(data.d);
+	};
+	
+	// Save into data string
+	static write = function() {
+		return lds_write(self);
+	};
+	
 	
 	// (INTERNAL) Set up the heap
 	static _formHeap = function() {
