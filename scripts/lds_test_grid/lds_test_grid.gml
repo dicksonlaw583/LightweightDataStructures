@@ -569,4 +569,21 @@ function lds_test_grid() {
 	grid.expandFromData([111, [222, 333], {t: "struct", d: {foo: 444}}, "555", {t: "struct", d: {bar: 666, baz: 777}}, "888", 3, 2]);
 	assert_equal(grid.to2dArray(), [[111, [222, 333], { foo: 444 }], ["555", { bar: 666, baz: 777 }, "888"]], "Test grid expansion 2");
 	#endregion
+
+	#region Test grid read/write
+	grid = new Grid(1, 1, 0);
+	grid2 = new Grid(2, 3, 11, 22, 33, 44, 55, 66);
+	got = grid.write();
+	grid2.read(got);
+	assert_equal(grid.to2dArray(), [[0]], "Test grid read/write 1");
+	grid = new Grid(2, 2, "foo", "bar", "baz", "qux");
+	grid2 = new Grid(4, 4);
+	got = grid.write();
+	grid2.read(got);
+	assert_equal([grid2.width(), grid2.height(), grid2.get(0, 0), grid2.get(1, 0), grid2.get(0, 1), grid2.get(1, 1)], [2, 2, "foo", "bar", "baz", "qux"], "Test grid read/write 2");
+	grid = new Grid(1, 1, "foo");
+	assert_throws(method({ grid: grid }, function() {
+		grid.read(lds_write(int64(0)));
+	}), new IncompatibleDataException("Grid", "int64"), "Test grid read/write 3");
+	#endregion
 }
