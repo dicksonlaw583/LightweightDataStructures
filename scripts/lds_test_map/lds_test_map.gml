@@ -84,4 +84,20 @@ function lds_test_map() {
 	map = new Map("bad", 583);
 	map.expandFromData([["foo", "bar", "baz"], [111, [222, 2222], {t: "struct", d: {foobar: 333}}]]);
 	assert_equal([map.size(), map.get("foo"), map.get("bar"), map.get("baz")], [3, 111, [222, 2222], {foobar: 333}], "Test map expansion 3");
+	
+	// Test map read/write
+	map = new Map();
+	map2 = new Map("foo", 123);
+	got = map.write();
+	map2.read(got);
+	assert(map2.empty(), "Test map read/write 1");
+	map = new Map("foo", 123, "bar", 234);
+	map2 = new Map();
+	got = map.write();
+	map2.read(got);
+	assert_equal([map2.size(), map2.get("foo"), map2.get("bar")], [2, 123, 234], "Test map read/write 2");
+	map = new Map("foo", 567);
+	assert_throws(method({ map: map }, function() {
+		map.read(lds_write(int64(0)));
+	}), new IncompatibleDataException("Map", "int64"), "Test map read/write 3");
 }
