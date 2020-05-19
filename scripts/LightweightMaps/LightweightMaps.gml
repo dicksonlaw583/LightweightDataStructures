@@ -1,4 +1,8 @@
 function Map() constructor {
+	static _toKeyName = function(k) {
+		return "_" + string_replace_all(string_replace_all(string_replace_all(base64_encode(k), "+", "_3"), "/", "_4"), "=", "_p");
+	};
+	
 	// Set up basic properties and starting entries
 	_canonType = "Map";
 	_type = "Map";
@@ -13,10 +17,6 @@ function Map() constructor {
 		variable_struct_set(_exists, kn, _keysCachePos);
 		_keysCache[_keysCachePos++] = argument[i];
 	}
-	
-	static _toKeyName = function(k) {
-		return "_" + string_replace_all(string_replace_all(string_replace_all(base64_encode(k), "+", "_3"), "/", "_4"), "=", "_p");
-	};
 	
 	//static _fromKeyName = function(kn) {
 	//	return base64_decode(string_replace_all(string_replace_all(string_replace_all(string_delete(kn, 1, 1), "_3", "+"), "_4", "/"), "_p", "="));
