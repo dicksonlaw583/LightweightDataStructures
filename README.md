@@ -21,7 +21,7 @@ Get the current beta asset package and associated documentation from [the releas
 ```
 var list = new List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 list.shuffle();
-show_message("Your draws are: " + string(list.get(0)) + "," string(list.get(1)) + "," + string(list.get(2)));
+show_message("Your draws are: " + string(list.get(0)) + "," + string(list.get(1)) + "," + string(list.get(2)));
 ```
 
 ### Simple Nested Map Example
@@ -34,12 +34,12 @@ var characters = new List(
 lds_save_encrypted(working_directory + "characters.dat", characters, "secretChars");
 ```
 ```
-global.characters = lds_load_encrypted(working_directory + "characters.dat", "secretChars");
+var loadedCharacters = lds_load_encrypted(working_directory + "characters.dat", "secretChars");
 show_message(
-	"Stats:"
-	"\n- Alice: " + string(global.characters.get(0).get("hp")) +
-	"\n- Bob: " + string(global.characters.get(1).get("hp")) +
-	"\n- Caitlyn: " + string(global.characters.get(2).get("hp"))
+	"Stats:" +
+	"\n- Alice: " + string((loadedCharacters.get(0)).get("hp")) +
+	"\n- Bob: " + string((loadedCharacters.get(1)).get("hp")) +
+	"\n- Caitlyn: " + string((loadedCharacters.get(2)).get("hp"))
 );
 ```
 
