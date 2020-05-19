@@ -1,9 +1,50 @@
-# Lightweight Data Structures (Work-In-Progress)
+# Lightweight Data Structures (Beta)
 
 ## Overview
 
-This library implements struct-based, GC-friendly equivalents of GameMaker Studio's built-in data structures.
+This library implements struct-based, GC-friendly equivalents of GameMaker Studio's built-in data structures. It also adds the ability to save even nested structures without manual marking, in plaintext and RC4 ciphertext.
 
 ## Requirements
 
 - GameMaker Studio 2.3 Open Beta
+- [JSON Struct](https://github.com/dicksonlaw583/JsonStruct)
+
+## Installation
+
+Get the current beta asset package and associated documentation from [the releases page](https://github.com/dicksonlaw583/LightweightDataStructures/releases). Simply extract everything to your project, including the extension and the companion scripts.
+
+**Reminder**: Don't forget to install and configure JSON Struct if you have not already done so!
+
+## Example
+
+### Simple List Example
+```
+var list = new List(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+list.shuffle();
+show_message("Your draws are: " + string(list.get(0)) + "," string(list.get(1)) + "," + string(list.get(2)));
+```
+
+### Simple Nested Map Example
+```
+var characters = new List(
+	new Map("name", "Alice", "hp", 4),
+	new Map("name", "Bob", "hp", 5),
+	new Map("name", "Caitlyn", "hp", 6)
+);
+lds_save_encrypted(working_directory + "characters.dat", characters, "secretChars");
+```
+```
+global.characters = lds_load_encrypted(working_directory + "characters.dat", "secretChars");
+show_message(
+	"Stats:"
+	"\n- Alice: " + string(global.characters.get(0).get("hp")) +
+	"\n- Bob: " + string(global.characters.get(1).get("hp")) +
+	"\n- Caitlyn: " + string(global.characters.get(2).get("hp"))
+);
+```
+
+## Contributing to Lightweight Data Structures
+
+- Clone this repository.
+- Open the project in GameMaker Studio 2.3 and make your additions/changes to the `LightweightDataStructures` extension and/or group. Also add the corresponding tests to the `LightweightDataStructures_test` group.
+- Open a pull request here.
