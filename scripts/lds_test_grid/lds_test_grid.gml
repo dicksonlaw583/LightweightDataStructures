@@ -586,4 +586,93 @@ function lds_test_grid() {
 		grid.read(lds_write(int64(0)));
 	}), new IncompatibleDataException("Grid", "int64"), "Test grid read/write 3");
 	#endregion
+
+	#region Test grid forEach
+	grid = new Grid(3, 3,
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+	);
+	grid2 = new Grid(3, 3);
+	grid.forEach(method({ g2: grid2 }, function(v, xx, yy) {
+		g2.set(xx, yy, v+10);
+	}));
+	assert_equal(grid2.to2dArray(), [[10, 11, 12], [13, 14, 15], [16, 17, 18]], "Test grid forEach 1");
+	grid = new Grid(3, 3,
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+	);
+	grid2 = new Grid(3, 3,
+		0, 0, 0,
+		0, 0, 0,
+		0, 0, 0,
+	);
+	grid.forEachInDisk(method({ g2: grid2 }, function(v, xx, yy) {
+		g2.set(xx, yy, v+100);
+	}), 2, 2, 1);
+	assert_equal(grid2.to2dArray(), [[000, 000, 000], [000, 000, 105], [000, 107, 108]], "Test grid forEachInDisk 1");
+	grid2 = new Grid(3, 3,
+		000, 000, 000,
+		000, 000, 105,
+		000, 107, 108,
+	);
+	grid.forEachInRegion(method({ g2: grid2 }, function(v, xx, yy) {
+		g2.set(xx, yy, v+110);
+	}), -1, -1, 1, 1);
+	assert_equal(grid2.to2dArray(), [[110, 111, 000], [113, 114, 105], [000, 107, 108]], "Test grid forEachInRegion 1");
+	#endregion
+	
+	#region Test grid mapEach
+	grid = new Grid(3, 3,
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+	);
+	grid.mapEach(function(v) {
+		return v+20;
+	});
+	assert_equal(grid.to2dArray(), [[20, 21, 22], [23, 24, 25], [26, 27, 28]], "Test grid mapEach 1");
+	grid = new Grid(3, 3,
+		20, 21, 22,
+		23, 24, 25,
+		26, 27, 28,
+	);
+	grid.mapEachInDisk(function(v) {
+		return v+20;
+	}, 2, 0, 1);
+	assert_equal(grid.to2dArray(), [[20, 41, 42], [23, 24, 45], [26, 27, 28]], "Test grid mapEachInDisk 1");
+	grid = new Grid(3, 3,
+		20, 41, 42,
+		23, 24, 45,
+		26, 27, 28,
+	);
+	grid.mapEachInRegion(function(v) {
+		return v+30;
+	}, -1, 1, 1, 3);
+	assert_equal(grid.to2dArray(), [[20, 41, 42], [53, 54, 45], [56, 57, 28]], "Test grid mapEachInRegion 1");
+	#endregion
+
+	#region Test grid iterators
+	grid = new Grid(3, 3,
+		0, 1, 2,
+		3, 4, 5,
+		6, 7, 8,
+	);
+	grid2 = new Grid(3, 3);
+	for (var i = grid.iterator(); i.hasNext(); i.next()) {
+		grid2.set(i.x, i.y, i.value+30);
+	}
+	assert_equal(grid2.to2dArray(), [[30, 31, 32], [33, 34, 35], [36, 37, 38]], "Test grid iterator 1");
+	grid2.clear(0);
+	for (var i = grid.diskIterator(2, 2, 1); i.hasNext(); i.next()) {
+		grid2.set(i.x, i.y, i.value+40);
+	}
+	assert_equal(grid2.to2dArray(), [[00, 00, 00], [00, 00, 45], [00, 47, 48]], "Test grid disk iterator 1");
+	grid2.clear(0);
+	for (var i = grid.regionIterator(-1, -1, 1, 3); i.hasNext(); i.next()) {
+		grid2.set(i.x, i.y, i.value+50);
+	}
+	assert_equal(grid2.to2dArray(), [[50, 51, 00], [53, 54, 00], [56, 57, 00]], "Test grid region iterator 1");
+	#endregion
 }

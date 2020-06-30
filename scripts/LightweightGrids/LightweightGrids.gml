@@ -618,6 +618,190 @@ function Grid() constructor {
 	static write = function() {
 		return lds_write(self);
 	};
+	
+	// Perform a function for each entry in the grid
+	static forEach = function(func) {
+		for (var yy = 0; yy < _height; ++yy) {
+			for (var xx = 0; xx < _width; ++xx) {
+				if (is_method(func)) {
+					func(_data[xx+yy*_width], xx, yy);
+				} else {
+					script_execute(func, _data[xx+yy*_width], xx, yy);
+				}
+			}
+		}
+	};
+	
+	// Perform a function for each entry in a disk on the grid
+	static forEachInDisk = function(func, xm, ym, r) {
+		var Y = min(_height-ym-1, r);
+		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
+			var R = r-abs(dy);
+			var X = min(_width-xm-1, R);
+			for (var dx = max(-xm, -R); dx <= X; ++dx) {
+				if (is_method(func)) {
+					func(_data[xm+dx+(ym+dy)*_width], xm+dx, ym+dy);
+				} else {
+					script_execute(func, _data[xm+dx+(ym+dy)*_width], xm+dx, ym+dy);
+				}
+			}
+		}
+	};
+	
+	// Perform a function for each entry in a region on the grid
+	static forEachInRegion = function(func, x1, y1, x2, y2) {
+		var _x1 = max(0, x1),
+			_y1 = max(0, y1),
+			_x2 = min(_width-1, x2),
+			_y2 = min(_height-1, y2);
+		for (var yy = _y1; yy <= _y2; ++yy) {
+			for (var xx = _x1; xx <= _x2; ++xx) {
+				if (is_method(func)) {
+					func(_data[xx+yy*_width], xx, yy);
+				} else {
+					script_execute(func, _data[xx+yy*_width], xx, yy);
+				}
+			}
+		}
+	};
+	
+	// Set each entry in the grid to the return value of a function
+	static mapEach = function(func) {
+		for (var yy = 0; yy < _height; ++yy) {
+			for (var xx = 0; xx < _width; ++xx) {
+				var pos = xx+yy*_width;
+				if (is_method(func)) {
+					_data[@pos] = func(_data[pos]);
+				} else {
+					_data[@pos] = script_execute(func, _data[pos]);
+				}
+			}
+		}
+	};
+	
+	// Set each entry in a disk on the grid to the return value of a function
+	static mapEachInDisk = function(func, xm, ym, r) {
+		var Y = min(_height-ym-1, r);
+		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
+			var R = r-abs(dy);
+			var X = min(_width-xm-1, R);
+			for (var dx = max(-xm, -R); dx <= X; ++dx) {
+				var pos = xm+dx+(ym+dy)*_width;
+				if (is_method(func)) {
+					_data[@pos] = func(_data[pos]);
+				} else {
+					_data[@pos] = script_execute(func, _data[pos]);
+				}
+			}
+		}
+	};
+	
+	// Set each entry in a region on the grid to the return value of a function
+	static mapEachInRegion = function(func, x1, y1, x2, y2) {
+		var _x1 = max(0, x1),
+			_y1 = max(0, y1),
+			_x2 = min(_width-1, x2),
+			_y2 = min(_height-1, y2);
+		for (var yy = _y1; yy <= _y2; ++yy) {
+			for (var xx = _x1; xx <= _x2; ++xx) {
+				var pos = xx+yy*_width;
+				if (is_method(func)) {
+					_data[@pos] = func(_data[pos]);
+				} else {
+					_data[@pos] = script_execute(func, _data[pos]);
+				}
+			}
+		}
+	};
+	
+	// Return an iterator for the entire grid
+	static iterator = function() {
+		return new GridRegionIterator(self, 0, 0, _width-1, _height-1);
+	};
+	
+	// Return an iterator for a disk region of the grid
+	static diskIterator = function(xm, ym, r) {
+		return new GridDiskIterator(self, xm, ym, r);
+	};
+	
+	// Return an iterator for a rectangular region of the grid
+	static regionIterator = function(x1, y1, x2, y2) {
+		return new GridRegionIterator(self, x1, y1, x2, y2);
+	};
+}
+
+function GridDiskIterator(grid, _xm, _ym, _r) constructor {
+	_grid = grid;
+	_width = grid._width;
+	_height = grid._height;
+	xm = _xm;
+	ym = _ym;
+	r = _r;
+	_Y = min(grid._height-ym-1, r);
+	_dy = max(-ym, -r);
+	_R = r-abs(_dy);
+	_X = min(grid._width-xm-1, _R);
+	_dx = max(-xm, -_R);
+	x = xm+_dx;
+	y = ym+_dy;
+	value = (x > 0 && y > 0 && x < _width && y < _height) ? grid._data[x+y*_width] : undefined;
+	
+	static hasNext = function() {
+		return (_dx <= _X) && (_dy <= _Y);
+	};
+	
+	static next = function() {
+		if (++_dx > _X) {
+			if (++_dy > _Y) {
+				value = undefined;
+				return false;
+			}
+			_R = r-abs(_dy);
+			_X = min(_width-xm-1, _R);
+			_dx = max(-xm, -_R);
+			y = ym+_dy;
+		}
+		x = xm+_dx;
+		value = _grid._data[x+y*_width];
+	};
+	
+	static set = function(val) {
+		_grid._data[@x+y*_width] = val;
+		value = val;
+	};
+}
+
+function GridRegionIterator(grid, _x1, _y1, _x2, _y2) constructor {
+	_grid = grid;
+	_width = grid._width;
+	_height = grid._height;
+	x1 = max(0, _x1);
+	y1 = max(0, _y1);
+	x2 = min(_width-1, _x2);
+	y2 = min(_height-1, _y2);
+	x = x1;
+	y = y1;
+	value = (x <= x2 && y <= y2) ? _grid._data[x+y*_width] : undefined;
+	
+	static hasNext = function() {
+		return (x <= x2 && y <= y2);
+	};
+	
+	static next = function() {
+		if (++x > x2) {
+			if (++y > y2) {
+				value = undefined;
+				return false;
+			}
+			x = x1;
+		}
+		value = _grid._data[x+y*_width];
+	};
+	
+	static set = function(val) {
+		_grid._data[@x+y*_width] = val;
+		value = val;
+	};
 }
 
 function GridIndexOutOfBoundsException(xx, yy) constructor {
