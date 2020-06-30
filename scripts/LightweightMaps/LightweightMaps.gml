@@ -233,6 +233,92 @@ function Map() constructor {
 	static write = function() {
 		return lds_write(self);
 	};
+	
+	// Perform a function for each entry in the map
+	static forEach = function(func) {
+		for (var i = 0; i < _keysCachePos; ++i) {
+			var k = _keysCache[i];
+			var kn = _toKeyName(k);
+			var v = variable_struct_get(_data, kn);
+			if (is_method(func)) {
+				func(v, k);
+			} else {
+				script_execute(func, v, k);
+			}
+		}
+	};
+	
+	// Replace each entry in the map with the return value of the function
+	// Delete those that cause the function to throw undefined
+	static mapEach = function(func) {
+		for (var i = 0; i < _keysCachePos; ++i) {
+			var k = _keysCache[i];
+			var kn = _toKeyName(k);
+			var v = variable_struct_get(_data, kn);
+			try {
+				var funcResult;
+				if (is_method(func)) {
+					funcResult = func(v);
+				} else {
+					funcResult = script_execute(func, v);
+				}
+				variable_struct_set(_data, kn, funcResult);
+			} catch (ex) {
+				if (is_undefined(ex)) {
+					variable_struct_set(_data, kn, undefined);
+					variable_struct_set(_exists, kn, undefined);
+					_keysCache[i] = undefined;
+					--_size;
+				} else {
+					throw ex;
+				}
+			}
+		}
+	};
+	
+	// Return an iterator for this map
+	static iterator = function() {
+		return new MapIterator(self);
+	};
+}
+
+function MapIterator(map) constructor {
+	_map = map;
+	_keyPos = 0;
+	key = undefined;
+	value = undefined;
+	var kcSize = _map._keysCachePos;
+	var kc = _map._keysCache;
+	for (; _keyPos < kcSize; ++_keyPos) {
+		if (!is_undefined(kc[_keyPos])) {
+			key = kc[_keyPos];
+			value = _map.get(key);
+			break;
+		}
+	}
+	
+	static hasNext = function() {
+		return !is_undefined(key);
+	};
+	
+	static next = function() {
+		var kc = _map._keysCache;
+		var kcSize = _map._keysCachePos;
+		key = undefined;
+		while (is_undefined(key) && ++_keyPos < kcSize) {
+			key = kc[_keyPos];
+		}
+		value = is_undefined(key) ? undefined : _map.get(key);
+	};
+	
+	static set = function(val) {
+		_map.set(key, val);
+		value = val;
+	};
+	
+	static remove = function() {
+		_map.remove(key);
+	};
 }
 
 function MapKeyMissingException(_msg) constructor {

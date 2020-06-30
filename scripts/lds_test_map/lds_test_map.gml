@@ -100,4 +100,41 @@ function lds_test_map() {
 	assert_throws(method({ map: map }, function() {
 		map.read(lds_write(int64(0)));
 	}), new IncompatibleDataException("Map", "int64"), "Test map read/write 3");
+	
+	// Test map iteration
+	map = new Map();
+	map2 = new Map();
+	map.forEach(method({ m2: map2 }, function(v, k) {
+		m2.add(k, v);
+		m2.add(string_upper(k), string_upper(v));
+	}));
+	assert(map2.empty(), "Test map forEach 1");
+	map = new Map("a", "foo", "b", "bar", "c", "baz");
+	map2 = new Map();
+	map.forEach(method({ m2: map2 }, function(v, k) {
+		m2.add(k, v);
+		m2.add(string_upper(k), string_upper(v));
+	}));
+	assert_equal([map2.size(), map2.get("a"), map2.get("A"), map2.get("b"), map2.get("B"), map2.get("c"), map2.get("C")], [6, "foo", "FOO", "bar", "BAR", "baz", "BAZ"], "Test map forEach 2");
+	map = new Map("a", "foo", "b", "bar", "c", "baz", "d", "qux", "e", "waahoo");
+	map.mapEach(function(v) {
+		if (v == "foo" || v == "baz" || v == "waahoo") throw undefined;
+		return string_upper(v);
+	});
+	assert_equal([map.size(), map.get("b"), map.get("d")], [2, "BAR", "QUX"], "Test map mapEach 1");
+	map = new Map("a", "foo", "b", "bar", "c", "baz");
+	map2 = new Map();
+	for (var i = map.iterator(); i.hasNext(); i.next()) {
+		map2.add(i.key, string_upper(i.value));
+	}
+	assert_equal([map2.size(), map2.get("a"), map2.get("b"), map2.get("c")], [3, "FOO", "BAR", "BAZ"], "Test map iterator 1");
+	map = new Map("a", "foo", "b", "bar", "c", "baz", "d", "qux", "e", "waahoo");
+	for (var i = map.iterator(); i.hasNext(); i.next()) {
+		if (i.key == "a" || i.key == "c" || i.key == "e") {
+			i.remove();
+		} else {
+			i.set(string_upper(i.value));
+		}
+	}
+	assert_equal([map.size(), map.get("b"), map.get("d")], [2, "BAR", "QUX"], "Test map iterator 2");
 }
