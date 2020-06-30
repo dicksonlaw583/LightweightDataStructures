@@ -170,4 +170,42 @@ function lds_test_list() {
 	assert_throws(method({ list: list }, function() {
 		list.read(lds_write(int64(0)));
 	}), new IncompatibleDataException("List", "int64"), "Test list read/write 3");
+	
+	// Test list iteration
+	list = new List();
+	list2 = new List();
+	list.forEach(method({ l2: list2 }, function(v, i) {
+		l2.add(i);
+		l2.add(v);
+	}));
+	assert_equal(list2.toArray(), [], "Test list forEach 1");
+	list = new List("a", "b", "c");
+	list2 = new List();
+	list.forEach(method({ l2: list2 }, function(v, i) {
+		l2.add(i);
+		l2.add(v);
+	}));
+	assert_equal(list2.toArray(), [0, "a", 1, "b", 2, "c"], "Test list forEach 2");
+	list = new List("alpha", "beta", "gamma", "delta", "epsilon");
+	list.mapEach(function(v) {
+		if (v == "alpha" || v == "epsilon" || v == "gamma") throw undefined;
+		return string_upper(v);
+	});
+	assert_equal([list.size(), list.get(0), list.get(1)], [2, "BETA", "DELTA"], "Test list mapEach 1");
+	list = new List("a", "b", "c");
+	list2 = new List();
+	for (var i = list.iterator(); i.hasNext(); i.next()) {
+		list2.add(i.index);
+		list2.add(i.value);
+	}
+	assert_equal(list2.toArray(), [0, "a", 1, "b", 2, "c"], "Test list ListIterator 1");
+	list = new List("a", "b", "c", "d", "e");
+	for (var i = list.iterator(); i.hasNext(); i.next()) {
+		if (i.value == "a" || i.value == "c" || i.value == "e") {
+			i.remove();
+		} else {
+			i.set(string_upper(i.value));
+		}
+	}
+	assert_equal([list.size(), list.toArray()], [2, ["B", "D"]], "Test list ListIterator 2");
 }

@@ -327,6 +327,106 @@ function List() constructor {
 	static write = function() {
 		return lds_write(self);
 	};
+	
+	// Perform a function for each entry in the list
+	static forEach = function(func) {
+		var _currentNode = _head;
+		var i = 0;
+		while (!is_undefined(_currentNode)) {
+			if (is_method(func)) {
+				func(_currentNode[2], i);
+			} else {
+				script_execute(func, _currentNode[2], i);
+			}
+			++i;
+			_currentNode = _currentNode[1];
+		}
+	};
+	
+	// Replace each entry in the list with the return value of the function
+	// Delete those that cause the function to throw undefined
+	static mapEach = function(func) {
+		var _currentNode = _head;
+		while (!is_undefined(_currentNode)) {
+			try {
+				var funcResult;
+				if (is_method(func)) {
+					funcResult = func(_currentNode[2]);
+				} else {
+					funcResult = script_execute(func, _currentNode[2]);
+				}
+				_currentNode[@2] = funcResult;
+			} catch (ex) {
+				if (is_undefined(ex)) {
+					var prevNode = _currentNode[0];
+					var nextNode = _currentNode[1];
+					if (is_undefined(prevNode)) {
+						_head = _currentNode[1];
+					} else {
+						prevNode[@1] = nextNode;
+					}
+					if (is_undefined(nextNode)) {
+						_tail = _currentNode[0];
+					} else {
+						nextNode[@0] = prevNode;
+					}
+					--_length;
+				} else {
+					throw ex;
+				}
+			}
+			_currentNode = _currentNode[1];
+		}
+	};
+	
+	// Return an iterator for this list
+	static iterator = function() {
+		return new ListIterator(self);
+	};
+}
+
+function ListIterator(list) constructor {
+	_list = list;
+	_currentNode = _list._head;
+	index = 0;
+	value = is_array(_currentNode) ? _currentNode[2] : undefined;
+	_intact = true;
+	
+	static hasNext = function() {
+		return !is_undefined(_currentNode);
+	};
+	
+	static next = function() {
+		if (_intact) {
+			_currentNode = _currentNode[1];
+			++index;
+		}
+		value = is_array(_currentNode) ? _currentNode[2] : undefined;
+		_intact = true;
+	};
+	
+	static set = function(val) {
+		_currentNode[@2] = val;
+		value = val;
+	};
+	
+	static remove = function() {
+		var prevNode = _currentNode[0];
+		var nextNode = _currentNode[1];
+		if (is_undefined(prevNode)) {
+			_list._head = _currentNode[1];
+		} else {
+			prevNode[@1] = nextNode;
+		}
+		if (is_undefined(nextNode)) {
+			_list._tail = _currentNode[0];
+		} else {
+			nextNode[@0] = prevNode;
+		}
+		_currentNode = nextNode;
+		--_list._length;
+		_intact = false;
+	};
 }
 
 function ListIndexOutOfBoundsException(_index) constructor {
