@@ -17,7 +17,7 @@
   "installdir": "",
   "files": [
     {"filename":"LightweightDataStructures.gml","origname":"","init":"","final":"","kind":2,"uncompress":false,"functions":[
-        {"externalName":"__lds_array_merge__","kind":2,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
+        {"externalName":"__lds_array_sort_merger__","kind":2,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
             2,
             2,
@@ -25,7 +25,7 @@
             2,
             2,
             2,
-          ],"resourceVersion":"1.0","name":"__lds_array_merge__","tags":[],"resourceType":"GMExtensionFunction",},
+          ],"resourceVersion":"1.0","name":"__lds_array_sort_merger__","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"__lds_array_sort_kernel__","kind":2,"help":"","hidden":false,"returnType":2,"argCount":0,"args":[
             2,
             2,
@@ -51,7 +51,7 @@
         {"name":"LightweightDataStructures","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"LightweightDataStructures","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"LightweightDataStructures","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
-        {"name":"__lds_array_merge__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
+        {"name":"__lds_array_sort_merger__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_sort_kernel__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_shuffle__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_sort__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
