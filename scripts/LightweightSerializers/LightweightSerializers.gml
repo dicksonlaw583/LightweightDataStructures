@@ -26,12 +26,7 @@ function lds_reduce(thing) {
 					variable_struct_set(thingData, key, lds_reduce(variable_struct_get(thing, key)));
 				}
 			} else {
-				var reducer = variable_struct_get(global.__lds_reducers__, thingType);
-				if (is_method(reducer)) {
-					thingData = reducer(thing);
-				} else {
-					throw new UnrecognizedLdsTypeException(thingType);
-				}
+				thingData = thing.reduceToData();
 			}
 			reduced = { t: thingType, d: thingData };
 			break;
@@ -60,9 +55,9 @@ function lds_expand(data) {
 					}
 					break;
 				default:
-					var expander = variable_struct_get(global.__lds_expanders__, data.t);
-					if (is_method(expander)) {
-						expanded = expander(data.d);
+					if (variable_struct_exists(global.__lds_registry__, data.t)) {
+						expanded = variable_struct_get(global.__lds_registry__, data.t)();
+						expanded.expandFromData(data.d);
 					} else {
 						throw new UnrecognizedLdsTypeException(data.t);
 					}
@@ -87,6 +82,8 @@ function lds_expand(data) {
 ///@param source
 ///@desc Shallow copy to thing from source
 function lds_copy(thing, source) {
+	//var thing = argument0;
+	//var source = argument1;
 	var copyType = typeof(thing);
 	if (copyType != typeof(source) || (copyType == "struct" && instanceof(thing) != instanceof(source))) throw new IncompatibleCopyException(thing, source);
 	var copySize;
@@ -116,12 +113,7 @@ function lds_copy(thing, source) {
 					}
 				}
 			} else {
-				var copier = variable_struct_get(global.__lds_copiers__, copyType);
-				if (is_method(copier)) {
-					copier(thing, source);
-				} else {
-					throw new UnrecognizedLdsTypeException(copyType);
-				}
+				thing.copy(source);
 			}
 		break;
 		default:
@@ -135,6 +127,8 @@ function lds_copy(thing, source) {
 ///@param source
 ///@desc Deep copy to thing from source
 function lds_copy_deep(thing, source) {
+	//var thing = argument0;
+	//var source = argument1;
 	var copyType = __lds_typeof__(thing);
 	if (copyType != __lds_typeof__(source)) throw new IncompatibleCopyException(thing, source);
 	var copySize, thingEntry, sourceEntry, sourceType;
@@ -179,12 +173,7 @@ function lds_copy_deep(thing, source) {
 					}
 				}
 			} else {
-				var copier = variable_struct_get(global.__lds_deep_copiers__, copyType);
-				if (is_method(copier)) {
-					copier(thing, source);
-				} else {
-					throw new UnrecognizedLdsTypeException(copyType);
-				}
+				thing.copyDeep(source);
 			}
 		break;
 		default:
@@ -197,6 +186,7 @@ function lds_copy_deep(thing, source) {
 ///@param thing
 ///@desc Return shallow clone of thing
 function lds_clone(thing) {
+	//var thing = argument0;
 	var cloneType = typeof(thing);
 	var theClone;
 	switch (cloneType) {
@@ -215,12 +205,7 @@ function lds_clone(thing) {
 					variable_struct_set(theClone, cloneKey, variable_struct_get(thing, cloneKey));
 				}
 			} else {
-				var cloner = variable_struct_get(global.__lds_cloners__, cloneType);
-				if (is_method(cloner)) {
-					theClone = cloner(thing);
-				} else {
-					throw new UnrecognizedLdsTypeException(cloneType);
-				}
+				theClone = thing.clone();
 			}
 		break;
 		default:
@@ -233,6 +218,7 @@ function lds_clone(thing) {
 ///@param thing
 ///@desc Return deep clone of thing
 function lds_clone_deep(thing) {
+	//var thing = argument0;
 	var cloneType = typeof(thing);
 	var theClone;
 	switch (cloneType) {
@@ -253,12 +239,7 @@ function lds_clone_deep(thing) {
 					variable_struct_set(theClone, cloneKey, lds_clone_deep(variable_struct_get(thing, cloneKey)));
 				}
 			} else {
-				var cloner = variable_struct_get(global.__lds_deep_cloners__, cloneType);
-				if (is_method(cloner)) {
-					theClone = cloner(thing);
-				} else {
-					throw new UnrecognizedLdsTypeException(cloneType);
-				}
+				theClone = thing.cloneDeep();
 			}
 		break;
 		default:
