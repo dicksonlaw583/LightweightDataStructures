@@ -1,6 +1,6 @@
 ///@func lds_test_all()
 function lds_test_all() {
-	global.__lds_test_fails__ = 0;
+	global.__test_fails__ = 0;
 	var timeA, timeB;
 	timeA = current_time;
 	
@@ -18,5 +18,5 @@ function lds_test_all() {
 	
 	timeB = current_time;
 	show_debug_message("Lightweight Data Structure tests done in " + string(timeB-timeA) + "ms.");
-	return global.__lds_test_fails__ == 0;
+	return global.__test_fails__ == 0;
 }

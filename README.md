@@ -1,4 +1,4 @@
-# Lightweight Data Structures (Beta)
+# Lightweight Data Structures v1.0.0
 
 ## Overview
 
@@ -6,8 +6,8 @@ This library implements struct-based, GC-friendly equivalents of GameMaker Studi
 
 ## Requirements
 
-- GameMaker Studio 2.3 Open Beta
-- [JSON Struct](https://github.com/dicksonlaw583/JsonStruct)
+- GameMaker Studio 2.3.0 or higher
+- [JSON Struct](https://github.com/dicksonlaw583/JsonStruct) v1.0.0 or higher
 
 ## Installation
 
@@ -37,9 +37,9 @@ lds_save_encrypted(working_directory + "characters.dat", characters, "secretChar
 var loadedCharacters = lds_load_encrypted(working_directory + "characters.dat", "secretChars");
 show_message(
 	"Stats:" +
-	"\n- Alice: " + string((loadedCharacters.get(0)).get("hp")) +
-	"\n- Bob: " + string((loadedCharacters.get(1)).get("hp")) +
-	"\n- Caitlyn: " + string((loadedCharacters.get(2)).get("hp"))
+	"\n- Alice: " + string(loadedCharacters.get(0).get("hp")) +
+	"\n- Bob: " + string(loadedCharacters.get(1).get("hp")) +
+	"\n- Caitlyn: " + string(loadedCharacters.get(2).get("hp"))
 );
 ```
 

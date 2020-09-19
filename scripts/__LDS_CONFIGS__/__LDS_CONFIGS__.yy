@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "LightweightDataStructures",
-    "path": "folders/Scripts/LightweightDataStructures.yy",
+    "path": "folders/Libraries_config/LightweightDataStructures.yy",
   },
   "resourceVersion": "1.0",
   "name": "__LDS_CONFIGS__",

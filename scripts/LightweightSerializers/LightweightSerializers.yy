@@ -3,7 +3,7 @@
   "isCompatibility": false,
   "parent": {
     "name": "LightweightDataStructures",
-    "path": "folders/Scripts/LightweightDataStructures.yy",
+    "path": "folders/Libraries/LightweightDataStructures.yy",
   },
   "resourceVersion": "1.0",
   "name": "LightweightSerializers",

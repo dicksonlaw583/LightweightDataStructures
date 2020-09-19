@@ -1,6 +1,7 @@
 #define __jsons_decode_array__
-///@func __jsons_decode_array__(@seekrec)
+///@func __jsons_decode_array__(@seekrec, safe)
 ///@param @seekrec
+///@param safe
 {
 	// Setup
 	var result = [];
@@ -10,7 +11,7 @@
 	do {
 		c = __jsons_decode_seek__(argument0);
 		if (c == "]") break;
-		val = __jsons_decode_subcontent__(argument0);
+		val = __jsons_decode_subcontent__(argument0, argument1);
 		result[i++] = val;
 		c = __jsons_decode_seek__(argument0);
 		if (c == ",") {
@@ -274,11 +275,12 @@
 }
 
 #define __jsons_decode_struct__
-///@func __jsons_decode_struct__(@seekrec)
+///@func __jsons_decode_struct__(@seekrec, safe)
 ///@param @seekrec
+///@param safe
 {
 	// Setup
-	var result = {};
+	var result = argument1 ? (new JsonStruct()) : {};
 	var keyMode = true;
 	var key, val, c;
 	// Keep seeking for new content
@@ -302,8 +304,12 @@
 		}
 		// Accept anything else in value mode
 		else {
-			val = __jsons_decode_subcontent__(argument0);
-			variable_struct_set(result, key, val);
+			val = __jsons_decode_subcontent__(argument0, argument1);
+			if (argument1) {
+				result.set(key, val);
+			} else {
+				variable_struct_set(result, key, val);
+			}
 			c = __jsons_decode_seek__(argument0);
 			if (c == ",") {
 				keyMode = true;
@@ -319,15 +325,16 @@
 }
 
 #define __jsons_decode_subcontent__
-///@func __jsons_decode_subcontent__(@seekrec)
+///@func __jsons_decode_subcontent__(@seekrec, safe)
 ///@param @seekrec
+///@param safe
 {
 	switch (ord(string_char_at(argument0.str, argument0.pos))) {
 		case ord("{"):
-			return __jsons_decode_struct__(argument0);
+			return __jsons_decode_struct__(argument0, argument1);
 		break;
 		case ord("["):
-			return __jsons_decode_array__(argument0);
+			return __jsons_decode_array__(argument0, argument1);
 		break;
 		case ord("\""):
 			return __jsons_decode_string__(argument0);
@@ -490,12 +497,22 @@
 	var cloneResult, siz;
 	switch (typeof(argument0)) {
 		case "struct":
-			cloneResult = {};
-			var keys = variable_struct_get_names(argument0);
-			siz = array_length(keys);
-			for (var i = 0; i < siz; ++i) {
-				var k = keys[i];
-				variable_struct_set(cloneResult, k, jsons_clone(variable_struct_get(argument0, k)));
+			if (instanceof(argument0) == "JsonStruct") {
+				cloneResult = new JsonStruct();
+				var keys = argument0.keys();
+				siz = array_length(keys);
+				for (var i = 0; i < siz; ++i) {
+					var k = keys[i];
+					cloneResult.set(k,  jsons_clone(argument0.get(k)));
+				}
+			} else {
+				cloneResult = {};
+				var keys = variable_struct_get_names(argument0);
+				siz = array_length(keys);
+				for (var i = 0; i < siz; ++i) {
+					var k = keys[i];
+					variable_struct_set(cloneResult, k, jsons_clone(variable_struct_get(argument0, k)));
+				}
 			}
 			return cloneResult;
 		break;
@@ -522,7 +539,21 @@
 	// Throw an exception if end of string reached without identifiable content
 	if (c == "") throw new JsonStructParseException(seekrec.pos, "Unexpected end of string");
 	// Decode to the correct type based on first sniffed character
-	return __jsons_decode_subcontent__(seekrec);
+	return __jsons_decode_subcontent__(seekrec, false);
+}
+
+#define jsons_decode_safe
+///@func jsons_decode_safe(jsonstr)
+///@param jsonstr
+///@desc Decode the given JSON string back into GML 2020 native types and JsonStruct structs
+{
+	// Seek to first active non-space character
+	var seekrec = { str: argument0, pos: 0 };
+	var c = __jsons_decode_seek__(seekrec);
+	// Throw an exception if end of string reached without identifiable content
+	if (c == "") throw new JsonStructParseException(seekrec.pos, "Unexpected end of string");
+	// Decode to the correct type based on first sniffed character
+	return __jsons_decode_subcontent__(seekrec, true);
 }
 
 #define jsons_decrypt
@@ -545,6 +576,28 @@
 			break;
 	}
 	return jsons_decode(is_method(decfunc) ? decfunc(argument[0], deckey) : script_execute(decfunc, argument[0], deckey));
+}
+
+#define jsons_decrypt_safe
+///@func jsons_decrypt_safe(jsonencstr, [deckey], [decfunc])
+///@param jsonencstr
+///@param [deckey]
+///@param [decfunc]
+{
+	var deckey = "theJsonEncryptedKey",
+		decfunc = function(v, k) { return __jsons_decrypt__(v, k); };//__jsons_decrypt__;
+	switch (argument_count) {
+		case 3:
+			decfunc = argument[2];
+		case 2:
+			deckey = argument[1];
+		case 1:
+			break;
+		default:
+			show_error("Expected 1-3 arguments, got " + string(argument_count) + ".", true);
+			break;
+	}
+	return jsons_decode_safe(is_method(decfunc) ? decfunc(argument[0], deckey) : script_execute(decfunc, argument[0], deckey));
 }
 
 #define jsons_encode
@@ -608,7 +661,8 @@
 		break;
 		case "struct":
 			buffer = buffer_create(64, buffer_grow, 1);
-			var keys = variable_struct_get_names(argument0);
+			var isConflict = instanceof(argument0) == "JsonStruct";
+			var keys = isConflict ? argument0.keys() : variable_struct_get_names(argument0);
 			siz = array_length(keys);
 			buffer_write(buffer, buffer_text, "{");
 			for (var i = 0; i < siz; ++i) {
@@ -616,7 +670,7 @@
 				if (i > 0) buffer_write(buffer, buffer_text, ",");
 				buffer_write(buffer, buffer_text, jsons_encode(k));
 				buffer_write(buffer, buffer_text, ":");
-				buffer_write(buffer, buffer_text, jsons_encode(variable_struct_get(argument0, k)));
+				buffer_write(buffer, buffer_text, jsons_encode(isConflict ? argument0.get(k) : variable_struct_get(argument0, k)));
 			}
 			buffer_write(buffer, buffer_string, "}");
 		break;
@@ -673,6 +727,20 @@
 	return jsons_decode(jsonstr);
 }
 
+#define jsons_load_safe
+///@func jsons_load_safe(fname)
+///@param fname
+{
+	var f = file_text_open_read(argument0),
+		jsonstr = file_text_read_string(f);
+	while (!file_text_eof(f)) {
+		file_text_readln(f);
+		jsonstr += "\n" + file_text_read_string(f);
+	}
+	file_text_close(f);
+	return jsons_decode_safe(jsonstr);
+}
+
 #define jsons_load_encrypted
 ///@func jsons_load_encrypted(fname, [deckey], [decfunc])
 ///@param fname
@@ -700,6 +768,35 @@
 	}
 	file_text_close(f);
 	return jsons_decrypt(jsonstr, deckey, decfunc);
+}
+
+#define jsons_load_encrypted_safe
+///@func jsons_load_encrypted_safe(fname, [deckey], [decfunc])
+///@param fname
+///@param [deckey]
+///@param [decfunc]
+{
+	var deckey = "theJsonEncryptedKey",
+		decfunc = function(v, k) { return __jsons_decrypt__(v, k); };//__jsons_decrypt__;
+	switch (argument_count) {
+		case 3:
+			decfunc = argument[2];
+		case 2:
+			deckey = argument[1];
+		case 1:
+			break;
+		default:
+			show_error("Expected 1-3 arguments, got " + string(argument_count) + ".", true);
+			break;
+	}
+	var f = file_text_open_read(argument[0]),
+		jsonstr = file_text_read_string(f);
+	while (!file_text_eof(f)) {
+		file_text_readln(f);
+		jsonstr += "\n" + file_text_read_string(f);
+	}
+	file_text_close(f);
+	return jsons_decrypt_safe(jsonstr, deckey, decfunc);
 }
 
 #define jsons_real_encoder_detailed
