@@ -31,7 +31,7 @@ var characters = new List(
 	new Map("name", "Bob", "hp", 5),
 	new Map("name", "Caitlyn", "hp", 6)
 );
-lds_save_encrypted(working_directory + "characters.dat", characters, "secretChars");
+lds_save_encrypted(characters, working_directory + "characters.dat", "secretChars");
 ```
 ```
 var loadedCharacters = lds_load_encrypted(working_directory + "characters.dat", "secretChars");
