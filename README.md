@@ -11,9 +11,11 @@ This library implements struct-based, GC-friendly equivalents of GameMaker Studi
 
 ## Installation
 
-Get the current beta asset package and associated documentation from [the releases page](https://github.com/dicksonlaw583/LightweightDataStructures/releases). Simply extract everything to your project, including the extension and the companion scripts.
+Get the current beta asset package and associated documentation from [the releases page](https://github.com/dicksonlaw583/LightweightDataStructures/releases). Once you download the package, simply extract everything to your project, including the extension and the companion scripts.
 
-**Reminder**: Don't forget to install and configure JSON Struct if you have not already done so!
+Alternatively, you can also download a ready-to-go version from [the YoYo Marketplace](https://marketplace.yoyogames.com/assets/9442/lightweight-data-structures) that comes with a compatible version of JSON Struct. Extract everything as usual.
+
+**Reminder**: Don't forget to install and configure JSON Struct if you are downloading a version of the package that doesn't include it!
 
 ## Example
 
