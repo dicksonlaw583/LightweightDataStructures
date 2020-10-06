@@ -78,7 +78,15 @@
         {"externalName":"lds_decrypt","kind":2,"help":"lds_decrypt(str, <key>, <decfunc>)","hidden":false,"returnType":2,"argCount":-1,"args":[],"resourceVersion":"1.0","name":"lds_decrypt","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"lds_save_encrypted","kind":2,"help":"lds_save_encrypted(thing, filename, <key>, <encfunc>)","hidden":false,"returnType":2,"argCount":-1,"args":[],"resourceVersion":"1.0","name":"lds_save_encrypted","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"lds_load_encrypted","kind":2,"help":"lds_load_encrypted(filename, <key>, <decfunc>)","hidden":false,"returnType":2,"argCount":-1,"args":[],"resourceVersion":"1.0","name":"lds_load_encrypted","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"__lds_array_copy__","kind":2,"help":"__lds_array_copy__(dest, dest_index, src, src_index, length)","hidden":false,"returnType":2,"argCount":0,"args":[
+            2,
+            2,
+            2,
+            2,
+            2,
+          ],"resourceVersion":"1.0","name":"__lds_array_copy__","tags":[],"resourceType":"GMExtensionFunction",},
       ],"constants":[],"ProxyFiles":[],"copyToTargets":-1,"order":[
+        {"name":"__lds_array_copy__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_sort_merger__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_sort_kernel__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_shuffle__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},

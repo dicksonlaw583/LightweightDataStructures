@@ -11,7 +11,7 @@ function lds_test_copy_shallow() {
 	assert_equal(lds_copy(target, source), [1, 2, [3, 4]], "Test basic copies array 1a");
 	source[0] = 11;
 	assert_equal(target, [1, 2, [3, 4]], "Test basic copies array 1b");
-	source[2][0] = 33;
+	source[2][@0] = 33;
 	assert_equal(target, [1, 2, [33, 4]], "Test basic copies array 1c");
 	// Struct
 	source = { foo: 1, bar: { baz: 2 } };
@@ -108,7 +108,7 @@ function lds_test_copy_shallow() {
 	assert_equal(target, [1, 2, [3, 4]], "Test basic clones array 1a");
 	source[0] = 11;
 	assert_equal(target, [1, 2, [3, 4]], "Test basic clones array 1b");
-	source[2][0] = 33;
+	source[2][@0] = 33;
 	assert_equal(target, [1, 2, [33, 4]], "Test basic clones array 1c");
 	// Struct
 	source = { foo: 1, bar: { baz: 2 } };

@@ -149,7 +149,7 @@ function Map() constructor {
 		}
 		// Copy keys cache
 		_keysCache = array_create(source._keysCachePos);
-		array_copy(_keysCache, 0, source._keysCache, 0, source._keysCachePos);
+		__lds_array_copy__(_keysCache, 0, source._keysCache, 0, source._keysCachePos);
 		_keysCachePos = source._keysCachePos;
 	};
 	
@@ -183,7 +183,7 @@ function Map() constructor {
 		_size = array_length(data[0]);
 		_keysCachePos = _size;
 		array_resize(_keysCache, _size);
-		array_copy(_keysCache, 0, data[0], 0, _size);
+		__lds_array_copy__(_keysCache, 0, data[0], 0, _size);
 		for (var i = _size-1; i >= 0; --i) {
 			var keyName = _toKeyName(dataKeys[i])
 			variable_struct_set(_data, keyName, lds_expand(dataData[i]));
@@ -211,7 +211,7 @@ function Map() constructor {
 		}
 		// Copy keys cache
 		_keysCache = array_create(source._keysCachePos);
-		array_copy(_keysCache, 0, source._keysCache, 0, source._keysCachePos);
+		__lds_array_copy__(_keysCache, 0, source._keysCache, 0, source._keysCachePos);
 		_keysCachePos = source._keysCachePos;
 	};
 	

@@ -52,16 +52,13 @@ function Grid() constructor {
 					_data[i] = undefined;
 				}
 			} else if (h < _height) {
-				var _newdata = array_create(wh);
-				array_copy(newDataSize, 0, _data, 0, wh);
-				delete _data;
-				_data = _newdata;
+				array_resize(_data, wh);
 			}
 		} else {
 			var _newdata = array_create(wh, undefined);
 			var copyWidth = min(_width, w);
 			for (var yy = min(_height, h)-1; yy >= 0; --yy) {
-				array_copy(_newdata, yy*w, _data, yy*_width, copyWidth);
+				__lds_array_copy__(_newdata, yy*w, _data, yy*_width, copyWidth);
 			}
 			delete _data;
 			_data = _newdata;
@@ -122,7 +119,7 @@ function Grid() constructor {
 		tx1 += sx1-x1;
 		ty1 += sy1-y1;
 		for (var yy = 0; yy < regionHeight; ++yy) {
-			array_copy(_data, tx1+(ty1+yy)*_width, sourceData, sx1+(sy1+yy)*sourceWidth, regionWidth);
+			__lds_array_copy__(_data, tx1+(ty1+yy)*_width, sourceData, sx1+(sy1+yy)*sourceWidth, regionWidth);
 		}
 	};
 
@@ -483,9 +480,9 @@ function Grid() constructor {
 		var temp = array_create(_width);
 		var ii = i*_width;
 		var jj = j*_width;
-		array_copy(temp, 0, _data, ii, _width);
-		array_copy(_data, ii, _data, jj, _width);
-		array_copy(_data, jj, temp, 0, _width);
+		__lds_array_copy__(temp, 0, _data, ii, _width);
+		__lds_array_copy__(_data, ii, _data, jj, _width);
+		__lds_array_copy__(_data, jj, temp, 0, _width);
 		delete temp;
 	};
 	
@@ -541,7 +538,7 @@ function Grid() constructor {
 		var to2d = array_create(_height);
 		for (var i = _height-1; i >= 0; --i) {
 			to2d[i] = array_create(_width);
-			array_copy(to2d[i], 0, _data, _width*i, _width);
+			__lds_array_copy__(to2d[i], 0, _data, _width*i, _width);
 		}
 		return to2d;
 	};
@@ -553,7 +550,7 @@ function Grid() constructor {
 		_height = source._height;
 		var totalSize = _width*_height;
 		_data = array_create(totalSize);
-		array_copy(_data, 0, source._data, 0, totalSize);
+		__lds_array_copy__(_data, 0, source._data, 0, totalSize);
 	};
 	
 	// Create a shallow clone of this grid

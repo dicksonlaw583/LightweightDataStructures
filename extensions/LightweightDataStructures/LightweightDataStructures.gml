@@ -1,3 +1,14 @@
+#define __lds_array_copy__
+{
+	if (os_browser == browser_not_a_browser) {
+		array_copy(argument0, argument1, argument2, argument3, argument4);
+	} else {
+		for (var i = argument4-1; i >= 0; --i) {
+			argument0[@argument1+i] = argument2[argument3+i];
+		}
+	}
+}
+
 #define __lds_array_shuffle__
 {
 	var arr = argument0;
@@ -79,7 +90,7 @@
 			_arr[ii++] = arr[lo+i++];
 		}
 	}
-	array_copy(arr, lo, _arr, 0, span);
+	__lds_array_copy__(arr, lo, _arr, 0, span);
 }
 
 #define __lds_typeof__
@@ -184,7 +195,7 @@
 		case "array":
 			copySize = array_length(source);
 			array_resize(thing, copySize);
-			array_copy(thing, 0, source, 0, copySize);
+			__lds_array_copy__(thing, 0, source, 0, copySize);
 		break;
 		case "struct":
 			copyType = instanceof(source);
@@ -288,7 +299,7 @@
 		case "array":
 			var cloneSize = array_length(thing);
 			theClone = array_create(cloneSize);
-			array_copy(theClone, 0, thing, 0, cloneSize);
+			__lds_array_copy__(theClone, 0, thing, 0, cloneSize);
 		break;
 		case "struct":
 			cloneType = instanceof(thing);

@@ -154,8 +154,8 @@ function Heap() constructor {
 		_data = array_create(1+_length, undefined);
 		_priority = array_create(1+_length, undefined);
 		if (_length > 0) {
-			array_copy(_data, 1, source._data, 1, _length);
-			array_copy(_priority, 1, source._priority, 1, _length);
+			__lds_array_copy__(_data, 1, source._data, 1, _length);
+			__lds_array_copy__(_priority, 1, source._priority, 1, _length);
 		}
 	};
 	
@@ -169,7 +169,7 @@ function Heap() constructor {
 	// Reduce this heap to a representation in basic data types
 	static reduceToData = function() {
 		var priorityArray = array_create(_length);
-		array_copy(priorityArray, 0, _priority, 1, _length);
+		__lds_array_copy__(priorityArray, 0, _priority, 1, _length);
 		var dataArray = array_create(_length);
 		for (var i = _length; i >= 1; --i) {
 			dataArray[i-1] = lds_reduce(_data[i]);
@@ -181,7 +181,7 @@ function Heap() constructor {
 	static expandFromData = function(data) {
 		_length = array_length(data[0]);
 		array_resize(_priority, 1+_length);
-		array_copy(_priority, 1, data[0], 0, _length);
+		__lds_array_copy__(_priority, 1, data[0], 0, _length);
 		array_resize(_data, 1+_length);
 		var dataData = data[1];
 		for (var i = _length; i >= 1; --i) {
@@ -200,7 +200,7 @@ function Heap() constructor {
 			for (var i = _length; i >= 1; --i) {
 				_data[i] = lds_clone_deep(sourceData[i]);
 			}
-			array_copy(_priority, 1, source._priority, 1, _length);
+			__lds_array_copy__(_priority, 1, source._priority, 1, _length);
 		}
 	};
 	
