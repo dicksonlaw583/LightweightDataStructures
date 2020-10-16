@@ -53,8 +53,8 @@
     "name": "Default",
     "children": [],
   },
-  "RoomOrder": [
-    {"name":"rm_lds_test","path":"rooms/rm_lds_test/rm_lds_test.yy",},
+  "RoomOrderNodes": [
+    {"roomId":{"name":"rm_lds_test","path":"rooms/rm_lds_test/rm_lds_test.yy",},},
   ],
   "Folders": [
     {"folderPath":"folders/Libraries/LightweightDataStructures.yy","order":2,"resourceVersion":"1.0","name":"LightweightDataStructures","tags":[],"resourceType":"GMFolder",},
@@ -76,9 +76,9 @@
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2.3.0.529",
+    "IDEVersion": "23.1.1.193",
   },
-  "resourceVersion": "1.3",
+  "resourceVersion": "1.4",
   "name": "LightweightDataStructures",
   "tags": [],
   "resourceType": "GMProject",
