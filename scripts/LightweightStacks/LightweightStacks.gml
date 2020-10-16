@@ -126,7 +126,7 @@ function Stack() constructor {
 	
 	// Load from data string
 	static read = function(datastr) {
-		var data = jsons_decode(datastr);
+		var data = json_parse(datastr);
 		if (data.t != instanceof(self)) throw new IncompatibleDataException(instanceof(self), data.t);
 		expandFromData(data.d);
 	};
