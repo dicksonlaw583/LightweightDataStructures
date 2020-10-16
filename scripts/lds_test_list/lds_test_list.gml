@@ -168,8 +168,8 @@ function lds_test_list() {
 	assert_equal([list2.size(), list2.get(0), list2.get(1), list2.get(2)], [3, "foo", "bar", "baz"], "Test list read/write 2");
 	list = new List("foo");
 	assert_throws(method({ list: list }, function() {
-		list.read(lds_write(int64(0)));
-	}), new IncompatibleDataException("List", "int64"), "Test list read/write 3");
+		list.read(lds_write({ foo: "bar" }));
+	}), new IncompatibleDataException("List", "struct"), "Test list read/write 3");
 	
 	// Test list iteration
 	list = new List();

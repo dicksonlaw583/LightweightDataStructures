@@ -98,8 +98,8 @@ function lds_test_map() {
 	assert_equal([map2.size(), map2.get("foo"), map2.get("bar")], [2, 123, 234], "Test map read/write 2");
 	map = new Map("foo", 567);
 	assert_throws(method({ map: map }, function() {
-		map.read(lds_write(int64(0)));
-	}), new IncompatibleDataException("Map", "int64"), "Test map read/write 3");
+		map.read(lds_write({ foo: "bar" }));
+	}), new IncompatibleDataException("Map", "struct"), "Test map read/write 3");
 	
 	// Test map iteration
 	map = new Map();

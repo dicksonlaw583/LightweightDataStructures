@@ -160,6 +160,6 @@ function lds_test_queue() {
 	assert_equal([queue2.size(), queue2.head(), queue2.tail()], [3, "foo", "baz"], "Test queue read/write 2");
 	queue = new Queue("foo");
 	assert_throws(method({ queue: queue }, function() {
-		queue.read(lds_write(int64(0)));
-	}), new IncompatibleDataException("Queue", "int64"), "Test queue read/write 3");
+		queue.read(lds_write({ foo: "bar" }));
+	}), new IncompatibleDataException("Queue", "struct"), "Test queue read/write 3");
 }

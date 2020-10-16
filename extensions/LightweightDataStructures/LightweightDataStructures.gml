@@ -217,7 +217,8 @@
 					break;
 				default:
 					if (variable_struct_exists(global.__lds_registry__, data.t)) {
-						expanded = variable_struct_get(global.__lds_registry__, data.t)();
+						var regenFunction = variable_struct_get(global.__lds_registry__, data.t);
+						expanded = regenFunction();
 						expanded.expandFromData(data.d);
 					} else {
 						throw new UnrecognizedLdsTypeException(data.t);

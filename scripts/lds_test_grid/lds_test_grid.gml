@@ -583,8 +583,8 @@ function lds_test_grid() {
 	assert_equal([grid2.width(), grid2.height(), grid2.get(0, 0), grid2.get(1, 0), grid2.get(0, 1), grid2.get(1, 1)], [2, 2, "foo", "bar", "baz", "qux"], "Test grid read/write 2");
 	grid = new Grid(1, 1, "foo");
 	assert_throws(method({ grid: grid }, function() {
-		grid.read(lds_write(int64(0)));
-	}), new IncompatibleDataException("Grid", "int64"), "Test grid read/write 3");
+		grid.read(lds_write({ foo: "bar" }));
+	}), new IncompatibleDataException("Grid", "struct"), "Test grid read/write 3");
 	#endregion
 
 	#region Test grid forEach

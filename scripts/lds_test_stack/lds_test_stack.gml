@@ -174,6 +174,6 @@ function lds_test_stack() {
 	assert_equal([stack2.size(), stack2.top()], [2, "foo"], "Test stack read/write 2");
 	stack = new Stack("foo");
 	assert_throws(method({ stack: stack }, function() {
-		stack.read(lds_write(int64(0)));
-	}), new IncompatibleDataException("Stack", "int64"), "Test stack read/write 3");
+		stack.read(lds_write({ foo: "bar" }));
+	}), new IncompatibleDataException("Stack", "struct"), "Test stack read/write 3");
 }
