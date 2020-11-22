@@ -2,212 +2,110 @@ function List() constructor {
 	// Set up basic properties and starting entries
 	_canonType = "List";
 	_type = "List";
-	_head = undefined;
-	_tail = undefined;
-	if (argument_count != 0) {
-		_tail = [undefined, undefined, argument[argument_count-1]];
-		_head = _tail;
+	_data = array_create(argument_count);
+	for (var i = argument_count-1; i >= 0; --i) {
+		_data[i] = argument[i];
 	}
-	for (var i = argument_count-2; i >= 0; --i) {
-		var prevHead = _head;
-		_head = [undefined, prevHead, argument[i]];
-		prevHead[@0] = _head;
-	}
-	_length = argument_count;
 
 	// Clear
 	static clear = function() {
-		delete _head;
-		delete _tail;
-		_head = undefined;
-		_tail = undefined;
-		_length = 0;
+		delete _data;
+		_data = [];
 	};
 
 	// Empty
 	static empty = function() {
-		return _length == 0;
+		return array_length(_data) == 0;
 	};
 
 	// Size
 	static size = function() {
-		return _length;
+		return array_length(_data);
 	};
 
 	// Add
 	static add = function() {
-		var i = 0;
-		if (_length == 0) {
-			_head = [undefined, undefined, argument[0]];
-			_tail = _head;
-			++i;
+		for (var i = 0; i < argument_count; ++i) {
+			array_push(_data, argument[i]);
 		}
-		for (; i < argument_count; ++i) {
-			var newTail = [_tail, undefined, argument[i]];
-			_tail[@1] = newTail;
-			_tail = newTail;
-		}
-		_length += argument_count;
 	};
 
-	// Get the node
-	static _getNode = function(pos) {
+	// Get the normalized position
+	static _normPos = function(pos) {
+		var _length = array_length(_data);
 		if (pos >= _length || pos < -_length) {
 			throw new ListIndexOutOfBoundsException(pos);
 		}
-		var halfLength = _length >> 1,
-			currentNode;
-		if (pos >= 0) {
-			if (pos < halfLength) {
-				currentNode = _head;
-				repeat (pos) {
-					currentNode = currentNode[1];
-				}
-			} else {
-				currentNode = _tail;
-				repeat (_length-pos-1) {
-					currentNode = currentNode[0];
-				}
-			}
-		} else {
-			if (pos < -halfLength) {
-				currentNode = _head;
-				repeat (_length+pos) {
-					currentNode = currentNode[1];
-				}
-			} else {
-				currentNode = _tail;
-				repeat (-pos-1) {
-					currentNode = currentNode[0];
-				}
-			}
-		}
-		return currentNode;
-	};
-
-	// Stretch the list
-	static _stretch = function(newMaxIndex) {
-		repeat (newMaxIndex-_length+1) {
-			var newTail = [_tail, undefined, undefined];
-			_tail[@1] = newTail;
-			_tail = newTail;
-		}
-		_length = newMaxIndex+1;
+		return (pos >= 0) ? pos : (_length+pos);
 	};
 
 	// Set
 	static set = function(pos, val) {
+		var _length = array_length(_data);
 		if (pos >= _length) {
-			_stretch(pos);
-			_tail[@2] = val;
+			array_set(_data, pos, val);
+			for (var i = _length; i < pos; ++i) {
+				_data[i] = undefined;
+			}
 		} else {
-			var node = _getNode(pos);
-			node[@2] = val;
+			_data[@_normPos(pos)] = val;
 		}
 	};
 
 	// Delete
 	static remove = function(pos) {
-		var node = _getNode(pos);
-		var prevNode = node[0],
-			nextNode = node[1];
-		if (!is_undefined(prevNode)) {
-			prevNode[@1] = nextNode;
-		}
-		if (!is_undefined(nextNode)) {
-			nextNode[@0] = prevNode;
-		}
-		if (node == _head) {
-			_head = nextNode;
-		}
-		if (node == _tail) {
-			_tail = prevNode;
-		}
-		--_length;
+		var _pos = _normPos(pos);
+		var val = _data[_pos];
+		array_delete(_data, _pos, 1);
+		return val;
 	};
 
 	// Find index
 	static findIndex = function(val) {
-		var node = _head,
-			i = 0;
-		while (!is_undefined(node)) {
-			if (node[2] == val) return i;
-			node = node[1];
-			++i;
+		var _length = array_length(_data);
+		for (var i = 0; i < _length; ++i) {
+			if (_data[i] == val) return i;
 		}
 		return -1;
 	};
 
 	// Find value
 	static findValue = function(pos) {
-		var node = _getNode(pos);
-		return node[2];
+		return _data[_normPos(pos)];
 	};
 	static get = findValue;
 
 	// Insert
 	static insert = function(pos, val) {
-		if (pos > _length) {
-			throw new ListIndexOutOfBoundsException(pos);
-		} else if (pos == _length) {
-			var newNode = [_tail, undefined, val];
-			if (!is_undefined(_tail)) {
-				_tail[@1] = newNode;
-			}
-			_tail = newNode;
-			if (is_undefined(_head)) {
-				_head = newNode;
-			}
+		if (pos == array_length(_data)) {
+			array_push(_data, val);
 		} else {
-			var node = _getNode(pos),
-				prevNode = node[0],
-				newNode = [prevNode, node, val];
-			if (is_undefined(prevNode)) {
-				_head = newNode;
-			} else {
-				prevNode[@1] = newNode;
-			}
-			node[@0] = newNode;
+			array_insert(_data, _normPos(pos), val);
 		}
-		++_length;
 	};
 
 	// Replace
 	static replace = function(pos, val) {
-		var node = _getNode(pos);
-		node[@2] = val;
+		_data[@_normPos(pos)] = val;
 	};
 
 	// To array
 	static toArray = function() {
-		var arr = array_create(_length),
-			currentNode = _head,
-			i = 0;
-		repeat (_length) {
-			arr[i++] = currentNode[2];
-			currentNode = currentNode[1];
-		}
+		var _length = array_length(_data);
+		var arr = array_create(_length);
+		__lds_array_copy__(arr, 0, _data, 0, _length);
 		return arr;
 	};
 
 	// Shuffle
 	static shuffle = function() {
-		var content = toArray();
-		__lds_array_shuffle__(content);
-		var i = 0,
-			currentNode = _head;
-		repeat (_length) {
-			currentNode[@2] = content[i++];
-			currentNode = currentNode[1];
-		}
+		__lds_array_shuffle__(_data);
 	};
 
 	// Exists
 	static exists = function(val) {
-		var currentNode = _head;
-		repeat (_length) {
-			if (currentNode[2] == val) return true;
-			currentNode = currentNode[1];
+		for (var i = array_length(_data)-1; i >= 0; --i) {
+			if (_data[i] == val) return true;
 		}
 		return false;
 	};
@@ -224,34 +122,14 @@ function List() constructor {
 			case 0: break;
 			default: show_error("Expected 0-2 arguments, got " + string(argument_count) + ".", true);
 		}
-		var content = toArray();
-		__lds_array_sort__(content, ascend, keyer, comparer);
-		var i = 0,
-			currentNode = _head;
-		repeat (_length) {
-			currentNode[@2] = content[i++];
-			currentNode = currentNode[1];
-		}
+		__lds_array_sort__(_data, ascend, keyer, comparer);
 	};
 	
 	// Shallow copy from another list
 	static copy = function(source) {
-		delete _head;
-		delete _tail;
-		_head = undefined;
-		_tail = undefined;
-		_length = source._length;
-		var currentSourceNode = source._tail;
-		if (_length != 0) {
-			_tail = [undefined, undefined, currentSourceNode[2]];
-			_head = _tail;
-		}
-		repeat (_length-1) {
-			var prevHead = _head;
-			currentSourceNode = currentSourceNode[0];
-			_head = [undefined, prevHead, currentSourceNode[2]];
-			prevHead[@0] = _head;
-		}
+		var _length = array_length(source._data);
+		array_resize(_data, _length);
+		__lds_array_copy__(_data, 0, source._data, 0, _length);
 	};
 	
 	// Shallow clone of this list
@@ -263,49 +141,31 @@ function List() constructor {
 	
 	// Reduce this list to a representation in basic data types
 	static reduceToData = function() {
+		var _length = array_length(_data);
 		var dataArray = array_create(_length);
-		var currentNode = _head;
-		var i = 0;
-		repeat (_length) {
-			dataArray[i++] = lds_reduce(currentNode[2]);
-			currentNode = currentNode[1];
+		for (var i = _length-1; i >= 0; --i) {
+			dataArray[i] = lds_reduce(_data[i]);
 		}
 		return dataArray;
 	};
 	
 	// Expand the data to overwrite this queue
 	static expandFromData = function(data) {
-		clear();
-		_length = array_length(data);
-		if (_length > 0) {
-			_tail = [undefined, undefined, lds_expand(data[_length-1])];
-			_head = _tail;
-			for (var i = _length-2; i >= 0; --i) {
-				var prevHead = _head;
-				_head = [undefined, prevHead, lds_expand(data[i])];
-				prevHead[@0] = _head;
-			}
+		var _length = array_length(data);
+		array_resize(_data, _length);
+		for (var i = _length-1; i >= 0; --i) {
+			_data[i] = lds_expand(data[i]);
 		}
 		return self;
 	};
 	
 	// Deep copy from another list
 	static copyDeep = function(source) {
-		delete _head;
-		delete _tail;
-		_head = undefined;
-		_tail = undefined;
-		_length = source._length;
-		var currentSourceNode = source._tail;
-		if (_length != 0) {
-			_tail = [undefined, undefined, lds_clone_deep(currentSourceNode[2])];
-			_head = _tail;
-		}
-		repeat (_length-1) {
-			var prevHead = _head;
-			currentSourceNode = currentSourceNode[0];
-			_head = [undefined, prevHead, lds_clone_deep(currentSourceNode[2])];
-			prevHead[@0] = _head;
+		var sourceData = source._data;
+		var _length = array_length(sourceData);
+		array_resize(_data, _length);
+		for (var i = _length-1; i >= 0; --i) {
+			_data[i] = lds_clone_deep(sourceData[i]);
 		}
 	};
 	
@@ -331,52 +191,37 @@ function List() constructor {
 	
 	// Perform a function for each entry in the list
 	static forEach = function(func) {
-		var _currentNode = _head;
-		var i = 0;
-		while (!is_undefined(_currentNode)) {
+		var _length = array_length(_data);
+		for (var i = 0; i < _length; ++i) {
 			if (is_method(func)) {
-				func(_currentNode[2], i);
+				func(_data[i], i);
 			} else {
-				script_execute(func, _currentNode[2], i);
+				script_execute(func, _data[i], i);
 			}
-			++i;
-			_currentNode = _currentNode[1];
 		}
 	};
 	
 	// Replace each entry in the list with the return value of the function
 	// Delete those that cause the function to throw undefined
 	static mapEach = function(func) {
-		var _currentNode = _head;
-		while (!is_undefined(_currentNode)) {
+		var _length = array_length(_data);
+		for (var i = 0; i < _length; ++i) {
 			try {
 				var funcResult;
 				if (is_method(func)) {
-					funcResult = func(_currentNode[2]);
+					funcResult = func(_data[i]);
 				} else {
-					funcResult = script_execute(func, _currentNode[2]);
+					funcResult = script_execute(func, _data[i]);
 				}
-				_currentNode[@2] = funcResult;
+				_data[@i] = funcResult;
 			} catch (ex) {
 				if (is_undefined(ex)) {
-					var prevNode = _currentNode[0];
-					var nextNode = _currentNode[1];
-					if (is_undefined(prevNode)) {
-						_head = _currentNode[1];
-					} else {
-						prevNode[@1] = nextNode;
-					}
-					if (is_undefined(nextNode)) {
-						_tail = _currentNode[0];
-					} else {
-						nextNode[@0] = prevNode;
-					}
+					array_delete(_data, i--, 1);
 					--_length;
 				} else {
 					throw ex;
 				}
 			}
-			_currentNode = _currentNode[1];
 		}
 	};
 	
@@ -388,44 +233,29 @@ function List() constructor {
 
 function ListIterator(list) constructor {
 	_list = list;
-	_currentNode = _list._head;
 	index = 0;
-	value = is_array(_currentNode) ? _currentNode[2] : undefined;
+	value = array_length(list._data) ? list._data[0] : undefined;
 	_intact = true;
 	
 	static hasNext = function() {
-		return !is_undefined(_currentNode);
+		return index < array_length(_list._data);
 	};
 	
 	static next = function() {
 		if (_intact) {
-			_currentNode = _currentNode[1];
 			++index;
 		}
-		value = is_array(_currentNode) ? _currentNode[2] : undefined;
+		value = (index < array_length(_list._data)) ? _list._data[index] : undefined;
 		_intact = true;
 	};
 	
 	static set = function(val) {
-		_currentNode[@2] = val;
+		_list._data[@index] = val;
 		value = val;
 	};
 	
 	static remove = function() {
-		var prevNode = _currentNode[0];
-		var nextNode = _currentNode[1];
-		if (is_undefined(prevNode)) {
-			_list._head = _currentNode[1];
-		} else {
-			prevNode[@1] = nextNode;
-		}
-		if (is_undefined(nextNode)) {
-			_list._tail = _currentNode[0];
-		} else {
-			nextNode[@0] = prevNode;
-		}
-		_currentNode = nextNode;
-		--_list._length;
+		array_delete(_list._data, index, 1);
 		_intact = false;
 	};
 }
