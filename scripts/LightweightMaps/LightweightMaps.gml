@@ -1,26 +1,18 @@
 function Map() constructor {
-	static _toKeyName = function(k) {
-		return "_" + string_replace_all(string_replace_all(string_replace_all(base64_encode(k), "+", "_3"), "/", "_4"), "=", "_p");
-	};
-	
 	// Set up basic properties and starting entries
 	_canonType = "Map";
 	_type = "Map";
 	_data = {};
 	_exists = {};
 	_size = argument_count div 2;
-	_keysCache = array_create(argument_count >> 1);
+	_keysCache = array_create(_size);
 	_keysCachePos = 0;
 	for (var i = 0; i < argument_count; i += 2) {
-		var kn = _toKeyName(argument[i]);
+		var kn = string(argument[i]);
 		variable_struct_set(_data, kn, argument[i+1]);
 		variable_struct_set(_exists, kn, _keysCachePos);
 		_keysCache[_keysCachePos++] = argument[i];
 	}
-	
-	//static _fromKeyName = function(kn) {
-	//	return base64_decode(string_replace_all(string_replace_all(string_replace_all(string_delete(kn, 1, 1), "_3", "+"), "_4", "/"), "_p", "="));
-	//};
 	
 	static clear = function() {
 		delete _data;
@@ -41,8 +33,8 @@ function Map() constructor {
 	};
 	
 	static get = function(k) {
-		var kn = _toKeyName(k);
-		if (is_undefined(variable_struct_get(_exists, kn))) {
+		var kn = string(k);
+		if (!variable_struct_exists(_exists, kn)) {
 			throw new MapKeyMissingException("Map has no key " + string(k) + ".");
 		}
 		return variable_struct_get(_data, kn);
@@ -50,11 +42,11 @@ function Map() constructor {
 	static findValue = get;
 	
 	static set = function(k, v) {
-		var kn = _toKeyName(k);
+		var kn = string(k);
 		variable_struct_set(_data, kn, v);
-		if (is_undefined(variable_struct_get(_exists, kn))) {
+		if (!variable_struct_exists(_exists, kn)) {
 			variable_struct_set(_exists, kn, _keysCachePos);
-			_keysCache[_keysCachePos++] = k;
+			_keysCache[_keysCachePos++] = kn;
 			++_size;
 		}
 	}
@@ -62,19 +54,19 @@ function Map() constructor {
 	static replace = set;
 	
 	static exists = function(k) {
-		var kn = _toKeyName(k);
-		return !is_undefined(variable_struct_get(_exists, kn));
+		var kn = string(k);
+		return variable_struct_exists(_data, kn);
 	};
 	
 	static remove = function(k) {
-		var kn = _toKeyName(k),
-			knp = variable_struct_get(_exists, kn);
-		if (is_undefined(knp)) {
+		var kn = string(k);
+		if (!variable_struct_exists(_data, kn)) {
 			throw new MapKeyMissingException("Map has no key " + string(k) + ".");
 		}
-		variable_struct_set(_data, kn, undefined);
+		var knp = variable_struct_get(_exists, kn);
+		variable_struct_remove(_data, kn);
 		_keysCache[knp] = undefined;
-		variable_struct_set(_exists, kn, undefined);
+		variable_struct_remove(_exists, kn);
 		if (--_size == 0) {
 			clear();
 		}
@@ -142,10 +134,8 @@ function Map() constructor {
 		for (var i = array_length(sourceKeys)-1; i >= 0; --i) {
 			var sourceKey = sourceKeys[i],
 				sourceKeyExists = variable_struct_get(source._exists, sourceKey);
-			if (!is_undefined(sourceKeyExists)) {
-				variable_struct_set(_exists, sourceKey, sourceKeyExists);
-				variable_struct_set(_data, sourceKey, variable_struct_get(source._data, sourceKey));
-			}
+			variable_struct_set(_exists, sourceKey, sourceKeyExists);
+			variable_struct_set(_data, sourceKey, variable_struct_get(source._data, sourceKey));
 		}
 		// Copy keys cache
 		_keysCache = array_create(source._keysCachePos);
@@ -169,7 +159,7 @@ function Map() constructor {
 			var key = _keysCache[ii];
 			if (is_undefined(key)) continue;
 			keysArray[i] = key;
-			valuesArray[i] = lds_reduce(variable_struct_get(_data, _toKeyName(key)));
+			valuesArray[i] = lds_reduce(variable_struct_get(_data, string(key)));
 			++i;
 		}
 		return [keysArray, valuesArray];
@@ -185,7 +175,7 @@ function Map() constructor {
 		array_resize(_keysCache, _size);
 		__lds_array_copy__(_keysCache, 0, data[0], 0, _size);
 		for (var i = _size-1; i >= 0; --i) {
-			var keyName = _toKeyName(dataKeys[i])
+			var keyName = string(dataKeys[i])
 			variable_struct_set(_data, keyName, lds_expand(dataData[i]));
 			variable_struct_set(_exists, keyName, i);
 		}
@@ -204,10 +194,8 @@ function Map() constructor {
 		for (var i = array_length(sourceKeys)-1; i >= 0; --i) {
 			var sourceKey = sourceKeys[i],
 				sourceKeyExists = variable_struct_get(source._exists, sourceKey);
-			if (!is_undefined(sourceKeyExists)) {
-				variable_struct_set(_exists, sourceKey, sourceKeyExists);
-				variable_struct_set(_data, sourceKey, lds_clone_deep(variable_struct_get(source._data, sourceKey)));
-			}
+			variable_struct_set(_exists, sourceKey, sourceKeyExists);
+			variable_struct_set(_data, sourceKey, lds_clone_deep(variable_struct_get(source._data, sourceKey)));
 		}
 		// Copy keys cache
 		_keysCache = array_create(source._keysCachePos);
@@ -239,7 +227,7 @@ function Map() constructor {
 	static forEach = function(func) {
 		for (var i = 0; i < _keysCachePos; ++i) {
 			var k = _keysCache[i];
-			var kn = _toKeyName(k);
+			var kn = string(k);
 			var v = variable_struct_get(_data, kn);
 			if (is_method(func)) {
 				func(v, k);
@@ -254,7 +242,7 @@ function Map() constructor {
 	static mapEach = function(func) {
 		for (var i = 0; i < _keysCachePos; ++i) {
 			var k = _keysCache[i];
-			var kn = _toKeyName(k);
+			var kn = string(k);
 			var v = variable_struct_get(_data, kn);
 			try {
 				var funcResult;
