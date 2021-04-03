@@ -236,7 +236,7 @@ function lds_test_heap() {
 	assert_equal([heap2.size(), heap2.getMin(), heap2.getMax()], [2, "foo", "bar"], "Test heap read/write 2");
 	heap = new Heap("foo", 567);
 	assert_throws(method({ heap: heap }, function() {
-		heap.read(lds_write(int64(0)));
-	}), new IncompatibleDataException("Heap", "int64"), "Test heap read/write 3");
+		heap.read(lds_write({ foo: "bar" }));
+	}), new IncompatibleDataException("Heap", "struct"), "Test heap read/write 3");
 	#endregion
 }

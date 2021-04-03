@@ -38,6 +38,20 @@
             2,
           ],"resourceVersion":"1.0","name":"__lds_array_shuffle__","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"__lds_array_sort__","kind":2,"help":"","hidden":false,"returnType":2,"argCount":-1,"args":[],"resourceVersion":"1.0","name":"__lds_array_sort__","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"__lds_rc4__","kind":2,"help":"__lds_rc4__(@buffer, key, offset, length)","hidden":true,"returnType":2,"argCount":0,"args":[
+            2,
+            1,
+            2,
+            2,
+          ],"resourceVersion":"1.0","name":"__lds_rc4__","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"__lds_rc4_decrypt__","kind":2,"help":"__lds_rc4_decrypt__(str, key)","hidden":true,"returnType":1,"argCount":0,"args":[
+            1,
+            1,
+          ],"resourceVersion":"1.0","name":"__lds_rc4_decrypt__","tags":[],"resourceType":"GMExtensionFunction",},
+        {"externalName":"__lds_rc4_encrypt__","kind":2,"help":"__lds_rc4_encrypt__(str, key)","hidden":true,"returnType":1,"argCount":0,"args":[
+            1,
+            1,
+          ],"resourceVersion":"1.0","name":"__lds_rc4_encrypt__","tags":[],"resourceType":"GMExtensionFunction",},
         {"externalName":"__lds_typeof__","kind":2,"help":"__lds_typeof__(thing)","hidden":false,"returnType":1,"argCount":0,"args":[
             2,
           ],"resourceVersion":"1.0","name":"__lds_typeof__","tags":[],"resourceType":"GMExtensionFunction",},
@@ -91,6 +105,9 @@
         {"name":"__lds_array_sort_kernel__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_shuffle__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_array_sort__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
+        {"name":"__lds_rc4__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
+        {"name":"__lds_rc4_decrypt__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
+        {"name":"__lds_rc4_encrypt__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"__lds_typeof__","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"lds_reduce","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},
         {"name":"lds_expand","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},

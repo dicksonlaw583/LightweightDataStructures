@@ -93,6 +93,64 @@
 	__lds_array_copy__(arr, lo, _arr, 0, span);
 }
 
+#define __lds_rc4__
+{
+	var i, j, s, temp, keyLength, pos;
+	s = array_create(256);
+	keyLength = string_byte_length(argument1);
+	for (var i = 255; i >= 0; --i) {
+		s[i] = i;
+	}
+	j = 0;
+	for (var i = 0; i <= 255; ++i) {
+		j = (j + s[i] + string_byte_at(argument1, i mod keyLength)) mod 256;
+		temp = s[i];
+		s[i] = s[j];
+		s[j] = temp;
+	}
+	i = 0;
+	j = 0;
+	pos = 0;
+	buffer_seek(argument0, buffer_seek_start, argument2);
+	repeat (argument3) {
+		i = (i+1) mod 256;
+		j = (j+s[i]) mod 256;
+		temp = s[i];
+		s[i] = s[j];
+		s[j] = temp;
+		var currentByte = buffer_peek(argument0, pos++, buffer_u8);
+		buffer_write(argument0, buffer_u8, s[(s[i]+s[j]) mod 256] ^ currentByte);
+	}
+	return argument0;
+}
+
+#define __lds_rc4_decrypt__
+///@func __lds_rc4_decrypt__(str, key)
+///@param str
+///@param key
+{
+	var buffer = buffer_base64_decode(argument0);
+	__lds_rc4__(buffer, string(argument1), 0, buffer_get_size(buffer));
+	buffer_seek(buffer, buffer_seek_start, 0);
+	var decoded = buffer_read(buffer, buffer_string);
+	buffer_delete(buffer);
+	return decoded;
+}
+
+#define __lds_rc4_encrypt__
+///@func __lds_rc4_encrypt__(str, key)
+///@param str
+///@param key
+{
+	var length = string_byte_length(argument0);
+	var buffer = buffer_create(length+1, buffer_fixed, 1);
+	buffer_write(buffer, buffer_string, argument0);
+	__lds_rc4__(buffer, string(argument1), 0, buffer_tell(buffer));
+	var encoded = buffer_base64_encode(buffer, 0, length);
+	buffer_delete(buffer);
+	return encoded;
+}
+
 #define __lds_typeof__
 {
 	gml_pragma("forceinline");
@@ -159,7 +217,8 @@
 					break;
 				default:
 					if (variable_struct_exists(global.__lds_registry__, data.t)) {
-						expanded = variable_struct_get(global.__lds_registry__, data.t)();
+						var regenFunction = variable_struct_get(global.__lds_registry__, data.t);
+						expanded = regenFunction();
 						expanded.expandFromData(data.d);
 					} else {
 						throw new UnrecognizedLdsTypeException(data.t);
@@ -358,90 +417,103 @@
 #define lds_write
 {
 	var thing = argument0;
-	return jsons_encode(lds_reduce(thing));
+	return json_stringify(lds_reduce(thing));
 }
 
 #define lds_read
 {
 	var str = argument0;
-	return lds_expand(jsons_decode(str));
+	return lds_expand(json_parse(str));
 }
 
 #define lds_save
 {
 	var thing = argument0,
 		filename = argument1;
-	return jsons_save(filename, lds_reduce(thing));
+	var f = file_text_open_write(filename);
+	file_text_write_string(f, json_stringify(lds_reduce(thing)));
+	file_text_close(f);
 }
 
 #define lds_load
 {
 	var filename = argument0;
-	return lds_expand(jsons_load(filename));
+	var f = file_text_open_read(filename);
+	var jsonstr = file_text_eof(f) ? "" : file_text_read_string(f);
+	while (!file_text_eof(f)) {
+		file_text_readln(f);
+		jsonstr += "\n" + file_text_read_string(f);
+	}
+	file_text_close(f);
+	return lds_expand(json_parse(jsonstr));
 }
 
 #define lds_encrypt
 {
 	var thing = lds_reduce(argument[0]),
-		key = "myLdsSecretKey",
-		encfunc = function(v, k) { return __jsons_encrypt__(v, k); }; //__jsons_encrypt__
+		enckey = "myLdsSecretKey",
+		encfunc = function(v, k) { return __lds_rc4_encrypt__(v, k); }; //__lds_rc4_encrypt__
 	switch (argument_count) {
 		case 3:
 			encfunc = argument[2];
 		case 2:
-			key = argument[1];
+			enckey = argument[1];
 		case 1: break;
 		default:
 			show_error("Expected 1-3 arguments, got " + string(argument_count) + ".", true);
 	}
-	return jsons_encrypt(thing, key, encfunc);
+	return is_method(encfunc) ? encfunc(json_stringify(thing), enckey) : script_execute(encfunc, json_stringify(thing), enckey);
 }
 
 #define lds_decrypt
 {
-	var key = "myLdsSecretKey",
-		decfunc = function(v, k) { return __jsons_decrypt__(v, k); }; //__jsons_decrypt__
+	var deckey = "myLdsSecretKey",
+		decfunc = function(v, k) { return __lds_rc4_decrypt__(v, k); }; //__lds_rc4_decrypt__
 	switch (argument_count) {
 		case 3:
 			decfunc = argument[2];
 		case 2:
-			key = argument[1];
+			deckey = argument[1];
 		case 1: break;
 		default:
 			show_error("Expected 1-3 arguments, got " + string(argument_count) + ".", true);
 	}
-	return lds_expand(jsons_decrypt(argument[0], key, decfunc));
+	return lds_expand(json_parse(is_method(decfunc) ? decfunc(argument[0], deckey) : script_execute(decfunc, argument[0], deckey)));
 }
 
 #define lds_save_encrypted
 {
-	var thing = lds_reduce(argument[0]),
-		key = "myLdsSecretKey",
-		encfunc = function(v, k) { return __jsons_encrypt__(v, k); }; //__jsons_encrypt__
+	var enckey = "myLdsSecretKey",
+		encfunc = function(v, k) { return __lds_rc4_encrypt__(v, k); }; //__lds_rc4_encrypt__
 	switch (argument_count) {
 		case 4:
 			encfunc = argument[3];
 		case 3:
-			key = argument[2];
+			enckey = argument[2];
 		case 2: break;
 		default:
 			show_error("Expected 2-4 arguments, got " + string(argument_count) + ".", true);
 	}
-	return jsons_save_encrypted(argument[1], thing, key, encfunc);
+	var f = file_text_open_write(argument[1]);
+	file_text_write_string(f, lds_encrypt(argument[0], enckey, encfunc));
+	file_text_close(f);
 }
 
 #define lds_load_encrypted
 {
-	var key = "myLdsSecretKey",
-		decfunc = function(v, k) { return __jsons_decrypt__(v, k); }; //__jsons_decrypt__
+	var deckey = "myLdsSecretKey",
+		decfunc = function(v, k) { return __lds_rc4_decrypt__(v, k); }; //__lds_rc4_decrypt__
 	switch (argument_count) {
 		case 3:
 			decfunc = argument[2];
 		case 2:
-			key = argument[1];
+			deckey = argument[1];
 		case 1: break;
 		default:
 			show_error("Expected 1-3 arguments, got " + string(argument_count) + ".", true);
 	}
-	return lds_expand(jsons_load_encrypted(argument[0], key, decfunc));
+	var f = file_text_open_read(argument[0]);
+	var result = lds_decrypt(file_text_read_string(f), deckey, decfunc);
+	file_text_close(f);
+	return result;
 }

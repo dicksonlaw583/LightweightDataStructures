@@ -165,7 +165,8 @@ function Queue() constructor {
 	
 	// Load from data string
 	static read = function(datastr) {
-		var data = jsons_decode(datastr);
+		var data = json_parse(datastr);
+		if (!is_struct(data)) throw new IncompatibleDataException(instanceof(self), typeof(data));
 		if (data.t != instanceof(self)) throw new IncompatibleDataException(instanceof(self), data.t);
 		expandFromData(data.d);
 	};
