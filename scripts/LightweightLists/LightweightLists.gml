@@ -234,7 +234,7 @@ function List() constructor {
 function ListIterator(list) constructor {
 	_list = list;
 	index = 0;
-	value = array_length(list._data) ? list._data[0] : undefined;
+	value = array_length(_list._data) ? _list._data[0] : undefined;
 	_intact = true;
 	
 	static hasNext = function() {
