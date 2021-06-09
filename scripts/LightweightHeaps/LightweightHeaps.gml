@@ -106,7 +106,7 @@ function Heap() constructor {
 			_pushUp(i);
 			_pushDown(i);
 		} else {
-			data[_length--] = undefined;
+			_data[_length--] = undefined;
 		}
 		if (_length == 0) clear();
 		return result;
