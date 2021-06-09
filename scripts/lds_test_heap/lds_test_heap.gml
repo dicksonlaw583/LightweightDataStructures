@@ -1,28 +1,30 @@
 ///@func lds_test_heap()
 function lds_test_heap() {
 	var heap, heap2;
+	var heapSubject;
 	
 	#region Test empty heap
 	heap = new Heap();
+	heapSubject = { _heap: heap };
 	assert_equal(heap.size(), 0, "Test empty heap 1");
 	assert(heap.empty(), "Test empty heap 2");
-	assert_throws(method({ heap: heap }, function() {
-		heap.deleteMin();
+	assert_throws(method(heapSubject, function() {
+		_heap.deleteMin();
 	}), new HeapEmptyException("Trying to remove min from an empty heap."), "Test empty heap 3");
-	assert_throws(method({ heap: heap }, function() {
-		heap.deleteMax();
+	assert_throws(method(heapSubject, function() {
+		_heap.deleteMax();
 	}), new HeapEmptyException("Trying to remove max from an empty heap."), "Test empty heap 4");
-	assert_throws(method({ heap: heap }, function() {
-		heap.deleteValue("foo");
+	assert_throws(method(heapSubject, function() {
+		_heap.deleteValue("foo");
 	}), new HeapEmptyException("Trying to remove a value from an empty heap."), "Test empty heap 5");
-	assert_throws(method({ heap: heap }, function() {
-		heap.findMin();
+	assert_throws(method(heapSubject, function() {
+		_heap.findMin();
 	}), new HeapEmptyException("Trying to get min from an empty heap."), "Test empty heap 6");
-	assert_throws(method({ heap: heap }, function() {
-		heap.findMax();
+	assert_throws(method(heapSubject, function() {
+		_heap.findMax();
 	}), new HeapEmptyException("Trying to get max from an empty heap."), "Test empty heap 7");
-	assert_throws(method({ heap: heap }, function() {
-		heap.findValue("foo");
+	assert_throws(method(heapSubject, function() {
+		_heap.findValue("foo");
 	}), new HeapEmptyException("Trying to get a value from an empty heap."), "Test empty heap 8");
 	#endregion
 	
@@ -106,35 +108,36 @@ function lds_test_heap() {
 	heap.clear();
 	assert_equal(heap.size(), 0, "Test clearing heap 1");
 	assert(heap.empty(), "Test clearing heap 2");
-	assert_throws(method({ heap: heap }, function() {
-		heap.deleteMin();
+	assert_throws(method(heapSubject, function() {
+		_heap.deleteMin();
 	}), new HeapEmptyException("Trying to remove min from an empty heap."), "Test clearing heap 3");
-	assert_throws(method({ heap: heap }, function() {
-		heap.deleteMax();
+	assert_throws(method(heapSubject, function() {
+		_heap.deleteMax();
 	}), new HeapEmptyException("Trying to remove max from an empty heap."), "Test clearing heap 4");
-	assert_throws(method({ heap: heap }, function() {
-		heap.deleteValue("foo");
+	assert_throws(method(heapSubject, function() {
+		_heap.deleteValue("foo");
 	}), new HeapEmptyException("Trying to remove a value from an empty heap."), "Test clearing heap 5");
-	assert_throws(method({ heap: heap }, function() {
-		heap.findMin();
+	assert_throws(method(heapSubject, function() {
+		_heap.findMin();
 	}), new HeapEmptyException("Trying to get min from an empty heap."), "Test clearing heap 6");
-	assert_throws(method({ heap: heap }, function() {
-		heap.findMax();
+	assert_throws(method(heapSubject, function() {
+		_heap.findMax();
 	}), new HeapEmptyException("Trying to get max from an empty heap."), "Test clearing heap 7");
-	assert_throws(method({ heap: heap }, function() {
-		heap.findValue("foo");
+	assert_throws(method(heapSubject, function() {
+		_heap.findValue("foo");
 	}), new HeapEmptyException("Trying to get a value from an empty heap."), "Test clearing heap 8");
 	#endregion
 	
 	#region Test changing priorities (with one deletion)
 	heap = new Heap("alpha", 7, "beta", 2, "gamma", 10, "delta", 5, "epsilon", 0);
+	heapSubject = { _heap: heap };
 	heap.changePriority("alpha", 4);
 	heap.changePriority("beta", 7);
 	heap.changePriority("gamma", 10);
 	heap.changePriority("delta", 13);
 	heap.changePriority("epsilon", 16);
-	assert_throws(method({ heap: heap }, function() {
-		heap.changePriority("omega", 20);
+	assert_throws(method(heapSubject, function() {
+		_heap.changePriority("omega", 20);
 	}), new HeapValueNotFoundException("Cannot find omega in the heap."), "Test changing priorities A0");
 	assert_equal(heap.deleteMin(), "alpha", "Test changing priorities A1");
 	assert_equal(heap.deleteMin(), "beta", "Test changing priorities A2");
@@ -142,17 +145,25 @@ function lds_test_heap() {
 	assert_equal(heap.deleteMin(), "delta", "Test changing priorities A4");
 	assert_equal(heap.deleteMin(), "epsilon", "Test changing priorities A5");
 	heap = new Heap("alpha", 7, "beta", 2, "zeta", 4, "gamma", 10, "delta", 5, "epsilon", 0);
+	heapSubject = { _heap: heap };
 	heap.changePriority("alpha", 16);
 	heap.changePriority("beta", 12);
 	heap.changePriority("gamma", 8);
 	heap.deleteValue("zeta");
-	assert_throws(method({ heap: heap }, function() {
+	// Workaround: YYC Runtime 23.1.1.290 crash
+	//assert_throws(method(heapSubject, function() {
+	//	_heap.deleteValue("zeta");
+	//}), new HeapValueNotFoundException("Cannot find zeta in the heap."), "Test changing priorities B");
+	try {
 		heap.deleteValue("zeta");
-	}), new HeapValueNotFoundException("Cannot find zeta in the heap."), "Test changing priorities B");
+		assert(false, "Test changing priorities B (didn't throw)");
+	} catch (exc) {
+		assert_equal(exc, new HeapValueNotFoundException("Cannot find zeta in the heap."), "Test changing priorities B");
+	}
 	heap.changePriority("delta", 4);
 	heap.changePriority("epsilon", 0);
-	assert_throws(method({ heap: heap }, function() {
-		heap.changePriority("omega", 20);
+	assert_throws(method(heapSubject, function() {
+		_heap.changePriority("omega", 20);
 	}), new HeapValueNotFoundException("Cannot find omega in the heap."), "Test changing priorities B0");
 	assert_equal(heap.deleteMax(), "alpha", "Test changing priorities B1");
 	assert_equal(heap.deleteMax(), "beta", "Test changing priorities B2");
@@ -163,6 +174,7 @@ function lds_test_heap() {
 
 	#region Test heap copy
 	heap = new Heap("foo", 5, "bar", 7, "baz", 4, "qux", 6, "gone", 9);
+	heapSubject = { _heap: heap };
 	heap2 = new Heap("foobar", 583, "barbaz", 907);
 	heap.deleteMax();
 	heap2.copy(heap);
@@ -182,6 +194,7 @@ function lds_test_heap() {
 	
 	#region Test heap clone
 	heap = new Heap("foo", 5, "bar", 7, "baz", 4, "qux", 6);
+	heapSubject = { _heap: heap };
 	heap2 = heap.clone();
 	assert_equal(heap2.size(), 4, "Test heap clone 1a");
 	assert_equal(heap2.deleteMin(), "baz", "Test heap clone 1b");
@@ -235,8 +248,9 @@ function lds_test_heap() {
 	heap2.read(got);
 	assert_equal([heap2.size(), heap2.getMin(), heap2.getMax()], [2, "foo", "bar"], "Test heap read/write 2");
 	heap = new Heap("foo", 567);
-	assert_throws(method({ heap: heap }, function() {
-		heap.read(lds_write({ foo: "bar" }));
+	heapSubject = { _heap: heap };
+	assert_throws(method(heapSubject, function() {
+		_heap.read(lds_write({ foo: "bar" }));
 	}), new IncompatibleDataException("Heap", "struct"), "Test heap read/write 3");
 	#endregion
 }
