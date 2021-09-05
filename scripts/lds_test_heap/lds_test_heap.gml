@@ -243,18 +243,18 @@ function lds_test_heap() {
 	#region Stress test
 	var stressTries = 200;
 	var stressArrayN = 50;
+	var expectedStressArray = array_create(stressArrayN);
+	var shuffledStressArray = array_create(stressArrayN);
+	var gotStressArray = array_create(stressArrayN, 0);
 	
 	// Stress test A (deleteMin)
-	var expectedStressArray = array_create(stressArrayN);
 	for (var i = 0; i < stressArrayN; ++i) {
 		expectedStressArray[@i] = i;
 	}
-	var shuffledStressArray = array_create(stressArrayN);
-	var gotStressArray = array_create(stressArrayN, 0);
+	heap = new Heap();
 	repeat (stressTries) {
 		__lds_array_copy__(shuffledStressArray, 0, expectedStressArray, 0, stressArrayN);
 		array_sort(shuffledStressArray, function() { return choose(-1, 1); });
-		heap = new Heap();
 		for (var i = 0; i < stressArrayN; ++i) {
 			heap.add(shuffledStressArray[i], shuffledStressArray[i]/10);
 		}
@@ -269,8 +269,7 @@ function lds_test_heap() {
 	for (var i = 0; i < stressArrayN; ++i) {
 		expectedStressArray[@i] = stressArrayN-i;
 	}
-	var shuffledStressArray = array_create(stressArrayN);
-	var gotStressArray = array_create(stressArrayN, 0);
+	heap = new Heap();
 	repeat (stressTries) {
 		__lds_array_copy__(shuffledStressArray, 0, expectedStressArray, 0, stressArrayN);
 		array_sort(shuffledStressArray, function() { return choose(-1, 1); });
