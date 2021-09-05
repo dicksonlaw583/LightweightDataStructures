@@ -239,4 +239,49 @@ function lds_test_heap() {
 		heap.read(lds_write({ foo: "bar" }));
 	}), new IncompatibleDataException("Heap", "struct"), "Test heap read/write 3");
 	#endregion
+
+	#region Stress test
+	var stressTries = 200;
+	var stressArrayN = 50;
+	
+	// Stress test A (deleteMin)
+	var expectedStressArray = array_create(stressArrayN);
+	for (var i = 0; i < stressArrayN; ++i) {
+		expectedStressArray[@i] = i;
+	}
+	var shuffledStressArray = array_create(stressArrayN);
+	var gotStressArray = array_create(stressArrayN, 0);
+	repeat (stressTries) {
+		__lds_array_copy__(shuffledStressArray, 0, expectedStressArray, 0, stressArrayN);
+		array_sort(shuffledStressArray, function() { return choose(-1, 1); });
+		heap = new Heap();
+		for (var i = 0; i < stressArrayN; ++i) {
+			heap.add(shuffledStressArray[i], shuffledStressArray[i]/10);
+		}
+		for (var i = 0; i < stressArrayN; ++i) {
+			gotStressArray[i] = heap.deleteMin();
+		}
+		assert_equal(gotStressArray, expectedStressArray, "Heap stress test A failed for: " + string(shuffledStressArray));
+	}
+	
+	// Stress test B (deleteMax)
+	var expectedStressArray = array_create(stressArrayN);
+	for (var i = 0; i < stressArrayN; ++i) {
+		expectedStressArray[@i] = stressArrayN-i;
+	}
+	var shuffledStressArray = array_create(stressArrayN);
+	var gotStressArray = array_create(stressArrayN, 0);
+	repeat (stressTries) {
+		__lds_array_copy__(shuffledStressArray, 0, expectedStressArray, 0, stressArrayN);
+		array_sort(shuffledStressArray, function() { return choose(-1, 1); });
+		heap = new Heap();
+		for (var i = 0; i < stressArrayN; ++i) {
+			heap.add(shuffledStressArray[i], shuffledStressArray[i]/10);
+		}
+		for (var i = 0; i < stressArrayN; ++i) {
+			gotStressArray[i] = heap.deleteMax();
+		}
+		assert_equal(gotStressArray, expectedStressArray, "Heap stress test B failed for: " + string(shuffledStressArray));
+	}
+	#endregion
 }

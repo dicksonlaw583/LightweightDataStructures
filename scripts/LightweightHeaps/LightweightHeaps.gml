@@ -359,6 +359,7 @@ function Heap() constructor {
 		while (grandpa != 0 && _priority[i] < _priority[grandpa]) {
 			_swap(i, grandpa);
 			i = grandpa;
+			grandpa = i >> 2;
 		}
 	};
 	
@@ -369,6 +370,7 @@ function Heap() constructor {
 		while (grandpa != 0 && _priority[i] > _priority[grandpa]) {
 			_swap(i, grandpa);
 			i = grandpa;
+			grandpa = i >> 2;
 		}
 	};
 	
