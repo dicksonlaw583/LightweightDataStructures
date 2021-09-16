@@ -1,4 +1,4 @@
-# Lightweight Data Structures v1.1.0
+# Lightweight Data Structures v1.1.10
 
 ## Overview
 
@@ -49,4 +49,5 @@ show_message(
 - Clone this repository.
 - Open the project in GameMaker Studio 2.3 and make your additions/changes to the `LightweightDataStructures` extension and/or group. Also add the corresponding tests to the `LightweightDataStructures_test` group.
 - Open a pull request here.
+
 
