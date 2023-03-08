@@ -9,7 +9,6 @@ function List() constructor {
 
 	// Clear
 	static clear = function() {
-		delete _data;
 		_data = [];
 	};
 
@@ -207,7 +206,7 @@ function List() constructor {
 		var _length = array_length(_data);
 		for (var i = 0; i < _length; ++i) {
 			try {
-				var funcResult;
+				var funcResult = undefined;
 				if (is_method(func)) {
 					funcResult = func(_data[i]);
 				} else {

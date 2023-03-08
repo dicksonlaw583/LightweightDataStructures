@@ -60,7 +60,6 @@ function Grid() constructor {
 			for (var yy = min(_height, h)-1; yy >= 0; --yy) {
 				__lds_array_copy__(_newdata, yy*w, _data, yy*_width, copyWidth);
 			}
-			delete _data;
 			_data = _newdata;
 		}
 		_width = w;
@@ -483,7 +482,6 @@ function Grid() constructor {
 		__lds_array_copy__(temp, 0, _data, ii, _width);
 		__lds_array_copy__(_data, ii, _data, jj, _width);
 		__lds_array_copy__(_data, jj, temp, 0, _width);
-		delete temp;
 	};
 	
 	// Shuffle rows
@@ -530,7 +528,6 @@ function Grid() constructor {
 				moveMap[i] = newi;
 			}
 		}
-		delete moveMap;
 	};
 	
 	// To 2D array
@@ -545,7 +542,6 @@ function Grid() constructor {
 
 	// Shallow copy from another grid
 	static copy = function(source) {
-		delete _data;
 		_width = source._width;
 		_height = source._height;
 		var totalSize = _width*_height;
@@ -586,7 +582,6 @@ function Grid() constructor {
 	
 	// Deep copy from another grid
 	static copyDeep = function(source) {
-		delete _data;
 		_width = source._width;
 		_height = source._height;
 		var totalSize = _width*_height;

@@ -14,7 +14,6 @@ function Stack() constructor {
 	
 	// Clear this stack
 	static clear = function() {
-		delete _data;
 		_data = [];
 	};
 	
@@ -58,8 +57,10 @@ function Stack() constructor {
 		__lds_array_copy__(_data, 0, sourceData, 0, _length);
 	};
 	
-	// Return a shallow clone of this stack
-	static clone = function(source) {
+	///@func clone()
+	///@return {Struct.Stack}
+	///@desc Return a shallow clone of this stack
+	static clone = function() {
 		var theClone = new Stack();
 		theClone.copy(self);
 		return theClone;

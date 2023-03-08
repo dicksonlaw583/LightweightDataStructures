@@ -16,7 +16,6 @@ function Queue() constructor {
 	
 	// Clear the queue
 	static clear = function() {
-		delete _data;
 		_data = [];
 	};
 
@@ -67,8 +66,10 @@ function Queue() constructor {
 		__lds_array_copy__(_data, 0, source._data, 0, _length);
 	};
 	
-	// Return a shallow clone of this queue
-	static clone = function(source) {
+	///@func clone()
+	///@return {Struct.Queue}
+	///@desc Return a shallow clone of this queue
+	static clone = function() {
 		var theClone = new Queue();
 		theClone.copy(self);
 		return theClone;

@@ -1,8 +1,6 @@
 function Heap() constructor {
 	// Clear the heap
 	static clear = function() {
-		delete _data;
-		delete _priority;
 		_data = [undefined];
 		_priority = [undefined];
 		_length = 0;
@@ -29,7 +27,8 @@ function Heap() constructor {
 	
 	// Change priority
 	static changePriority = function(val, priority) {
-		for (var i = _length; i >= 1; --i) {
+		var i = _length;
+		for (; i >= 1; --i) {
 			if (_data[i] == val) {
 				break;
 			}
@@ -44,19 +43,20 @@ function Heap() constructor {
 	
 	// Delete max
 	static deleteMax = function() {
+		var result = undefined;
 		switch (_length) {
 			case 0: throw new HeapEmptyException("Trying to remove max from an empty heap.");
 			case 1:
-				var result = _data[1];
+				result = _data[1];
 				clear();
 				break;
 			case 2:
-				var result = _data[_length];
+				result = _data[_length];
 				_data[_length--] = undefined;
 				break;
 			default:
-				var deletePos = (_priority[2] > _priority[3]) ? 2 : 3,
-					result = _data[deletePos];
+				var deletePos = (_priority[2] > _priority[3]) ? 2 : 3;
+				result = _data[deletePos];
 				if (deletePos < _length) {
 					_swap(deletePos, _length);
 					_data[_length--] = undefined;
@@ -71,14 +71,15 @@ function Heap() constructor {
 	
 	// Delete min
 	static deleteMin = function() {
+		var result = undefined;
 		switch (_length) {
 			case 0: throw new HeapEmptyException("Trying to remove min from an empty heap.");
 			case 1:
-				var result = _data[1];
+				result = _data[1];
 				clear();
 				break;
 			default:
-				var result = _data[1];
+				result = _data[1];
 				_swap(1, _length);
 				_data[_length--] = undefined;
 				_pushDownMin(1);
@@ -91,7 +92,8 @@ function Heap() constructor {
 		if (_length == 0) {
 			throw new HeapEmptyException("Trying to remove a value from an empty heap.");
 		}
-		for (var i = _length; i >= 1; --i) {
+		var i = _length;
+		for (; i >= 1; --i) {
 			if (_data[i] == val) {
 				break;
 			}
@@ -137,7 +139,8 @@ function Heap() constructor {
 		if (_length == 0) {
 			throw new HeapEmptyException("Trying to get a value from an empty heap.");
 		}
-		for (var i = _length; i >= 1; --i) {
+		var i = _length;
+		for (; i >= 1; --i) {
 			if (_data[i] == val) {
 				break;
 			}

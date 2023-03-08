@@ -88,7 +88,8 @@ function Map() constructor {
 	
 	static findNext = function(k) {
 		var __next = undefined;
-		for (var i = _keysCachePos-1; i >= 0; --i) {
+		var i = _keysCachePos-1;
+		for (; i >= 0; --i) {
 			var kci = _keysCache[i];
 			if (is_undefined(kci)) continue;
 			if (k == kci) break;
@@ -100,7 +101,8 @@ function Map() constructor {
 	
 	static findPrevious = function(k) {
 		var __prev = undefined;
-		for (var i = 0; i < _keysCachePos; ++i) {
+		var i = 0;
+		for (; i < _keysCachePos; ++i) {
 			var kci = _keysCache[i];
 			if (is_undefined(kci)) continue;
 			if (k == kci) break;
@@ -245,7 +247,7 @@ function Map() constructor {
 			var kn = string(k);
 			var v = variable_struct_get(_data, kn);
 			try {
-				var funcResult;
+				var funcResult = undefined;
 				if (is_method(func)) {
 					funcResult = func(v);
 				} else {
