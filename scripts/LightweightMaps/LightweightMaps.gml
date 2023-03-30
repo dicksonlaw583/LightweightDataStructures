@@ -1,3 +1,6 @@
+///@class Map(...)
+///@param {Any} ... Pairs of keys and values to seed the map with.
+///@desc Lightweight Map class equivalent to DS Maps.
 function Map() constructor {
 	// Set up basic properties and starting entries
 	_canonType = "Map";
@@ -14,6 +17,8 @@ function Map() constructor {
 		_keysCache[_keysCachePos++] = argument[i];
 	}
 	
+	///@func clear()
+	///@desc Clear this map.
 	static clear = function() {
 		delete _data;
 		delete _exists;
@@ -24,14 +29,24 @@ function Map() constructor {
 		_keysCachePos = 0;
 	};
 	
+	///@func size()
+	///@return {Real}
+	///@desc Return the size of this map.
 	static size = function() {
 		return _size;
 	};
 	
+	///@func empty()
+	///@return {Bool}
+	///@desc Return whether this map is empty.
 	static empty = function() {
 		return _size == 0;
 	};
 	
+	///@func get(k)
+	///@param {String} k The key value to use.
+	///@return {Any}
+	///@desc Return the value stored under the given key.
 	static get = function(k) {
 		var kn = string(k);
 		if (!variable_struct_exists(_exists, kn)) {
@@ -39,8 +54,16 @@ function Map() constructor {
 		}
 		return variable_struct_get(_data, kn);
 	};
+	///@func findValue(k)
+	///@param {String} k The key value to use.
+	///@return {Any}
+	///@desc Return the value stored under the given key.
 	static findValue = get;
 	
+	///@func setValue(k, v)
+	///@param {String} k The key value to use.
+	///@param {Any} v The value to store.
+	///@desc Store a value under the given key in this map.
 	static set = function(k, v) {
 		var kn = string(k);
 		variable_struct_set(_data, kn, v);
@@ -50,14 +73,29 @@ function Map() constructor {
 			++_size;
 		}
 	}
+	///@func add(k, v)
+	///@param {String} k The key value to use.
+	///@param {Any} v The value to store.
+	///@desc Store a value under the given key in this map.
 	static add = set;
+	///@func replace(k, v)
+	///@param {String} k The key value to use.
+	///@param {Any} v The value to store.
+	///@desc Store a value under the given key in this map.
 	static replace = set;
 	
+	///@func exists(k)
+	///@param {String} k The key value to use.
+	///@return {Bool}
+	///@desc Return whether the given key exists in this map.
 	static exists = function(k) {
 		var kn = string(k);
 		return variable_struct_exists(_data, kn);
 	};
 	
+	///@func remove(k)
+	///@param {String} k The key value to use.
+	///@desc Remove the value under the given key in this map.
 	static remove = function(k) {
 		var kn = string(k);
 		if (!variable_struct_exists(_data, kn)) {
@@ -72,20 +110,34 @@ function Map() constructor {
 		}
 	};
 	
+	///@func findFirst()
+	///@return {String,Undefined}
+	///@desc Return the first key in this map. If not found, return undefined.
 	static findFirst = function() {
 		for (var i = 0; i < _keysCachePos; ++i) {
+			///Feather disable GM1045
 			if (!is_undefined(_keysCache[i])) return _keysCache[i];
+			///Feather enable GM1045
 		}
 		return undefined;
 	};
 	
+	///@func findLast()
+	///@return {String,Undefined}
+	///@desc Return the last key in this map. If not found, return undefined.
 	static findLast = function() {
 		for (var i = _keysCachePos-1; i >= 0; --i) {
+			///Feather disable GM1045
 			if (!is_undefined(_keysCache[i])) return _keysCache[i];
+			///Feather enable GM1045
 		}
 		return undefined;
 	};
 	
+	///@func findNext(k)
+	///@param {String} k The key value to use.
+	///@return {String,Undefined}
+	///@desc Return the key after the given key in this map. If not found, return undefined.
 	static findNext = function(k) {
 		var __next = undefined;
 		var i = _keysCachePos-1;
@@ -96,9 +148,15 @@ function Map() constructor {
 			__next = kci;
 		}
 		if (i < 0) throw new MapKeyMissingException("Map has no key " + string(k) + ".");
+		///Feather disable GM1045
 		return __next;
+		///Feather enable GM1045
 	};
 	
+	///@func findPrevious(k)
+	///@param {String} k The key value to use.
+	///@return {String,Undefined}
+	///@desc Return the key before the given key in this map. If not found, return undefined.
 	static findPrevious = function(k) {
 		var __prev = undefined;
 		var i = 0;
@@ -109,9 +167,14 @@ function Map() constructor {
 			__prev = kci;
 		}
 		if (i >= _keysCachePos) throw new MapKeyMissingException("Map has no key " + string(k) + ".");
+		///Feather disable GM1045
 		return __prev;
+		///Feather enable GM1045
 	};
 	
+	///@func keys()
+	///@return {Array<String>}
+	///@desc Return an array of keys used in this map.
 	static keys = function() {
 		var _keys = array_create(_size);
 		var ii = 0;
@@ -121,10 +184,14 @@ function Map() constructor {
 				_keys[ii++] = kci;
 			}
 		}
+		///Feather disable GM1045
 		return _keys;
+		///Feather enable GM1045
 	};
 
-	// Shallow copy from another map
+	///@func copy(source)
+	///@param {Struct.Map} source The map to copy from.
+	///@desc Shallow copy from another map.
 	static copy = function(source) {
 		delete _data;
 		delete _exists;
@@ -145,14 +212,18 @@ function Map() constructor {
 		_keysCachePos = source._keysCachePos;
 	};
 	
-	// Shallow clone of this map
+	///@func clone()
+	///@return {Struct.Map}
+	///@desc Return a shallow clone of this map.
 	static clone = function() {
 		var theClone = new Map();
 		theClone.copy(self);
 		return theClone;
 	}
 	
-	// Reduce this map to a representation in basic data types
+	///@func reduceToData()
+	///@return {Array<Any>}
+	///@desc Return a reduction this map to a representation in basic data types.
 	static reduceToData = function() {
 		var keysArray = array_create(_size);
 		var valuesArray = array_create(_size);
@@ -167,7 +238,10 @@ function Map() constructor {
 		return [keysArray, valuesArray];
 	};
 	
-	// Expand the data to overwrite this map
+	///@func expandFromData(data)
+	///@param {Array<Any>} data
+	///@return {Struct.Map}
+	///@desc Expand the reduced data to overwrite this map. Return self for chaining.
 	static expandFromData = function(data) {
 		clear();
 		var dataKeys = data[0],
@@ -184,7 +258,9 @@ function Map() constructor {
 		return self;
 	};
 	
-	// Deep copy from another map
+	///@func copyDeep(source)
+	///@param {Struct.Map} source The map to copy from.
+	///@desc Deep copy from another map.
 	static copyDeep = function(source) {
 		delete _data;
 		delete _exists;
@@ -205,14 +281,18 @@ function Map() constructor {
 		_keysCachePos = source._keysCachePos;
 	};
 	
-	// Deep clone of this map
+	///@func cloneDeep()
+	///@return {Struct.Map}
+	///@desc Return a deep clone of this map.
 	static cloneDeep = function() {
 		var theClone = new Map();
 		theClone.copyDeep(self);
 		return theClone;
 	}
 	
-	// Load from data string
+	///@func read(datastr)
+	///@param {String} datastr The data string to use.
+	///@desc Load from the given data string into this map.
 	static read = function(datastr) {
 		var data = json_parse(datastr);
 		if (!is_struct(data)) throw new IncompatibleDataException(instanceof(self), typeof(data));
@@ -220,12 +300,16 @@ function Map() constructor {
 		expandFromData(data.d);
 	};
 	
-	// Save into data string
+	///@func write()
+	///@return {String}
+	///@desc Save this map into data string and return it.
 	static write = function() {
 		return lds_write(self);
 	};
 	
-	// Perform a function for each entry in the map
+	///@func forEach(func)
+	///@param {Function} func A predicate taking the value and the key as arguments.
+	///@desc Perform a function for each entry in the map.
 	static forEach = function(func) {
 		for (var i = 0; i < _keysCachePos; ++i) {
 			var k = _keysCache[i];
@@ -239,8 +323,12 @@ function Map() constructor {
 		}
 	};
 	
-	// Replace each entry in the map with the return value of the function
-	// Delete those that cause the function to throw undefined
+	
+	///@func mapEach(func)
+	///@param {Function} func A predicate taking the value and the key as arguments.
+	///@desc Replace each entry in the map with the return value of the function.
+	///
+	///Delete those that cause the function to throw undefined.
 	static mapEach = function(func) {
 		for (var i = 0; i < _keysCachePos; ++i) {
 			var k = _keysCache[i];
@@ -267,12 +355,17 @@ function Map() constructor {
 		}
 	};
 	
-	// Return an iterator for this map
+	///@func iterator()
+	///@return {Struct.MapIterator}
+	///@desc Return an iterator for this map.
 	static iterator = function() {
 		return new MapIterator(self);
 	};
 }
 
+///@class MapIterator(map)
+///@param {Struct.Map} map The map to iterate over.
+///@desc Utility for iterating through the given map.
 function MapIterator(map) constructor {
 	_map = map;
 	_keyPos = 0;
@@ -288,10 +381,15 @@ function MapIterator(map) constructor {
 		}
 	}
 	
+	///@func hasNext()
+	///@return {Bool}
+	///@desc Return whether there are more entries to iterate.
 	static hasNext = function() {
 		return !is_undefined(key);
 	};
 	
+	///@func next()
+	///@desc Iterate to the next entry.
 	static next = function() {
 		var kc = _map._keysCache;
 		var kcSize = _map._keysCachePos;
@@ -302,18 +400,30 @@ function MapIterator(map) constructor {
 		value = is_undefined(key) ? undefined : _map.get(key);
 	};
 	
+	///@func set(val)
+	///@param {Any} val 
+	///@desc Set the value that the current iteration points to.
 	static set = function(val) {
 		_map.set(key, val);
 		value = val;
 	};
 	
+	///@func remove()
+	///@desc Remove the value that the current iteration points to.
 	static remove = function() {
 		_map.remove(key);
 	};
 }
 
-function MapKeyMissingException(_msg) constructor {
-	msg = _msg;
+///@class MapKeyMissingException(msg)
+///@param {String} msg The message to display.
+///@desc Exception for when trying to access a missing key in a map.
+function MapKeyMissingException(msg) constructor {
+	self.msg = msg;
+	
+	///@func toString()
+	///@return {String}
+	///@desc Return a message describing this exception.
 	static toString = function() {
 		return msg;
 	};
