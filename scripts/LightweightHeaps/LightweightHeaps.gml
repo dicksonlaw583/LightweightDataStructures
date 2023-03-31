@@ -1,22 +1,32 @@
+///@class Heap(...)
+///@param {Any} ... Pre-seeded value-priority pairs.
+///@desc A min-max heap class equivalent to DS Priority Queues.
 function Heap() constructor {
-	// Clear the heap
+	///@func clear()
+	///@desc Clear the heap.
 	static clear = function() {
 		_data = [undefined];
 		_priority = [undefined];
 		_length = 0;
 	};
 	
-	// Return whether the heap is empty
+	///@func empty()
+	///@return {Bool}
+	///@desc Return whether the heap is empty.
 	static empty = function() {
 		return _length == 0;
 	};
 	
-	// Return the size of the heap
+	///@func size()
+	///@return {Real}
+	///@desc Return the size of the heap.
 	static size = function() {
 		return _length;
 	};
 	
-	// Add entries to the heap
+	///@func add(...)
+	///@param {Any} ... 
+	///@desc Add entries to the heap.
 	static add = function() {
 		for (var i = 0; i < argument_count; i += 2) {
 			_data[++_length] = argument[i];
@@ -25,7 +35,10 @@ function Heap() constructor {
 		}
 	};
 	
-	// Change priority
+	///@func changePriority(val, priority)
+	///@param {Any} val The value to target.
+	///@param {Real} priority The new priority to set.
+	///@desc Change the priority of a value in the heap.
 	static changePriority = function(val, priority) {
 		var i = _length;
 		for (; i >= 1; --i) {
@@ -41,7 +54,9 @@ function Heap() constructor {
 		_pushDown(i);
 	};
 	
-	// Delete max
+	///@func deleteMax()
+	///@return {Any}
+	///@desc Delete the value of maximum priority and return it.
 	static deleteMax = function() {
 		var result = undefined;
 		switch (_length) {
@@ -69,7 +84,9 @@ function Heap() constructor {
 		return result;
 	};
 	
-	// Delete min
+	///@func deleteMin()
+	///@return {Any}
+	///@desc Delete the value of minimum priority and return it.
 	static deleteMin = function() {
 		var result = undefined;
 		switch (_length) {
@@ -87,7 +104,10 @@ function Heap() constructor {
 		return result;
 	};
 	
-	// Delete value
+	///@func deleteValue(val)
+	///@param {Any} val The value to remove.
+	///@return {Any}
+	///@desc Delete the given value from the heap and return it.
 	static deleteValue = function(val) {
 		if (_length == 0) {
 			throw new HeapEmptyException("Trying to remove a value from an empty heap.");
@@ -114,7 +134,9 @@ function Heap() constructor {
 		return result;
 	};
 	
-	// Find max
+	///@func findMax()
+	///@return {Any}
+	///@desc Return the value with the highest priority in the heap.
 	static findMax = function() {
 		switch (_length) {
 			case 0: throw new HeapEmptyException("Trying to get max from an empty heap.");
@@ -123,18 +145,29 @@ function Heap() constructor {
 				return (_priority[2] > _priority[3]) ? _data[2] : _data[3];
 		}
 	};
+	///@func getMax()
+	///@return {Any}
+	///@desc Return the value with the highest priority in the heap.
 	static getMax = findMax;
 	
-	// Find min
+	///@func findMin()
+	///@return {Any}
+	///@desc Return the value with the lowest priority in the heap.
 	static findMin = function() {
 		if (_length == 0) {
 			throw new HeapEmptyException("Trying to get min from an empty heap.");
 		}
 		return _data[1];
 	};
+	///@func getMin()
+	///@return {Any}
+	///@desc Return the value with the lowest priority in the heap.
 	static getMin = findMin;
 	
-	// Find value
+	///@func findValue(val)
+	///@param {Any} val The value to find.
+	///@return {Real}
+	///@desc Return the priority associated with the given value.
 	static findValue = function(val) {
 		if (_length == 0) {
 			throw new HeapEmptyException("Trying to get a value from an empty heap.");
@@ -150,8 +183,15 @@ function Heap() constructor {
 		}
 		return _priority[i];
 	};
+	///@func findPriority(val)
+	///@param {Any} val The value to find.
+	///@return {Real}
+	///@desc Return the priority associated with the given value.
+	static findPriority = findValue;
 	
-	// Shallow copy from another heap
+	///@func copy(source)
+	///@param {Struct.Heap} source The heap to copy from.
+	///@desc Shallow copy from another heap.
 	static copy = function(source) {
 		_length = source._length;
 		_data = array_create(1+_length, undefined);
@@ -162,14 +202,18 @@ function Heap() constructor {
 		}
 	};
 	
-	// Return a shallow clone of this heap
+	///@func clone()
+	///@return {Struct.Heap}
+	///@desc Return a shallow clone of this heap.
 	static clone = function() {
 		var theClone = new Heap();
 		theClone.copy(self);
 		return theClone;
 	};
 	
-	// Reduce this heap to a representation in basic data types
+	///@func reduceToData()
+	///@return {Array}
+	///@desc Return a reduction of this heap to a representation in basic data types.
 	static reduceToData = function() {
 		var priorityArray = array_create(_length);
 		__lds_array_copy__(priorityArray, 0, _priority, 1, _length);
@@ -177,10 +221,15 @@ function Heap() constructor {
 		for (var i = _length; i >= 1; --i) {
 			dataArray[i-1] = lds_reduce(_data[i]);
 		}
+		///Feather disable GM1045
 		return [priorityArray, dataArray];
+		///Feather enable GM1045
 	};
 	
-	// Expand the data to overwrite this heap
+	///@func expandFromData(data)
+	///@param {Array} data 
+	///@return {Struct.Heap}
+	///@desc Expand the reduced data to overwrite this heap. Return self for chaining.
 	static expandFromData = function(data) {
 		_length = array_length(data[0]);
 		array_resize(_priority, 1+_length);
@@ -193,7 +242,9 @@ function Heap() constructor {
 		return self;
 	};
 	
-	// Deep copy from another heap
+	///@func copyDeep(source)
+	///@param {Struct.Heap} source The heap to copy from.
+	///@desc Deep copy from another heap.
 	static copyDeep = function(source) {
 		_length = source._length;
 		_data = array_create(1+_length, undefined);
@@ -207,14 +258,18 @@ function Heap() constructor {
 		}
 	};
 	
-	// Return a deep clone of this heap
+	///@func cloneDeep()
+	///@return {Struct.Heap}
+	///@desc Return a deep clone of this heap.
 	static cloneDeep = function() {
 		var theClone = new Heap();
 		theClone.copyDeep(self);
 		return theClone;
 	};
 	
-	// Load from data string
+	///@func read(datastr)
+	///@param {String} datastr The data string to load from.
+	///@desc Load from the given data string.
 	static read = function(datastr) {
 		var data = json_parse(datastr);
 		if (!is_struct(data)) throw new IncompatibleDataException(instanceof(self), typeof(data));
@@ -222,20 +277,27 @@ function Heap() constructor {
 		expandFromData(data.d);
 	};
 	
-	// Save into data string
+	///@func write()
+	///@return {String}
+	///@desc Save into data string and return it.
 	static write = function() {
 		return lds_write(self);
 	};
 	
-	
-	// (INTERNAL) Set up the heap
+	///@func _formHeap()
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Set up the heap
 	static _formHeap = function() {
 		for (var i = _length >> 1; i >= 1; --i) {
 			_pushDown(i);
 		}
 	};
 	
-	// (INTERNAL) Calculate level
+	///@func _level(i)
+	///@param {Real} i The internal heap position.
+	///@return {Real}
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Return the nesting level of the given heap position.
 	static _level = function(i) {
 		var lvl = -1;
 		do {
@@ -245,7 +307,11 @@ function Heap() constructor {
 		return lvl;
 	};
 	
-	// (INTERNAL) Swap two positions
+	///@func _swap(i, j)
+	///@param {Real} i The first internal heap position.
+	///@param {Real} j The second internal heap position.
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Swap two heap positions.
 	static _swap = function(i, j) {
 		var q = _data[i];
 		_data[i] = _data[j];
@@ -255,7 +321,10 @@ function Heap() constructor {
 		_priority[j] = q;
 	};
 	
-	// (INTERNAL) Push down
+	///@func _pushDown(i)
+	///@param {Real} i The first internal heap position
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push down
 	static _pushDown = function(i) {
 		if (_level(i) mod 2 == 0) {
 			_pushDownMin(i);
@@ -264,7 +333,10 @@ function Heap() constructor {
 		}
 	};
 	
-	// (INTERNAL) Push down min
+	///@func _pushDownMin(_m)
+	///@param {Real} _m The internal min heap position.
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push down min
 	static _pushDownMin = function(_m) {
 		var m = _m;
 		// While m has children
@@ -296,7 +368,10 @@ function Heap() constructor {
 		}
 	};
 	
-	// (INTERNAL) Push down max
+	///@func _pushDownMax(_m)
+	///@param {Real} _m The internal max heap position.
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push down max
 	static _pushDownMax = function(_m) {
 		var m = _m;
 		// While m has children
@@ -328,7 +403,10 @@ function Heap() constructor {
 		}
 	};
 	
-	// (INTERNAL) Push up
+	///@func _pushUp(i)
+	///@param {Real} i The internal heap position.
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push up
 	static _pushUp = function(i) {
 		// If i is not the root
 		if (i > 1) {
@@ -355,7 +433,10 @@ function Heap() constructor {
 		}
 	};
 	
-	// (INTERNAL) Push up min
+	///@func _pushUpMin(i)
+	///@param {Real} i The internal heap position.
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push up min
 	static _pushUpMin = function(i) {
 		// While i has a grandparent and i < grandparent
 		var grandpa = i >> 2;
@@ -366,7 +447,10 @@ function Heap() constructor {
 		}
 	};
 	
-	// (INTERNAL) Push up max
+	///@func _pushUpMax(i)
+	///@param {Real} i The internal heap position.
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push up max
 	static _pushUpMax = function(i) {
 		// While i has a grandparent and i > grandparent
 		var grandpa = i >> 2;
@@ -391,15 +475,29 @@ function Heap() constructor {
 	_formHeap();
 }
 
-function HeapValueNotFoundException(_msg) constructor {
-	msg = _msg;
+///@class HeapValueNotFoundException(msg)
+///@param {String} msg The message to display.
+///@desc Exception for when trying to access a value that doesn't exist in a heap.
+function HeapValueNotFoundException(msg) constructor {
+	self.msg = msg;
+	
+	///@func toString()
+	///@return {String}
+	///@desc Return a string message describing the exception.
 	static toString = function() {
 		return msg;
 	};
 }
 
-function HeapEmptyException(_msg) constructor {
-	msg = _msg;
+///@class HeapEmptyException(msg)
+///@param {String} msg The message to display.
+///@desc Exception for when trying to read or pop from an empty heap.
+function HeapEmptyException(msg) constructor {
+	self.msg = msg;
+	
+	///@func toString()
+	///@return {String}
+	///@desc Return a string message describing the exception.
 	static toString = function() {
 		return msg;
 	};
