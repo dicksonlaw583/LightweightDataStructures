@@ -1,4 +1,6 @@
 ///@func lds_test_all()
+///@return {Bool}
+///@desc Test all Lightweight Data Structure functionality. Return whether successful.
 function lds_test_all() {
 	global.__test_fails__ = 0;
 	var timeA, timeB;

@@ -1,4 +1,5 @@
 ///@func lds_test_file()
+///@desc Test Lightweight Data Structure file saving and loading routines.
 function lds_test_file(){
 	var testFile = working_directory + "testfile.bin";
 	var lds_roundtrip_file = function(filename, thing) {

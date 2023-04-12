@@ -1,4 +1,5 @@
 ///@func lds_test_heap()
+///@desc Test Lightweight Data Structure heaps.
 function lds_test_heap() {
 	var heap, heap2, expectedStressArray;
 	

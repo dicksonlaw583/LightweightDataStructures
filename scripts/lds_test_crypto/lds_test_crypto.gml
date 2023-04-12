@@ -1,4 +1,5 @@
 ///@func lds_test_crypto()
+///@desc Test Lightweight Data Structure encryption and decryption utilities.
 function lds_test_crypto(){
 	var lds_roundtrip = function(thing, key="foobar") {
 		return lds_decrypt(lds_encrypt(thing, key), key);

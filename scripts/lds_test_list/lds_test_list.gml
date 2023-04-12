@@ -1,4 +1,5 @@
 ///@func lds_test_list()
+///@desc Test Lightweight Data Structure lists.
 function lds_test_list() {
 	var list;
 	

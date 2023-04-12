@@ -1,4 +1,5 @@
 ///@func lds_test_map()
+///@desc Test Lightweight Data Structure maps.
 function lds_test_map() {
 	var map;
 	

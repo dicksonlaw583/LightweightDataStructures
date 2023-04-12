@@ -1,4 +1,5 @@
 ///@func lds_test_sort()
+///@desc Test the Lightweight Data Structure internal sorting kernel.
 function lds_test_sort() {
 	// Make sure it sorts properly
 	var arrayNumbers = [4, 9, 6, 8, 0, 7, 2, 5, 3, 1];

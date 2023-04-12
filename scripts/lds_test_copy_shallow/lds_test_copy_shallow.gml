@@ -1,4 +1,5 @@
 ///@func lds_test_copy_shallow()
+///@desc Test Lightweight Data Structure shallow-copy functions.
 function lds_test_copy_shallow() {
 	var target, source, nestedEntry;
 	
