@@ -7,6 +7,7 @@
     {"id":{"name":"lds_test_map","path":"scripts/lds_test_map/lds_test_map.yy",},"order":4,},
     {"id":{"name":"lds_test_shuffle","path":"scripts/lds_test_shuffle/lds_test_shuffle.yy",},"order":6,},
     {"id":{"name":"lds_test_grid","path":"scripts/lds_test_grid/lds_test_grid.yy",},"order":8,},
+    {"id":{"name":"LightweightDataStructures_Internal","path":"scripts/LightweightDataStructures_Internal/LightweightDataStructures_Internal.yy",},"order":9,},
     {"id":{"name":"GMAssert_Typecheck","path":"scripts/GMAssert_Typecheck/GMAssert_Typecheck.yy",},"order":6,},
     {"id":{"name":"__LDS_CONFIGS__","path":"scripts/__LDS_CONFIGS__/__LDS_CONFIGS__.yy",},"order":0,},
     {"id":{"name":"GMAssert_Comparison","path":"scripts/GMAssert_Comparison/GMAssert_Comparison.yy",},"order":1,},
@@ -60,13 +61,13 @@
   ],
   "Folders": [
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Libraries_config","folderPath":"folders/Libraries_config.yy","order":16,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"GMAssert","folderPath":"folders/Libraries_config/GMAssert.yy","order":3,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"LightweightDataStructures","folderPath":"folders/Libraries_config/LightweightDataStructures.yy","order":2,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Libraries_test","folderPath":"folders/Libraries_test.yy","order":17,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"LightweightDataStructures_test","folderPath":"folders/Libraries_test/LightweightDataStructures_test.yy","order":0,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Libraries","folderPath":"folders/Libraries.yy","order":15,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"LightweightDataStructures","folderPath":"folders/Libraries/LightweightDataStructures.yy","order":2,},
     {"resourceType":"GMFolder","resourceVersion":"1.0","name":"GMAssert","folderPath":"folders/Libraries/GMAssert.yy","order":3,},
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"GMAssert","folderPath":"folders/Libraries_config/GMAssert.yy","order":3,},
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"LightweightDataStructures","folderPath":"folders/Libraries/LightweightDataStructures.yy","order":2,},
   ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},

@@ -1,0 +1,9 @@
+{
+  "extensionId": {
+    "name": "LightweightDataStructures",
+    "path": "extensions/LightweightDataStructures/LightweightDataStructures.yy"
+  },
+  "resourceVersion": "1.0",
+  "resourceType": "GMExtensionConfigSet",
+  "configurables": null
+}
