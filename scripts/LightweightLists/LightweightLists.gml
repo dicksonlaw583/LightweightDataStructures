@@ -178,7 +178,7 @@ function List() constructor {
 	};
 	
 	///@func reduceToData()
-	///@return {Array}
+	///@return {Any}
 	///@desc Return a reduction of this list to a representation in basic data types.
 	static reduceToData = function() {
 		var _length = array_length(_data);
@@ -192,7 +192,7 @@ function List() constructor {
 	};
 	
 	///@func expandFromData(data)
-	///@param {Array} data The reduced data to expand.
+	///@param {Any} data The reduced data to expand.
 	///@return {Struct.List}
 	///@desc Expand the reduced data to overwrite this list. Return self for chaining.
 	static expandFromData = function(data) {

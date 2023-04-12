@@ -222,7 +222,7 @@ function Map() constructor {
 	}
 	
 	///@func reduceToData()
-	///@return {Array<Any>}
+	///@return {Any}
 	///@desc Return a reduction this map to a representation in basic data types.
 	static reduceToData = function() {
 		var keysArray = array_create(_size);

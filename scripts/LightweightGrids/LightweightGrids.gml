@@ -743,7 +743,7 @@ function Grid() constructor {
 	};
 
 	///@func reduceTodata()
-	///@return {Array}
+	///@return {Any}
 	///@desc Return a reduction of this grid to a representation in basic data types.
 	static reduceToData = function() {
 		var siz = _width*_height;
@@ -759,7 +759,7 @@ function Grid() constructor {
 	};
 	
 	///@func expandFromData(data)
-	///@param {Array} data The reduction data to receive
+	///@param {Any} data The reduction data to receive
 	///@return {Struct.Grid}
 	///@desc Expand the reduced data to overwrite this grid.
 	static expandFromData = function(data) {

@@ -212,7 +212,7 @@ function Heap() constructor {
 	};
 	
 	///@func reduceToData()
-	///@return {Array}
+	///@return {Any}
 	///@desc Return a reduction of this heap to a representation in basic data types.
 	static reduceToData = function() {
 		var priorityArray = array_create(_length);
@@ -227,7 +227,7 @@ function Heap() constructor {
 	};
 	
 	///@func expandFromData(data)
-	///@param {Array} data 
+	///@param {Any} data 
 	///@return {Struct.Heap}
 	///@desc Expand the reduced data to overwrite this heap. Return self for chaining.
 	static expandFromData = function(data) {

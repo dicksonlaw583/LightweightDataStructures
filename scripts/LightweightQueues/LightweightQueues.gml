@@ -92,7 +92,7 @@ function Queue() constructor {
 	};
 	
 	///@func reduceToData()
-	///@return {Array}
+	///@return {Any}
 	///@desc Return a reduction of this queue
 	static reduceToData = function() {
 		var _length = array_length(_data);
@@ -106,7 +106,7 @@ function Queue() constructor {
 	};
 	
 	///@func expandFromData(data)
-	///@param {Array} data
+	///@param {Any} data
 	///@return {Struct.Queue}
 	///@desc Expand the data to overwrite this queue
 	static expandFromData = function(data) {

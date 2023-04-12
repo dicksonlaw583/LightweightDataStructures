@@ -18,7 +18,6 @@
     {"id":{"name":"GMAssert_Internal","path":"scripts/GMAssert_Internal/GMAssert_Internal.yy",},"order":5,},
     {"id":{"name":"LightweightSerializers","path":"scripts/LightweightSerializers/LightweightSerializers.yy",},"order":6,},
     {"id":{"name":"LightweightHeaps","path":"scripts/LightweightHeaps/LightweightHeaps.yy",},"order":2,},
-    {"id":{"name":"LightweightDataStructures","path":"extensions/LightweightDataStructures/LightweightDataStructures.yy",},"order":8,},
     {"id":{"name":"lds_test_reduce","path":"scripts/lds_test_reduce/lds_test_reduce.yy",},"order":9,},
     {"id":{"name":"LightweightMaps","path":"scripts/LightweightMaps/LightweightMaps.yy",},"order":3,},
     {"id":{"name":"GMAssert_Containment","path":"scripts/GMAssert_Containment/GMAssert_Containment.yy",},"order":2,},

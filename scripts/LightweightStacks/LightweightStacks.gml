@@ -90,7 +90,7 @@ function Stack() constructor {
 	};
 	
 	///@func reduceToData()
-	///@return {Array}
+	///@return {Any}
 	///@desc Return a data reduction of this stack's contents as an array.
 	static reduceToData = function() {
 		var _length = array_length(_data);
@@ -104,7 +104,7 @@ function Stack() constructor {
 	};
 	
 	///@func expandFromData(data)
-	///@param {Array} data 
+	///@param {Any} data 
 	///@return {Struct.Stack}
 	///@desc Expand the reduced data to overwrite this stack, then return self for chaining.
 	static expandFromData = function(data) {
