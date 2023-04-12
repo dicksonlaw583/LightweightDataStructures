@@ -14,6 +14,7 @@
     {"id":{"name":"LightweightGrids","path":"scripts/LightweightGrids/LightweightGrids.yy",},"order":5,},
     {"id":{"name":"GMAssert_Exceptions","path":"scripts/GMAssert_Exceptions/GMAssert_Exceptions.yy",},"order":4,},
     {"id":{"name":"LightweightLists","path":"scripts/LightweightLists/LightweightLists.yy",},"order":4,},
+    {"id":{"name":"lds_test_crypto","path":"scripts/lds_test_crypto/lds_test_crypto.yy",},"order":13,},
     {"id":{"name":"LightweightQueues","path":"scripts/LightweightQueues/LightweightQueues.yy",},"order":1,},
     {"id":{"name":"GMAssert_Internal","path":"scripts/GMAssert_Internal/GMAssert_Internal.yy",},"order":5,},
     {"id":{"name":"LightweightSerializers","path":"scripts/LightweightSerializers/LightweightSerializers.yy",},"order":6,},

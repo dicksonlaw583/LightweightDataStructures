@@ -15,6 +15,7 @@ function lds_test_all() {
 	lds_test_reduce();
 	lds_test_copy_shallow();
 	lds_test_copy_deep();
+	lds_test_crypto();
 	
 	timeB = current_time;
 	show_debug_message("Lightweight Data Structure tests done in " + string(timeB-timeA) + "ms.");
