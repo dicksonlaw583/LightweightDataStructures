@@ -79,7 +79,7 @@ function List() constructor {
 	};
 
 	///@func findIndex(val)
-	///@param {Real} val The value to find.
+	///@param {Any} val The value to find.
 	///@return {Real}
 	///@desc Return the index at which the given value is found. If not found, return -1.
 	static findIndex = function(val) {
