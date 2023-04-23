@@ -1,7 +1,6 @@
-/**
- * Lightweight Stack class equivalent to DS Stacks.
- * @param {any} ... (optional) Contents to start the stack with, from the top down.
- */
+///@class Stack(...)
+///@param {any} ... (optional) Contents to start the stack with, from the top down.
+///@desc Lightweight Stack class equivalent to DS Stacks.
 function Stack() constructor {
 	// Set up basic properties and starting entries
 	_canonType = "Stack";
@@ -12,6 +11,7 @@ function Stack() constructor {
 	}
 	
 	///@func size()
+	///@self Stack
 	///@return {Real}
 	///@desc Get the size of this stack.
 	static size = function() {
@@ -19,6 +19,7 @@ function Stack() constructor {
 	};
 	
 	///@func clear()
+	///@self Stack
 	///@desc Clear this stack.
 	static clear = function() {
 		_data = [];
@@ -32,6 +33,7 @@ function Stack() constructor {
 	};
 	
 	///@func push(...)
+	///@self Stack
 	///@param {Any} ... 
 	///@desc Push one or more entries onto this stack.
 	static push = function() {
@@ -41,6 +43,7 @@ function Stack() constructor {
 	};
 	
 	///@func pop()
+	///@self Stack
 	///@return {Any}
 	///@desc Pop from this stack and return the result.
 	static pop = function() {
@@ -53,6 +56,7 @@ function Stack() constructor {
 	};
 	
 	///@func top()
+	///@self Stack
 	///@return {Any}
 	///@desc Peek at the stack's top and return the result.
 	static top = function() {
@@ -62,15 +66,18 @@ function Stack() constructor {
 		return _data[0];
 	};
 	///@func get()
+	///@self Stack
 	///@return {Any}
 	///@desc Peek at the stack's top and return the result.
 	static get = top;
 	///@func peek()
+	///@self Stack
 	///@return {Any}
 	///@desc Peek at the stack's top and return the result.
 	static peek = top;
 	
 	///@func copy(source)
+	///@self Stack
 	///@param {Struct.Stack} source 
 	///@desc Clear the stack and shallow-copy contents from another stack.
 	static copy = function(source) {
@@ -81,6 +88,7 @@ function Stack() constructor {
 	};
 	
 	///@func clone()
+	///@self Stack
 	///@return {Struct.Stack}
 	///@desc Return a shallow clone of this stack
 	static clone = function() {
@@ -90,6 +98,7 @@ function Stack() constructor {
 	};
 	
 	///@func reduceToData()
+	///@self Stack
 	///@return {Any}
 	///@desc Return a data reduction of this stack's contents as an array.
 	static reduceToData = function() {
@@ -104,6 +113,7 @@ function Stack() constructor {
 	};
 	
 	///@func expandFromData(data)
+	///@self Stack
 	///@param {Any} data 
 	///@return {Struct.Stack}
 	///@desc Expand the reduced data to overwrite this stack, then return self for chaining.
@@ -117,6 +127,7 @@ function Stack() constructor {
 	};
 	
 	///@func copyDeep(source)
+	///@self Stack
 	///@param {Struct.Stack} source 
 	///@desc Clear the stack and deep-copy contents from another stack.
 	static copyDeep = function(source) {
@@ -129,6 +140,7 @@ function Stack() constructor {
 	};
 	
 	///@func cloneDeep()
+	///@self Stack
 	///@return {Struct.Stack}
 	///@desc Return a deep clone of this stack.
 	static cloneDeep = function() {
@@ -138,6 +150,7 @@ function Stack() constructor {
 	};
 	
 	///@func read(datastr)
+	///@self Stack
 	///@param {String} datastr The data string to read from.
 	///@desc Load from data string.
 	static read = function(datastr) {
@@ -148,6 +161,7 @@ function Stack() constructor {
 	};
 	
 	///@func write()
+	///@self Stack
 	///@return {String}
 	///@desc Save into data string and return it.
 	static write = function() {
@@ -162,6 +176,7 @@ function StackEmptyException(msg) constructor {
 	self.msg = msg;
 	
 	///@func toString()
+	///@self StackEmptyException
 	///@return {String}
 	///@desc Return the message carried by this exception.
 	static toString = function() {
