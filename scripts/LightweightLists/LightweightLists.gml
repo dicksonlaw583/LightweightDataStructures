@@ -1,5 +1,5 @@
 ///@class List(...)
-///@param {Any} ... Values to seed the list with.
+///@param {Any*} ... Values to seed the list with.
 ///@desc A Lightweight list class equivalent to a DS List.
 function List() constructor {
 	// Set up basic properties and starting entries
@@ -11,12 +11,14 @@ function List() constructor {
 	}
 
 	///@func clear()
+	///@self List
 	///@desc Clear this list.
 	static clear = function() {
 		_data = [];
 	};
 
 	///@func empty()
+	///@self List
 	///@return {Bool}
 	///@desc Return whether this list is empty.
 	static empty = function() {
@@ -24,6 +26,7 @@ function List() constructor {
 	};
 
 	///@func size()
+	///@self List
 	///@return {Real}
 	///@desc Return the size of this list.
 	static size = function() {
@@ -31,6 +34,7 @@ function List() constructor {
 	};
 
 	///@func add(...)
+	///@self List
 	///@param {Any} ... Values to add.
 	///@desc Append any number of entries to the back of the list.
 	static add = function() {
@@ -40,6 +44,7 @@ function List() constructor {
 	};
 
 	///@func _normPos(pos)
+	///@self List
 	///@param {Real} pos
 	///@return {Real}
 	///@ignore
@@ -53,6 +58,7 @@ function List() constructor {
 	};
 
 	///@func set(pos, val)
+	///@self List
 	///@param {Real} pos The position to set.
 	///@param {Any} val The new value to set.
 	///@desc Set the value at the given position.
@@ -69,6 +75,7 @@ function List() constructor {
 	};
 
 	///@func remove(pos)
+	///@self List
 	///@param {Real} pos The position to remove at.
 	///@desc Remove the entry at the given position.
 	static remove = function(pos) {
@@ -79,6 +86,7 @@ function List() constructor {
 	};
 
 	///@func findIndex(val)
+	///@self List
 	///@param {Any} val The value to find.
 	///@return {Real}
 	///@desc Return the index at which the given value is found. If not found, return -1.
@@ -91,6 +99,7 @@ function List() constructor {
 	};
 
 	///@func findValue(pos)
+	///@self List
 	///@param {Real} pos The position to fetch.
 	///@return {Any}
 	///@desc Return the value at the given position.
@@ -98,12 +107,14 @@ function List() constructor {
 		return _data[_normPos(pos)];
 	};
 	///@func get(pos)
+	///@self List
 	///@param {Real} pos The position to fetch.
 	///@return {Any}
 	///@desc Return the value at the given position.
 	static get = findValue;
 
 	///@func insert(pos, val)
+	///@self List
 	///@param {Real} pos The position to insert at.
 	///@param {Any} val The value to insert.
 	///@desc Insert a value at the given position, pushing back other entries after it.
@@ -116,6 +127,7 @@ function List() constructor {
 	};
 
 	///@func replace(pos, val)
+	///@self List
 	///@param {Real} pos The position to replace.
 	///@param {Any} val The new replacement value.
 	///@desc Replace the value at the given position.
@@ -124,6 +136,7 @@ function List() constructor {
 	};
 
 	///@func toArray()
+	///@self List
 	///@return {Array}
 	///@desc Return the equivalent array of this list.
 	static toArray = function() {
@@ -134,12 +147,14 @@ function List() constructor {
 	};
 
 	///@func shuffle()
+	///@self List
 	///@desc Shuffle the entries in this list.
 	static shuffle = function() {
 		__lds_array_shuffle__(_data);
 	};
 
 	///@func exists(val)
+	///@self List
 	///@param {Any} val The value to look for.
 	///@return {Bool}
 	///@desc Return whether the given value is in the list.
@@ -151,7 +166,8 @@ function List() constructor {
 	};
 
 	///@func sort(ascend, keyer, comparer)
-	///@param {Bool} ascend Whether to sort uupwards (true, default) or downwards (false).
+	///@self List
+	///@param {Bool} ascend Whether to sort upwards (true, default) or downwards (false).
 	///@param {Function,Undefined} keyer (optional) A method returning a reference value to sort by.
 	///@param {Function,Undefined} comparer (optional) A method for comparing a and b, returning true if a > b.
 	///@desc Sort this list.
@@ -160,6 +176,7 @@ function List() constructor {
 	};
 	
 	///@func copy(source)
+	///@self List
 	///@param {Struct.List} source The list to copy from.
 	///@desc Shallow copy from another list.
 	static copy = function(source) {
@@ -169,6 +186,7 @@ function List() constructor {
 	};
 	
 	///@func clone()
+	///@self List
 	///@return {Struct.List}
 	///@desc Return a shallow clone of this list.
 	static clone = function() {
@@ -178,6 +196,7 @@ function List() constructor {
 	};
 	
 	///@func reduceToData()
+	///@self List
 	///@return {Any}
 	///@desc Return a reduction of this list to a representation in basic data types.
 	static reduceToData = function() {
@@ -192,6 +211,7 @@ function List() constructor {
 	};
 	
 	///@func expandFromData(data)
+	///@self List
 	///@param {Any} data The reduced data to expand.
 	///@return {Struct.List}
 	///@desc Expand the reduced data to overwrite this list. Return self for chaining.
@@ -205,6 +225,7 @@ function List() constructor {
 	};
 	
 	///@func copyDeep(source)
+	///@self List
 	///@param {Struct.List} source The list to copy from.
 	///@desc Deep copy from another list.
 	static copyDeep = function(source) {
@@ -217,6 +238,7 @@ function List() constructor {
 	};
 	
 	///@func cloneDeep()
+	///@self List
 	///@return {Struct.List}
 	///@desc Return a deep clone of this list.
 	static cloneDeep = function() {
@@ -226,6 +248,7 @@ function List() constructor {
 	};
 	
 	///@func read(datastr)
+	///@self List
 	///@param {String} datastr The data string to load from.
 	///@desc Load from the given data string into this list.
 	static read = function(datastr) {
@@ -236,6 +259,7 @@ function List() constructor {
 	};
 	
 	///@func write()
+	///@self List
 	///@return {String}
 	///@desc Save this list into a data string and return it.
 	static write = function() {
@@ -243,6 +267,7 @@ function List() constructor {
 	};
 	
 	///@func forEach(func)
+	///@self List
 	///@param {Function} func A predicate taking a list entry as an argument.
 	///@desc Perform a function for each entry in the list.
 	static forEach = function(func) {
@@ -257,6 +282,7 @@ function List() constructor {
 	};
 	
 	///@func mapEach(func)
+	///@self List
 	///@param {Function} func A predicate taking a list entry as an argument.
 	///@desc Replace each entry in the list with the return value of the function.
 	///
@@ -284,6 +310,7 @@ function List() constructor {
 	};
 	
 	///@func iterator()
+	///@self List
 	///@return {Struct.ListIterator}
 	///@desc Return an iterator for this list.
 	static iterator = function() {
@@ -301,6 +328,7 @@ function ListIterator(list) constructor {
 	_intact = true;
 	
 	///@func hasNext()
+	///@self ListIterator
 	///@return {Bool}
 	///@desc Return whether there are more entries to iterate.
 	static hasNext = function() {
@@ -308,6 +336,7 @@ function ListIterator(list) constructor {
 	};
 	
 	///@func next()
+	///@self ListIterator
 	///@desc Iterate to the next entry.
 	static next = function() {
 		if (_intact) {
@@ -318,6 +347,7 @@ function ListIterator(list) constructor {
 	};
 	
 	///@func set(val)
+	///@self ListIterator
 	///@param {Any} val 
 	///@desc Set the value that the current iteration points to.
 	static set = function(val) {
@@ -326,6 +356,7 @@ function ListIterator(list) constructor {
 	};
 	
 	///@func remove()
+	///@self ListIterator
 	///@desc Remove the value that the current iteration points to.
 	static remove = function() {
 		array_delete(_list._data, index, 1);
@@ -340,6 +371,7 @@ function ListIndexOutOfBoundsException(index) constructor {
 	self.index = index;
 	
 	///@func toString()
+	///@self ListIndexOutOfBoundsException
 	///@return {String}
 	///@desc Return a message describing this exception.
 	static toString = function() {
