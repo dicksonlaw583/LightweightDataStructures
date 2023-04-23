@@ -3,6 +3,7 @@
 ///@desc A min-max heap class equivalent to DS Priority Queues.
 function Heap() constructor {
 	///@func clear()
+	///@self Heap
 	///@desc Clear the heap.
 	static clear = function() {
 		_data = [undefined];
@@ -11,6 +12,7 @@ function Heap() constructor {
 	};
 	
 	///@func empty()
+	///@self Heap
 	///@return {Bool}
 	///@desc Return whether the heap is empty.
 	static empty = function() {
@@ -18,6 +20,7 @@ function Heap() constructor {
 	};
 	
 	///@func size()
+	///@self Heap
 	///@return {Real}
 	///@desc Return the size of the heap.
 	static size = function() {
@@ -25,6 +28,7 @@ function Heap() constructor {
 	};
 	
 	///@func add(...)
+	///@self Heap
 	///@param {Any} ... 
 	///@desc Add entries to the heap.
 	static add = function() {
@@ -36,6 +40,7 @@ function Heap() constructor {
 	};
 	
 	///@func changePriority(val, priority)
+	///@self Heap
 	///@param {Any} val The value to target.
 	///@param {Real} priority The new priority to set.
 	///@desc Change the priority of a value in the heap.
@@ -55,6 +60,7 @@ function Heap() constructor {
 	};
 	
 	///@func deleteMax()
+	///@self Heap
 	///@return {Any}
 	///@desc Delete the value of maximum priority and return it.
 	static deleteMax = function() {
@@ -85,6 +91,7 @@ function Heap() constructor {
 	};
 	
 	///@func deleteMin()
+	///@self Heap
 	///@return {Any}
 	///@desc Delete the value of minimum priority and return it.
 	static deleteMin = function() {
@@ -105,6 +112,7 @@ function Heap() constructor {
 	};
 	
 	///@func deleteValue(val)
+	///@self Heap
 	///@param {Any} val The value to remove.
 	///@return {Any}
 	///@desc Delete the given value from the heap and return it.
@@ -135,6 +143,7 @@ function Heap() constructor {
 	};
 	
 	///@func findMax()
+	///@self Heap
 	///@return {Any}
 	///@desc Return the value with the highest priority in the heap.
 	static findMax = function() {
@@ -146,11 +155,13 @@ function Heap() constructor {
 		}
 	};
 	///@func getMax()
+	///@self Heap
 	///@return {Any}
 	///@desc Return the value with the highest priority in the heap.
 	static getMax = findMax;
 	
 	///@func findMin()
+	///@self Heap
 	///@return {Any}
 	///@desc Return the value with the lowest priority in the heap.
 	static findMin = function() {
@@ -160,11 +171,13 @@ function Heap() constructor {
 		return _data[1];
 	};
 	///@func getMin()
+	///@self Heap
 	///@return {Any}
 	///@desc Return the value with the lowest priority in the heap.
 	static getMin = findMin;
 	
 	///@func findValue(val)
+	///@self Heap
 	///@param {Any} val The value to find.
 	///@return {Real}
 	///@desc Return the priority associated with the given value.
@@ -184,12 +197,14 @@ function Heap() constructor {
 		return _priority[i];
 	};
 	///@func findPriority(val)
+	///@self Heap
 	///@param {Any} val The value to find.
 	///@return {Real}
 	///@desc Return the priority associated with the given value.
 	static findPriority = findValue;
 	
 	///@func copy(source)
+	///@self Heap
 	///@param {Struct.Heap} source The heap to copy from.
 	///@desc Shallow copy from another heap.
 	static copy = function(source) {
@@ -203,6 +218,7 @@ function Heap() constructor {
 	};
 	
 	///@func clone()
+	///@self Heap
 	///@return {Struct.Heap}
 	///@desc Return a shallow clone of this heap.
 	static clone = function() {
@@ -212,6 +228,7 @@ function Heap() constructor {
 	};
 	
 	///@func reduceToData()
+	///@self Heap
 	///@return {Any}
 	///@desc Return a reduction of this heap to a representation in basic data types.
 	static reduceToData = function() {
@@ -227,6 +244,7 @@ function Heap() constructor {
 	};
 	
 	///@func expandFromData(data)
+	///@self Heap
 	///@param {Any} data 
 	///@return {Struct.Heap}
 	///@desc Expand the reduced data to overwrite this heap. Return self for chaining.
@@ -243,6 +261,7 @@ function Heap() constructor {
 	};
 	
 	///@func copyDeep(source)
+	///@self Heap
 	///@param {Struct.Heap} source The heap to copy from.
 	///@desc Deep copy from another heap.
 	static copyDeep = function(source) {
@@ -259,6 +278,7 @@ function Heap() constructor {
 	};
 	
 	///@func cloneDeep()
+	///@self Heap
 	///@return {Struct.Heap}
 	///@desc Return a deep clone of this heap.
 	static cloneDeep = function() {
@@ -268,6 +288,7 @@ function Heap() constructor {
 	};
 	
 	///@func read(datastr)
+	///@self Heap
 	///@param {String} datastr The data string to load from.
 	///@desc Load from the given data string.
 	static read = function(datastr) {
@@ -278,6 +299,7 @@ function Heap() constructor {
 	};
 	
 	///@func write()
+	///@self Heap
 	///@return {String}
 	///@desc Save into data string and return it.
 	static write = function() {
@@ -285,6 +307,7 @@ function Heap() constructor {
 	};
 	
 	///@func _formHeap()
+	///@self Heap
 	///@ignore
 	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Set up the heap
 	static _formHeap = function() {
@@ -294,6 +317,7 @@ function Heap() constructor {
 	};
 	
 	///@func _level(i)
+	///@self Heap
 	///@param {Real} i The internal heap position.
 	///@return {Real}
 	///@ignore
@@ -308,6 +332,7 @@ function Heap() constructor {
 	};
 	
 	///@func _swap(i, j)
+	///@self Heap
 	///@param {Real} i The first internal heap position.
 	///@param {Real} j The second internal heap position.
 	///@ignore
@@ -322,6 +347,7 @@ function Heap() constructor {
 	};
 	
 	///@func _pushDown(i)
+	///@self Heap
 	///@param {Real} i The first internal heap position
 	///@ignore
 	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push down
@@ -334,6 +360,7 @@ function Heap() constructor {
 	};
 	
 	///@func _pushDownMin(_m)
+	///@self Heap
 	///@param {Real} _m The internal min heap position.
 	///@ignore
 	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push down min
@@ -369,6 +396,7 @@ function Heap() constructor {
 	};
 	
 	///@func _pushDownMax(_m)
+	///@self Heap
 	///@param {Real} _m The internal max heap position.
 	///@ignore
 	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push down max
@@ -404,6 +432,7 @@ function Heap() constructor {
 	};
 	
 	///@func _pushUp(i)
+	///@self Heap
 	///@param {Real} i The internal heap position.
 	///@ignore
 	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push up
@@ -434,6 +463,7 @@ function Heap() constructor {
 	};
 	
 	///@func _pushUpMin(i)
+	///@self Heap
 	///@param {Real} i The internal heap position.
 	///@ignore
 	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push up min
@@ -448,6 +478,7 @@ function Heap() constructor {
 	};
 	
 	///@func _pushUpMax(i)
+	///@self Heap
 	///@param {Real} i The internal heap position.
 	///@ignore
 	///@desc (INTERNAL: Lightweight Data Structures - Heaps) Push up max
@@ -482,6 +513,7 @@ function HeapValueNotFoundException(msg) constructor {
 	self.msg = msg;
 	
 	///@func toString()
+	///@self HeapValueNotFoundException
 	///@return {String}
 	///@desc Return a string message describing the exception.
 	static toString = function() {
@@ -496,6 +528,7 @@ function HeapEmptyException(msg) constructor {
 	self.msg = msg;
 	
 	///@func toString()
+	///@self HeapEmptyException
 	///@return {String}
 	///@desc Return a string message describing the exception.
 	static toString = function() {
