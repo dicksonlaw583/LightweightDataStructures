@@ -18,6 +18,7 @@ function Map() constructor {
 	}
 	
 	///@func clear()
+	///@self Map
 	///@desc Clear this map.
 	static clear = function() {
 		delete _data;
@@ -30,6 +31,7 @@ function Map() constructor {
 	};
 	
 	///@func size()
+	///@self Map
 	///@return {Real}
 	///@desc Return the size of this map.
 	static size = function() {
@@ -37,6 +39,7 @@ function Map() constructor {
 	};
 	
 	///@func empty()
+	///@self Map
 	///@return {Bool}
 	///@desc Return whether this map is empty.
 	static empty = function() {
@@ -44,6 +47,7 @@ function Map() constructor {
 	};
 	
 	///@func get(k)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@return {Any}
 	///@desc Return the value stored under the given key.
@@ -55,12 +59,14 @@ function Map() constructor {
 		return variable_struct_get(_data, kn);
 	};
 	///@func findValue(k)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@return {Any}
 	///@desc Return the value stored under the given key.
 	static findValue = get;
 	
 	///@func setValue(k, v)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@param {Any} v The value to store.
 	///@desc Store a value under the given key in this map.
@@ -74,17 +80,20 @@ function Map() constructor {
 		}
 	}
 	///@func add(k, v)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@param {Any} v The value to store.
 	///@desc Store a value under the given key in this map.
 	static add = set;
 	///@func replace(k, v)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@param {Any} v The value to store.
 	///@desc Store a value under the given key in this map.
 	static replace = set;
 	
 	///@func exists(k)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@return {Bool}
 	///@desc Return whether the given key exists in this map.
@@ -94,6 +103,7 @@ function Map() constructor {
 	};
 	
 	///@func remove(k)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@desc Remove the value under the given key in this map.
 	static remove = function(k) {
@@ -111,6 +121,7 @@ function Map() constructor {
 	};
 	
 	///@func findFirst()
+	///@self Map
 	///@return {String,Undefined}
 	///@desc Return the first key in this map. If not found, return undefined.
 	static findFirst = function() {
@@ -123,6 +134,7 @@ function Map() constructor {
 	};
 	
 	///@func findLast()
+	///@self Map
 	///@return {String,Undefined}
 	///@desc Return the last key in this map. If not found, return undefined.
 	static findLast = function() {
@@ -135,6 +147,7 @@ function Map() constructor {
 	};
 	
 	///@func findNext(k)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@return {String,Undefined}
 	///@desc Return the key after the given key in this map. If not found, return undefined.
@@ -154,6 +167,7 @@ function Map() constructor {
 	};
 	
 	///@func findPrevious(k)
+	///@self Map
 	///@param {String} k The key value to use.
 	///@return {String,Undefined}
 	///@desc Return the key before the given key in this map. If not found, return undefined.
@@ -173,6 +187,7 @@ function Map() constructor {
 	};
 	
 	///@func keys()
+	///@self Map
 	///@return {Array<String>}
 	///@desc Return an array of keys used in this map.
 	static keys = function() {
@@ -190,6 +205,7 @@ function Map() constructor {
 	};
 
 	///@func copy(source)
+	///@self Map
 	///@param {Struct.Map} source The map to copy from.
 	///@desc Shallow copy from another map.
 	static copy = function(source) {
@@ -213,6 +229,7 @@ function Map() constructor {
 	};
 	
 	///@func clone()
+	///@self Map
 	///@return {Struct.Map}
 	///@desc Return a shallow clone of this map.
 	static clone = function() {
@@ -222,6 +239,7 @@ function Map() constructor {
 	}
 	
 	///@func reduceToData()
+	///@self Map
 	///@return {Any}
 	///@desc Return a reduction this map to a representation in basic data types.
 	static reduceToData = function() {
@@ -239,6 +257,7 @@ function Map() constructor {
 	};
 	
 	///@func expandFromData(data)
+	///@self Map
 	///@param {Array<Any>} data
 	///@return {Struct.Map}
 	///@desc Expand the reduced data to overwrite this map. Return self for chaining.
@@ -259,6 +278,7 @@ function Map() constructor {
 	};
 	
 	///@func copyDeep(source)
+	///@self Map
 	///@param {Struct.Map} source The map to copy from.
 	///@desc Deep copy from another map.
 	static copyDeep = function(source) {
@@ -282,6 +302,7 @@ function Map() constructor {
 	};
 	
 	///@func cloneDeep()
+	///@self Map
 	///@return {Struct.Map}
 	///@desc Return a deep clone of this map.
 	static cloneDeep = function() {
@@ -291,6 +312,7 @@ function Map() constructor {
 	}
 	
 	///@func read(datastr)
+	///@self Map
 	///@param {String} datastr The data string to use.
 	///@desc Load from the given data string into this map.
 	static read = function(datastr) {
@@ -301,6 +323,7 @@ function Map() constructor {
 	};
 	
 	///@func write()
+	///@self Map
 	///@return {String}
 	///@desc Save this map into data string and return it.
 	static write = function() {
@@ -308,6 +331,7 @@ function Map() constructor {
 	};
 	
 	///@func forEach(func)
+	///@self Map
 	///@param {Function} func A predicate taking the value and the key as arguments.
 	///@desc Perform a function for each entry in the map.
 	static forEach = function(func) {
@@ -325,6 +349,7 @@ function Map() constructor {
 	
 	
 	///@func mapEach(func)
+	///@self Map
 	///@param {Function} func A predicate taking the value and the key as arguments.
 	///@desc Replace each entry in the map with the return value of the function.
 	///
@@ -356,6 +381,7 @@ function Map() constructor {
 	};
 	
 	///@func iterator()
+	///@self Map
 	///@return {Struct.MapIterator}
 	///@desc Return an iterator for this map.
 	static iterator = function() {
@@ -382,6 +408,7 @@ function MapIterator(map) constructor {
 	}
 	
 	///@func hasNext()
+	///@self MapIterator
 	///@return {Bool}
 	///@desc Return whether there are more entries to iterate.
 	static hasNext = function() {
@@ -389,6 +416,7 @@ function MapIterator(map) constructor {
 	};
 	
 	///@func next()
+	///@self MapIterator
 	///@desc Iterate to the next entry.
 	static next = function() {
 		var kc = _map._keysCache;
@@ -401,6 +429,7 @@ function MapIterator(map) constructor {
 	};
 	
 	///@func set(val)
+	///@self MapIterator
 	///@param {Any} val 
 	///@desc Set the value that the current iteration points to.
 	static set = function(val) {
@@ -409,6 +438,7 @@ function MapIterator(map) constructor {
 	};
 	
 	///@func remove()
+	///@self MapIterator
 	///@desc Remove the value that the current iteration points to.
 	static remove = function() {
 		_map.remove(key);
@@ -422,6 +452,7 @@ function MapKeyMissingException(msg) constructor {
 	self.msg = msg;
 	
 	///@func toString()
+	///@self MapKeyMissingException
 	///@return {String}
 	///@desc Return a message describing this exception.
 	static toString = function() {
