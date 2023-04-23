@@ -1,3 +1,6 @@
+///@class Queue(...)
+///@param {any} ... (optional) Contents to start the queue with, from the head down.
+///@desc Lightweight Queue class equivalent to DS Queues.
 function Queue() constructor {
 	// Set up basic properties and starting entries
 	_canonType = "Queue";
@@ -10,6 +13,7 @@ function Queue() constructor {
 	}
 	
 	///@func size()
+	///@self Queue
 	///@return {Real}
 	///@desc Get the size
 	static size = function() {
@@ -17,19 +21,24 @@ function Queue() constructor {
 	};
 	
 	///@func clear()
+	///@self Queue
 	///@desc Clear the queue.
 	static clear = function() {
 		_data = [];
 	};
 
 	///@func empty()
+	///@self Queue
 	///@return {Bool}
 	///@desc Return whether empty
 	static empty = function() {
 		return array_length(_data) == 0;
 	};
 	
-	// Add onto the queue
+	///@func enqueue(...)
+	///@self Queue
+	///@param {any*} ... Entries to add onto the queue
+	///@desc Add onto the queue
 	static enqueue = function() {
 		for (var i = 0; i < argument_count; ++i) {
 			array_push(_data, argument[i]);
@@ -37,6 +46,7 @@ function Queue() constructor {
 	};
 	
 	///@func dequeue()
+	///@self Queue
 	///@return {Any*}
 	///@desc Remove from the queue
 	static dequeue = function() {
@@ -49,6 +59,7 @@ function Queue() constructor {
 	};
 	
 	///@func head()
+	///@self Queue
 	///@return {Any*}
 	///@desc Get from the head of the queue
 	static head = function() {
@@ -58,11 +69,13 @@ function Queue() constructor {
 		return _data[0];
 	}
 	///@func get()
+	///@self Queue
 	///@return {Any*}
 	///@desc Alias of head()
 	static get = head;
 	
 	///@func tail()
+	///@self Queue
 	///@return {Any*}
 	///@desc Get from the tail of the queue
 	static tail = function() {
@@ -74,6 +87,7 @@ function Queue() constructor {
 	}
 
 	///@func copy(source)
+	///@self Queue
 	///@param {Struct.Queue} source
 	///@desc Shallow-copy from another queue
 	static copy = function(source) {
@@ -83,6 +97,7 @@ function Queue() constructor {
 	};
 	
 	///@func clone()
+	///@self Queue
 	///@return {Struct.Queue}
 	///@desc Return a shallow clone of this queue
 	static clone = function() {
@@ -92,6 +107,7 @@ function Queue() constructor {
 	};
 	
 	///@func reduceToData()
+	///@self Queue
 	///@return {Any}
 	///@desc Return a reduction of this queue
 	static reduceToData = function() {
@@ -106,6 +122,7 @@ function Queue() constructor {
 	};
 	
 	///@func expandFromData(data)
+	///@self Queue
 	///@param {Any} data
 	///@return {Struct.Queue}
 	///@desc Expand the data to overwrite this queue
@@ -119,6 +136,7 @@ function Queue() constructor {
 	};
 	
 	///@func copyDeep(source)
+	///@self Queue
 	///@param {Struct.Queue} source
 	///@desc Deep-copy from another queue
 	static copyDeep = function(source) {
@@ -131,6 +149,7 @@ function Queue() constructor {
 	};
 	
 	///@func cloneDeep()
+	///@self Queue
 	///@return {Struct.Queue}
 	///@desc Return a deep clone of this queue
 	static cloneDeep = function() {
@@ -140,6 +159,7 @@ function Queue() constructor {
 	};
 	
 	///@func read(datastr)
+	///@self Queue
 	///@param {String} datastr
 	///@desc Load from data string
 	static read = function(datastr) {
@@ -150,6 +170,7 @@ function Queue() constructor {
 	};
 	
 	///@func write()
+	///@self Queue
 	///@return {String}
 	///@desc Save into data string.
 	static write = function() {
@@ -164,6 +185,7 @@ function QueueEmptyException(msg) constructor {
 	self.msg = msg;
 	
 	///@func toString()
+	///@self QueueEmptyException
 	///@return {String}
 	///@desc Return a message describing this exception.
 	static toString = function() {
