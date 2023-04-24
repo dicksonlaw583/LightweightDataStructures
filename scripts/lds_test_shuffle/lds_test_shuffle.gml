@@ -1,4 +1,5 @@
 ///@func lds_test_shuffle()
+///@desc Test the Lightweight Data Structure internal shuffle kernel.
 function lds_test_shuffle() {
 	var got;
 	

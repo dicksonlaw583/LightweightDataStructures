@@ -1,4 +1,4 @@
-# Lightweight Data Structures v1.1.10
+# Lightweight Data Structures
 
 ## Overview
 
@@ -6,15 +6,15 @@ This library implements struct-based, GC-friendly equivalents of GameMaker Studi
 
 ## Requirements
 
-- GameMaker Studio 2.3.2 or higher
+- GameMaker Studio 2022 / 2.3.7 or higher
+
+For GameMaker Studio 2.3.2 - 2.3.6, use [v1.1.10]((https://github.com/dicksonlaw583/LightweightDataStructures/releases/v1.1.10)).
 
 For GameMaker Studio 2.3.0 or 2.3.1, you can only use v1.0.x versions of this library, which would also require [JSON Struct](https://github.com/dicksonlaw583/JsonStruct) v1.0.0 or higher.
 
 ## Installation
 
 Get the current asset package and associated documentation from [the releases page](https://github.com/dicksonlaw583/LightweightDataStructures/releases). Once you download the package, simply extract everything to your project, including the extension and the companion scripts.
-
-Alternatively, you can also download a ready-to-go version from [the YoYo Marketplace](https://marketplace.yoyogames.com/assets/9442/lightweight-data-structures). Extract everything as usual.
 
 ## Example
 
@@ -47,7 +47,7 @@ show_message(
 ## Contributing to Lightweight Data Structures
 
 - Clone this repository.
-- Open the project in GameMaker Studio 2.3 and make your additions/changes to the `LightweightDataStructures` extension and/or group. Also add the corresponding tests to the `LightweightDataStructures_test` group.
+- Open the project in GameMaker Studio LTS and make your additions/changes to the `LightweightDataStructures` group. Also add the corresponding tests to the `LightweightDataStructures_test` group.
 - Open a pull request here.
 
 

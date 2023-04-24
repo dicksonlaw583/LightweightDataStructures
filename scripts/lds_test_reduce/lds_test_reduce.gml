@@ -1,4 +1,5 @@
 ///@func lds_test_reduce()
+///@desc Test Lightweight Data Structure data reductions and expansions.
 function lds_test_reduce() {
 	
 	// Test basic reductions

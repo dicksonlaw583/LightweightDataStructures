@@ -1,6 +1,7 @@
 ///@func lds_test_heap()
+///@desc Test Lightweight Data Structure heaps.
 function lds_test_heap() {
-	var heap, heap2;
+	var heap, heap2, expectedStressArray;
 	
 	#region Test empty heap
 	heap = new Heap();
@@ -243,7 +244,7 @@ function lds_test_heap() {
 	#region Stress test
 	var stressTries = 200;
 	var stressArrayN = 50;
-	var expectedStressArray = array_create(stressArrayN);
+	expectedStressArray = array_create(stressArrayN);
 	var shuffledStressArray = array_create(stressArrayN);
 	var gotStressArray = array_create(stressArrayN, 0);
 	
@@ -265,7 +266,7 @@ function lds_test_heap() {
 	}
 	
 	// Stress test B (deleteMax)
-	var expectedStressArray = array_create(stressArrayN);
+	expectedStressArray = array_create(stressArrayN);
 	for (var i = 0; i < stressArrayN; ++i) {
 		expectedStressArray[@i] = stressArrayN-i;
 	}

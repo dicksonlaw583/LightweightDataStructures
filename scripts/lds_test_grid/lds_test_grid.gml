@@ -1,4 +1,5 @@
 ///@func lds_test_grid()
+///@desc Test Lightweight Data Structure grids.
 function lds_test_grid() {
 	var grid, grid2;
 

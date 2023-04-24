@@ -1,4 +1,5 @@
 ///@func lds_test_queue()
+///@desc Test Lightweight Data Structure queues.
 function lds_test_queue() {
 	var queue, queue2;
 	

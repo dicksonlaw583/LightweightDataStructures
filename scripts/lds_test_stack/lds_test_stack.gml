@@ -1,4 +1,5 @@
 ///@func lds_test_stack()
+///@desc Test Lightweight Data Structure stacks.
 function lds_test_stack() {
 	var stack, got;
 	

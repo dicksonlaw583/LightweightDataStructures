@@ -1,7 +1,16 @@
+///@class Grid(...)
+///@param {Any} ... The seeded content (see description)
+///@desc Lightweight Grid class equivalent to DS grids. The seeded content can be any of the following:
+///
+///- new Grid(): Empty 0x0 grid.
+///
+///- new Grid(w): Empty wx1 grid.
+///
+///- new Grid(w, h, ...): New wxh grid with content in row-major order.
 function Grid() constructor {
 	// Set up basic properties and starting entries
 	_canonType = "Grid";
-	_type = "List";
+	_type = "Grid";
 	switch (argument_count) {
 		case 0:
 			_width = 0;
@@ -24,25 +33,38 @@ function Grid() constructor {
 			}
 	}
 
-	// Clear
+	///@func clear(val)
+	///@self Grid
+	///@param val The value to set entries to.
+	///@desc Clear this grid with the given value.
 	static clear = function(val) {
 		var i = -1;
 		repeat (_width*_height) {
-			_data[++i] = val;		
+			_data[++i] = val;
 		}
 	};
 
-	// Width
+	///@func width()
+	///@self Grid
+	///@return {Real}
+	///@desc Return the width of this grid.
 	static width = function() {
 		return _width;
 	};
 
-	// Height
+	///@func height()
+	///@self Grid
+	///@return {Real}
+	///@desc Return the height of this grid.
 	static height = function() {
 		return _height;
 	};
 
-	// Resize
+	///@func resize(w, h)
+	///@self Grid
+	///@param {Real} w The new width.
+	///@param {Real} h The new height.
+	///@desc Resize this grid to the given dimensions.
 	static resize = function(w, h) {
 		var wh = w*h;
 		if (w == _width) {
@@ -60,14 +82,18 @@ function Grid() constructor {
 			for (var yy = min(_height, h)-1; yy >= 0; --yy) {
 				__lds_array_copy__(_newdata, yy*w, _data, yy*_width, copyWidth);
 			}
-			delete _data;
 			_data = _newdata;
 		}
 		_width = w;
 		_height = h;
 	};
 
-	// Set
+	///@func set(xx, yy, val)
+	///@self Grid
+	///@param {Real} xx The X position to set at.
+	///@param {Real} yy The Y position to set at.
+	///@param {Any} val The new value.
+	///@desc Set a new value at the given position.
 	static set = function(xx, yy, val) {
 		if (xx < 0 || yy < 0 || xx >= _width || yy >= _height) {
 			throw new GridIndexOutOfBoundsException(xx, yy);
@@ -75,7 +101,13 @@ function Grid() constructor {
 		_data[xx+yy*_width] = val;
 	};
 
-	// Set disk
+	///@func setDisk(xm, ym, r, val)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@param val The value to set to
+	///@desc Set a new value to all entries on the disk.
 	static setDisk = function(xm, ym, r, val) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -87,7 +119,14 @@ function Grid() constructor {
 		}
 	};
 
-	// Set region
+	///@func setRegion(x1, y1, x2, y2, val)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param val The value to set to
+	///@desc Set a new value to all entries on the region.
 	static setRegion = function(x1, y1, x2, y2, val) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -100,7 +139,16 @@ function Grid() constructor {
 		}
 	};
 	
-	// Set grid region
+	///@func setGridRegion(sourceGrid, x1, y1, x2, y2, xpos, ypos)
+	///@self Grid
+	///@param {Struct.Grid} sourceGrid The grid to copy from
+	///@param {Real} x1 X position of the source region's top-left corner
+	///@param {Real} y1 Y position of the source region's top-left corner
+	///@param {Real} x2 X position of the source region's bottom-right corner
+	///@param {Real} y2 Y position of the source region's bottom-right corner
+	///@param xpos X position of the target region's top-left corner
+	///@param ypos Y position of the target region's top-left corner
+	///@desc Set values from the region in the source grid into the given position in this grid.
 	static setGridRegion = function(sourceGrid, x1, y1, x2, y2, xpos, ypos) {
 		var sx1 = max(0, x1),
 			sy1 = max(0, y1),
@@ -123,7 +171,12 @@ function Grid() constructor {
 		}
 	};
 
-	// Get
+	///@func get(xx, yy)
+	///@self Grid
+	///@param {Real} xx The X position to get
+	///@param {Real} yy The Y position to get
+	///@return {Any}
+	///@desc Return the value at the given grid position.
 	static get = function(xx, yy) {
 		if (xx < 0 || yy < 0 || xx >= _width || yy >= _height) {
 			throw new GridIndexOutOfBoundsException(xx, yy);
@@ -131,7 +184,12 @@ function Grid() constructor {
 		return _data[xx+yy*_width];
 	};
 
-	// Add
+	///@func add(xx, yy, val)
+	///@self Grid
+	///@param {Real} xx The X position to get
+	///@param {Real} yy The X position to get
+	///@param {Any} val The value to add
+	///@desc Add the given value to the given grid position.
 	static add = function(xx, yy, val) {
 		if (xx < 0 || yy < 0 || xx >= _width || yy >= _height) {
 			throw new GridIndexOutOfBoundsException(xx, yy);
@@ -139,7 +197,13 @@ function Grid() constructor {
 		_data[xx+yy*_width] += val;
 	}
 
-	// Add disk
+	///@func addDisk(xm, ym, r, val)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@param {Any} val The value to add
+	///@desc Add the given value to all entries on the disk.
 	static addDisk = function(xm, ym, r, val) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -151,7 +215,14 @@ function Grid() constructor {
 		}
 	};
 
-	// Add region
+	///@func addRegion(x1, y1, x2, y2, val)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param {Any} val The value to add
+	///@desc Add the given value to all entries on the region.
 	static addRegion = function(x1, y1, x2, y2, val) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -164,7 +235,16 @@ function Grid() constructor {
 		}
 	};
 	
-	// Add grid region
+	///@func addGridRegion(sourceGrid, x1, y1, x2, y2, xpos, ypos)
+	///@self Grid
+	///@param {Struct.Grid} sourceGrid The grid to copy from
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param xpos X position of the target region's top-left corner
+	///@param ypos Y position of the target region's top-left corner
+	///@desc Add values from the region in the source grid into the given position in this grid.
 	static addGridRegion = function(sourceGrid, x1, y1, x2, y2, xpos, ypos) {
 		var sx1 = max(0, x1),
 			sy1 = max(0, y1),
@@ -189,7 +269,12 @@ function Grid() constructor {
 		}
 	};
 
-	// Multiply
+	///@func multiply(xx, yy, val)
+	///@self Grid
+	///@param {Real} xx X position to multiply
+	///@param {Real} yy Y position to multiply
+	///@param {Any} val The value to multiply by
+	///@desc Multiply the given grid position by the given value.
 	static multiply = function(xx, yy, val) {
 		if (xx < 0 || yy < 0 || xx >= _width || yy >= _height) {
 			throw new GridIndexOutOfBoundsException(xx, yy);
@@ -197,7 +282,13 @@ function Grid() constructor {
 		_data[xx+yy*_width] *= val;
 	}
 
-	// Multiply disk
+	///@func multiplyDisk(xm, ym, r, val)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@param {Any} val The value to multiply by
+	///@desc Multiply entries in the disk by the given value.
 	static multiplyDisk = function(xm, ym, r, val) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -209,7 +300,14 @@ function Grid() constructor {
 		}
 	};
 
-	// Multiply region
+	///@func multiplyRegion(x1, y1, x2, y2, val)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param {Any} val The value to multiply by
+	///@desc Multiply entries in the region by the given value.
 	static multiplyRegion = function(x1, y1, x2, y2, val) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -222,7 +320,16 @@ function Grid() constructor {
 		}
 	};
 	
-	// Multiply grid region
+	///@func multiplyGridRegion(sourceGrid, x1, y1, x2, y2, xpos, ypos)
+	///@self Grid
+	///@param {Struct.Grid} sourceGrid The grid to copy from
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param xpos X position of the target region's top-left corner
+	///@param ypos Y position of the target region's top-left corner
+	///@desc Multiply values from the region in the source grid into the given position in this grid.
 	static multiplyGridRegion = function(sourceGrid, x1, y1, x2, y2, xpos, ypos) {
 		var sx1 = max(0, x1),
 			sy1 = max(0, y1),
@@ -247,7 +354,15 @@ function Grid() constructor {
 		}
 	};
 
-	// Value in region
+	///@func valueExists(x1, y1, x2, y2, val)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param {Any} val The value to search for
+	///@return {Bool}
+	///@desc Return whether the given value in in the region.
 	static valueExists = function(x1, y1, x2, y2, val) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -263,7 +378,14 @@ function Grid() constructor {
 		return false;
 	};
 	
-	// Value in disk
+	///@func valueDiskExists(xm, ym, r, val)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@param {Any} val The value to search for
+	///@return {Bool}
+	///@desc Return whether the given value in in the disk.
 	static valueDiskExists = function(xm, ym, r, val) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -278,7 +400,15 @@ function Grid() constructor {
 		return false;
 	};
 	
-	// Value's X in region
+	///@func valueX(x1, y1, x2, y2, val)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param {Any} val The value to search for
+	///@return {Real}
+	///@desc Return the value's X position in the region. If not found, return -1.
 	static valueX = function(x1, y1, x2, y2, val) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -294,7 +424,15 @@ function Grid() constructor {
 		return -1;
 	};
 	
-	// Value's Y in region
+	///@func valueY(x1, y1, x2, y2, val)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@param {Any} val The value to search for
+	///@return {Real}
+	///@desc Return the value's Y position in the region. If not found, return -1.
 	static valueY = function(x1, y1, x2, y2, val) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -310,7 +448,14 @@ function Grid() constructor {
 		return -1;
 	};
 	
-	// Value's X in disk
+	///@func valueDiskX(xm, ym, r, val)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@param {Any} val The value to search for
+	///@return {Real}
+	///@desc Return the value's X position in the disk. If not found, return -1.
 	static valueDiskX = function(xm, ym, r, val) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -325,7 +470,14 @@ function Grid() constructor {
 		return -1;
 	};
 	
-	// Value's Y in disk
+	///@func valueDiskY(xm, ym, r, val)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@param {Any} val The value to search for
+	///@return {Real}
+	///@desc Return the value's Y position in the disk. If not found, return -1.
 	static valueDiskY = function(xm, ym, r, val) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -340,7 +492,14 @@ function Grid() constructor {
 		return -1;
 	};
 	
-	// Region's max
+	///@func getMax(x1, y1, x2, y2)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@return {Any}
+	///@desc Return the maximum value in the region.
 	static getMax = function(x1, y1, x2, y2) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -358,7 +517,14 @@ function Grid() constructor {
 		return _max;
 	};
 	
-	// Region's mean
+	///@func getMean(x1, y1, x2, y2)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@return {Real}
+	///@desc Return the mean value of the region.
 	static getMean = function(x1, y1, x2, y2) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -373,7 +539,14 @@ function Grid() constructor {
 		return _sum/((_x2-_x1+1)*(_y2-_y1+1));
 	};
 	
-	// Region's min
+	///@func getMin(x1, y1, x2, y2)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@return {Any}
+	///@desc Return the minimum value in the region.
 	static getMin = function(x1, y1, x2, y2) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -391,7 +564,14 @@ function Grid() constructor {
 		return _min;
 	};
 	
-	// Region's sum
+	///@func getSum(x1, y1, x2, y2)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@return {Any}
+	///@desc Return the sum of values in the region.
 	static getSum = function(x1, y1, x2, y2) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -406,7 +586,13 @@ function Grid() constructor {
 		return _sum;
 	};
 	
-	// Disk's max
+	///@func getDiskMax(xm, ym, r)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@return {Any}
+	///@desc Return the maximum value in the disk.
 	static getDiskMax = function(xm, ym, r) {
 		var _max = undefined;
 		var Y = min(_height-ym-1, r);
@@ -423,7 +609,13 @@ function Grid() constructor {
 		return _max;
 	};
 	
-	// Disk's mean
+	///@func getDiskMean(xm, ym, r)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@return {Real}
+	///@desc Return the mean value of the disk.
 	static getDiskMean = function(xm, ym, r) {
 		var _sum = 0,
 			_count = 0;
@@ -439,7 +631,13 @@ function Grid() constructor {
 		return _sum/_count;
 	};
 	
-	// Disk's min
+	///@func getDiskMin(xm, ym, r)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@return {Any}
+	///@desc Return the minimum value in the disk.
 	static getDiskMin = function(xm, ym, r) {
 		var _min = undefined;
 		var Y = min(_height-ym-1, r);
@@ -456,7 +654,13 @@ function Grid() constructor {
 		return _min;
 	};
 	
-	// Disk's sum
+	///@func getDiskSum(xm, ym, r)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@return {Any}
+	///@desc Return the sum of values in the disk.
 	static getDiskSum = function(xm, ym, r) {
 		var _sum = 0;
 		var Y = min(_height-ym-1, r);
@@ -470,12 +674,19 @@ function Grid() constructor {
 		return _sum;
 	};
 	
-	// Shuffle everything
+	///@func shuffle()
+	///@self Grid
+	///@desc Shuffle everything
 	static shuffle = function() {
 		__lds_array_shuffle__(_data);
 	};
 	
-	// Swap rows
+	///@func _swap(i, j)
+	///@self Grid
+	///@param {Real} i The first row
+	///@param {Real} j The second row
+	///@ignore
+	///@desc (INTERNAL: Lightweight Data Structures - Grid) Swap rows
 	static _swap = function(i, j) {
 		var temp = array_create(_width);
 		var ii = i*_width;
@@ -483,10 +694,11 @@ function Grid() constructor {
 		__lds_array_copy__(temp, 0, _data, ii, _width);
 		__lds_array_copy__(_data, ii, _data, jj, _width);
 		__lds_array_copy__(_data, jj, temp, 0, _width);
-		delete temp;
 	};
 	
-	// Shuffle rows
+	///@func shuffleRows()
+	///@self Grid
+	///@desc Shuffle the rows of this grid.
 	static shuffleRows = function() {
 		for (var i = _height-1; i > 0; --i) {
 			var j = irandom(i);
@@ -496,19 +708,14 @@ function Grid() constructor {
 		}
 	};
 	
-	// Sort
-	static sort = function() {
-		var comparer = undefined,
-			keyer = function(v) { return v; },
-			ascend = true;
-		switch (argument_count) {
-			case 4: comparer = argument[3];
-			case 3: if (!is_undefined(argument[2])) keyer = argument[2];
-			case 2: ascend = argument[1];
-			case 1: break;
-			default: show_error("Expected 1-4 arguments, got " + string(argument_count) + ".", true);
-		}
-		var col = argument[0];
+	///@func sort(col, [ascend], [keyer], [comparer])
+	///@self Grid
+	///@param {Real} col The column to sort by
+	///@param {Bool} ascend (optional) To sort in ascending order (true, default) or descending order (false) 
+	///@param {Function} keyer (optional) Function that returns the value to sort using.
+	///@param {Function,Undefined} comparer (optional) Custom comparing function that accepts a and b and returns whether a > b.
+	///@desc Sort the rows of this grid by the given column.
+	static sort = function(col, ascend=true, keyer=function(v) { return v; }, comparer=undefined) {
 		// Sort key-row# pairs
 		var sortArray = array_create(_height);
 		for (var i = _height-1; i >= 0; --i) {
@@ -530,10 +737,12 @@ function Grid() constructor {
 				moveMap[i] = newi;
 			}
 		}
-		delete moveMap;
 	};
 	
-	// To 2D array
+	///@func to2dArray()
+	///@self Grid
+	///@return {Array<Array>}
+	///@desc Return the 2D array equivalent of this grid.
 	static to2dArray = function() {
 		var to2d = array_create(_height);
 		for (var i = _height-1; i >= 0; --i) {
@@ -543,9 +752,11 @@ function Grid() constructor {
 		return to2d;
 	};
 
-	// Shallow copy from another grid
+	///@func copy(source)
+	///@self Grid
+	///@param {Struct.Grid} source The source grid to copy from.
+	///@desc Shallow copy from another grid.
 	static copy = function(source) {
-		delete _data;
 		_width = source._width;
 		_height = source._height;
 		var totalSize = _width*_height;
@@ -553,14 +764,20 @@ function Grid() constructor {
 		__lds_array_copy__(_data, 0, source._data, 0, totalSize);
 	};
 	
-	// Create a shallow clone of this grid
+	///@func clone()
+	///@self Grid
+	///@return {Struct.Grid}
+	///@desc Create a shallow clone of this grid.
 	static clone = function() {
 		var theClone = new Grid(_width, _height);
 		theClone.copy(self);
 		return theClone;
 	};
 
-	// Reduce this grid to a representation in basic data types
+	///@func reduceTodata()
+	///@self Grid
+	///@return {Any}
+	///@desc Return a reduction of this grid to a representation in basic data types.
 	static reduceToData = function() {
 		var siz = _width*_height;
 		var dataArray = array_create(siz+2);
@@ -569,10 +786,16 @@ function Grid() constructor {
 		for (var i = siz-1; i >= 0; --i) {
 			dataArray[i] = lds_reduce(_data[i]);
 		}
+		///Feather disable GM1045
 		return dataArray;
+		///Feather enable GM1045
 	};
 	
-	// Expand the data to overwrite this grid
+	///@func expandFromData(data)
+	///@self Grid
+	///@param {Any} data The reduction data to receive
+	///@return {Struct.Grid}
+	///@desc Expand the reduced data to overwrite this grid.
 	static expandFromData = function(data) {
 		var dataEndIndex = array_length(data)-1;
 		_width = data[dataEndIndex-1];
@@ -584,9 +807,11 @@ function Grid() constructor {
 		return self;
 	};
 	
-	// Deep copy from another grid
+	///@func copyDeep(source)
+	///@self Grid
+	///@param {Struct.Grid} source The source grid to copy from
+	///@desc Deep copy from another grid
 	static copyDeep = function(source) {
-		delete _data;
 		_width = source._width;
 		_height = source._height;
 		var totalSize = _width*_height;
@@ -597,14 +822,20 @@ function Grid() constructor {
 		}
 	};
 	
-	// Create a deep clone of this grid
+	///@func cloneDeep()
+	///@self Grid
+	///@return {Struct.Grid}
+	///@desc Create a deep clone of this grid.
 	static cloneDeep = function() {
 		var theClone = new Grid(_width, _height);
 		theClone.copyDeep(self);
 		return theClone;
 	};
 	
-	// Load from data string
+	///@func read(datastr)
+	///@self Grid
+	///@param {String} datastr The data string to load from
+	///@desc Load from the given data string.
 	static read = function(datastr) {
 		var data = json_parse(datastr);
 		if (!is_struct(data)) throw new IncompatibleDataException(instanceof(self), typeof(data));
@@ -612,12 +843,18 @@ function Grid() constructor {
 		expandFromData(data.d);
 	};
 	
-	// Save into data string
+	///@func write()
+	///@self Grid
+	///@return {String}
+	///@desc Save into a data string and return it.
 	static write = function() {
 		return lds_write(self);
 	};
 	
-	// Perform a function for each entry in the grid
+	///@func forEach(func)
+	///@self Grid
+	///@param {Function} func The function to execute on each entry
+	///@desc Perform a function for each entry in the grid
 	static forEach = function(func) {
 		for (var yy = 0; yy < _height; ++yy) {
 			for (var xx = 0; xx < _width; ++xx) {
@@ -630,7 +867,13 @@ function Grid() constructor {
 		}
 	};
 	
-	// Perform a function for each entry in a disk on the grid
+	///@func forEachInDisk(func, xm, ym, r)
+	///@self Grid
+	///@param {Function} func The function to execute on each entry
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@desc Perform a function for each entry in a disk on the grid
 	static forEachInDisk = function(func, xm, ym, r) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -646,7 +889,14 @@ function Grid() constructor {
 		}
 	};
 	
-	// Perform a function for each entry in a region on the grid
+	///@func forEachInRegion(func, x1, y1, x2, y2)
+	///@self Grid
+	///@param {Function} func The function to execute on each entry
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@desc Perform a function for each entry in a region on the grid
 	static forEachInRegion = function(func, x1, y1, x2, y2) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -663,7 +913,10 @@ function Grid() constructor {
 		}
 	};
 	
-	// Set each entry in the grid to the return value of a function
+	///@func mapEach(func)
+	///@self Grid
+	///@param {Function} func The function to execute on each entry
+	///@desc Set each entry in the grid to the return value of a function.
 	static mapEach = function(func) {
 		for (var yy = 0; yy < _height; ++yy) {
 			for (var xx = 0; xx < _width; ++xx) {
@@ -677,7 +930,13 @@ function Grid() constructor {
 		}
 	};
 	
-	// Set each entry in a disk on the grid to the return value of a function
+	///@func mapEachInDisk(func, xm, ym, r)
+	///@self Grid
+	///@param {Function} func The function to execute on each entry
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@desc Set each entry in a disk on the grid to the return value of a function.
 	static mapEachInDisk = function(func, xm, ym, r) {
 		var Y = min(_height-ym-1, r);
 		for (var dy = max(-ym, -r); dy <= Y; ++dy) {
@@ -694,7 +953,14 @@ function Grid() constructor {
 		}
 	};
 	
-	// Set each entry in a region on the grid to the return value of a function
+	///@func mapEachInRegion(func, x1, y1, x2, y2)
+	///@self Grid
+	///@param {Function} func The function to execute on each entry
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@desc Set each entry in a region on the grid to the return value of a function.
 	static mapEachInRegion = function(func, x1, y1, x2, y2) {
 		var _x1 = max(0, x1),
 			_y1 = max(0, y1),
@@ -712,22 +978,44 @@ function Grid() constructor {
 		}
 	};
 	
-	// Return an iterator for the entire grid
+	///@func iterator()
+	///@self Grid
+	///@return {Struct.GridRegionIterator}
+	///@desc Return an iterator for the entire grid.
 	static iterator = function() {
 		return new GridRegionIterator(self, 0, 0, _width-1, _height-1);
 	};
 	
-	// Return an iterator for a disk region of the grid
+	///@func diskIterator(xm, ym, r)
+	///@self Grid
+	///@param {Real} xm X position of the disk's centre
+	///@param {Real} ym Y position of the disk's centre
+	///@param {Real} r The radius of the disk
+	///@return {Struct.GridDiskIterator}
+	///@desc Return an iterator for a disk region of the grid.
 	static diskIterator = function(xm, ym, r) {
 		return new GridDiskIterator(self, xm, ym, r);
 	};
 	
-	// Return an iterator for a rectangular region of the grid
+	///@func regionIterator(x1, y1, x2, y2)
+	///@self Grid
+	///@param {Real} x1 X position of the region's top-left corner
+	///@param {Real} y1 Y position of the region's top-left corner
+	///@param {Real} x2 X position of the region's bottom-right corner
+	///@param {Real} y2 Y position of the region's bottom-right corner
+	///@return {Struct.GridRegionIterator}
+	///@desc Return an iterator for a rectangular region of this grid.
 	static regionIterator = function(x1, y1, x2, y2) {
 		return new GridRegionIterator(self, x1, y1, x2, y2);
 	};
 }
 
+///@class GridDiskIterator(grid, _xm, _ym, _r)
+///@param {Struct.Grid} grid The grid to iterate through.
+///@param {Real} _xm X coordinate of the middle.
+///@param {Real} _ym Y coordinate of the middle.
+///@param {Real} _r The disk's radius.
+///@desc Utility for iterating through a disk on the given grid.
 function GridDiskIterator(grid, _xm, _ym, _r) constructor {
 	_grid = grid;
 	_width = grid._width;
@@ -744,10 +1032,17 @@ function GridDiskIterator(grid, _xm, _ym, _r) constructor {
 	y = ym+_dy;
 	value = (x > 0 && y > 0 && x < _width && y < _height) ? grid._data[x+y*_width] : undefined;
 	
+	///@func hasNext()
+	///@self GridDiskIterator
+	///@return {Bool}
+	///@desc Return whether there are more entries to iterate.
 	static hasNext = function() {
 		return (_dx <= _X) && (_dy <= _Y);
 	};
 	
+	///@func next()
+	///@self GridDiskIterator
+	///@desc Iterate to the next entry.
 	static next = function() {
 		if (++_dx > _X) {
 			if (++_dy > _Y) {
@@ -763,12 +1058,23 @@ function GridDiskIterator(grid, _xm, _ym, _r) constructor {
 		value = _grid._data[x+y*_width];
 	};
 	
+	///@func set(val)
+	///@self GridDiskIterator
+	///@param {Any} val 
+	///@desc Set the value that the current iteration points to.
 	static set = function(val) {
 		_grid._data[@x+y*_width] = val;
 		value = val;
 	};
 }
 
+///@class GridRegionIterator(grid, _x1, _y1, _x2, _y2)
+///@param {Struct.Grid} grid The grid to iterate through.
+///@param {Real} _x1 The X coordinate of the top-left corner.
+///@param {Real} _y1 The Y coordinate of the top-left corner.
+///@param {Real} _x2 The X coordinate of the bottom-right corner.
+///@param {Real} _y2 The Y coordinate of the bottom-right corner.
+///@desc Utility for iterating through a rectangular region on the given grid.
 function GridRegionIterator(grid, _x1, _y1, _x2, _y2) constructor {
 	_grid = grid;
 	_width = grid._width;
@@ -781,10 +1087,17 @@ function GridRegionIterator(grid, _x1, _y1, _x2, _y2) constructor {
 	y = y1;
 	value = (x <= x2 && y <= y2) ? _grid._data[x+y*_width] : undefined;
 	
+	///@func hasNext()
+	///@self GridRegionIterator
+	///@return {Bool}
+	///@desc Return whether there are more entries to iterate.
 	static hasNext = function() {
 		return (x <= x2 && y <= y2);
 	};
 	
+	///@func next()
+	///@self GridRegionIterator
+	///@desc Iterate to the next entry.
 	static next = function() {
 		if (++x > x2) {
 			if (++y > y2) {
@@ -796,15 +1109,28 @@ function GridRegionIterator(grid, _x1, _y1, _x2, _y2) constructor {
 		value = _grid._data[x+y*_width];
 	};
 	
+	///@func set(val)
+	///@self GridRegionIterator
+	///@param {Any} val 
+	///@desc Set the value that the current iteration points to.
 	static set = function(val) {
 		_grid._data[@x+y*_width] = val;
 		value = val;
 	};
 }
 
-function GridIndexOutOfBoundsException(xx, yy) constructor {
-	x = xx;
-	y = yy;
+///@class GridIndexOutOfBoundsException(x, y)
+///@param {Real} x The X position.
+///@param {Real} y The Y position.
+///@desc Exception when accessing a Grid beyond its size boundaries.
+function GridIndexOutOfBoundsException(x, y) constructor {
+	self.x = x;
+	self.y = y;
+	
+	///@func toString()
+	///@self GridIndexOutOfBoundsException
+	///@return {String}
+	///@desc Return a string message describing the exception.
 	static toString = function() {
 		return "Grid index (" + string(x) + "," + string(y) + ") is out of bounds.";
 	}

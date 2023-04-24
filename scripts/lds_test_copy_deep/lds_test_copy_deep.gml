@@ -1,4 +1,5 @@
 ///@func lds_test_copy_deep()
+///@desc Test Lightweight Data Structure deep-copying functions.
 function lds_test_copy_deep() {
 	var target, source, nestedEntry;
 	
