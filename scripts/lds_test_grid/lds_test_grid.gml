@@ -663,19 +663,19 @@ function lds_test_grid() {
 	grid2 = new Grid(3, 3);
 	for (var i = grid.iterator(); i.hasNext(); i.next()) {
 		assert_is_real(i.value, "Test grid iterator 1 is_real");
-		grid2.set(i.x, i.y, real(i.value)+30); //(GMS 2.3 beta 10) Work around YYC "unable to add a number to a string" false positive
+		grid2.set(i.xx, i.yy, real(i.value)+30); //(GMS 2.3 beta 10) Work around YYC "unable to add a number to a string" false positive
 	}
 	assert_equal(grid2.to2dArray(), [[30, 31, 32], [33, 34, 35], [36, 37, 38]], "Test grid iterator 1");
 	grid2.clear(0);
 	for (var i = grid.diskIterator(2, 2, 1); i.hasNext(); i.next()) {
 		assert_is_real(i.value, "Test grid disk iterator 1 is_real");
-		grid2.set(i.x, i.y, real(i.value)+40); //(GMS 2.3 beta 10) Work around YYC "unable to add a number to a string" false positive
+		grid2.set(i.xx, i.yy, real(i.value)+40); //(GMS 2.3 beta 10) Work around YYC "unable to add a number to a string" false positive
 	}
 	assert_equal(grid2.to2dArray(), [[00, 00, 00], [00, 00, 45], [00, 47, 48]], "Test grid disk iterator 1");
 	grid2.clear(0);
 	for (var i = grid.regionIterator(-1, -1, 1, 3); i.hasNext(); i.next()) {
 		assert_is_real(i.value, "Test grid region iterator 1 is_real");
-		grid2.set(i.x, i.y, real(i.value)+50); //(GMS 2.3 beta 10) Work around YYC "unable to add a number to a string" false positive
+		grid2.set(i.xx, i.yy, real(i.value)+50); //(GMS 2.3 beta 10) Work around YYC "unable to add a number to a string" false positive
 	}
 	assert_equal(grid2.to2dArray(), [[50, 51, 00], [53, 54, 00], [56, 57, 00]], "Test grid region iterator 1");
 	#endregion
